@@ -2,12 +2,12 @@
 //  FaceoffTests.swift
 //  FaceoffTests
 //
-//  Created by Huaying Tsai on 9/14/15.
-//  Copyright (c) 2015 huaying. All rights reserved.
+//  Created by Huaying Tsai on 9/20/15.
+//  Copyright © 2015 huaying. All rights reserved.
 //
 
-import UIKit
 import XCTest
+@testable import Faceoff
 
 class FaceoffTests: XCTestCase {
     
@@ -23,12 +23,12 @@ class FaceoffTests: XCTestCase {
     
     func testExample() {
         // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measureBlock() {
+        self.measureBlock {
             // Put the code you want to measure the time of here.
         }
     }
