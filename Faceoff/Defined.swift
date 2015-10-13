@@ -39,6 +39,10 @@ enum FaceoffGameSceneEffectAudioName: String {
     case AttackAudioName = "falling2a.mp3"
     case AttackedAudioName = "falling1a.mp3"
     case AlertAudioName = "siren1.mp3"
+    case SetWeaponAudioName = "chooseweapon.mp3"
+    case Round2Fight = "Round2Fight.mp3"
+    case PowerUpAudioName = "powerup.mp3"
+    case ButtonAudioName = "button.mp3"
 }
 
 //enum FaceoffScreenCrashEffectAudioName: String {

@@ -165,6 +165,7 @@ class SelectWeaponScene: SKScene {
             
             sprite.xScale = 0.5
             sprite.yScale = 0.5
+            //sprite.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
             sprite.position = location
         }
     }
@@ -252,6 +253,7 @@ class SelectWeaponScene: SKScene {
                             if(eachChild.name == String(arrayOfStrings.count-1)){
                                 let enlarge = SKAction.scaleTo(1.5, duration:0.5)
                                 eachChild.runAction(enlarge)
+                                
                             }
                             if(eachChild.name == "0"){
                                 let shrink = SKAction.scaleTo(0.5, duration:0.5)
@@ -275,6 +277,8 @@ class SelectWeaponScene: SKScene {
             
             if select_btn.containsPoint(location) {
                 
+                select_btn.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
+
                 switch(select_count){
                 case 0:
                     Weapon1.texture = SKTexture(imageNamed: arrayOfStrings[count])
@@ -304,6 +308,7 @@ class SelectWeaponScene: SKScene {
             }
             
             if confirm_btn.containsPoint(location) {
+                //confirm_btn.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
                 let nextScene = GameScene(size: scene!.size)
                 nextScene.scaleMode = SKSceneScaleMode.AspectFill
                 let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)
@@ -468,9 +473,13 @@ class SelectWeaponScene: SKScene {
         
         if(RorL==1){
             weapon.runAction(moveToLeft)
+            weapon.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
+
         }
         else{
             weapon.runAction(moveToRight)
+            weapon.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
+
         }
         
     }

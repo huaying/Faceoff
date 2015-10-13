@@ -41,7 +41,7 @@ class PlayerListScene: SKScene {
                 peerNode.fontSize = 30;
                 peerNode.position = CGPoint(x:CGRectGetMidX(self.frame),y:CGFloat(i*40)+50)
                 scrollnode.addChild(peerNode)
-            }
+                }
         }
 //        let list = [String](count: 20, repeatedValue: "DisplayName")
 //        for (i,el) in list.enumerate() {
@@ -52,17 +52,35 @@ class PlayerListScene: SKScene {
 //        }
     }
     
+    func statusLabel(statusName: String) -> SKLabelNode{
+        let label = SKLabelNode(fontNamed: "Chalkduster")
+        label.text = statusName
+        label.fontSize = 50
+        label.position = CGPointMake(frame.midX, frame.midY)
+        self.addChild(label)
+        return label
+    }
+    
+    
     func foundPeer(notification: NSNotification){
         updateScene()
+      
         print("foundPeer",peers)
     }
     func losePeer(notification: NSNotification){
         updateScene()
+        
+        statusLabel("Lost Peer")
+
         print("losePeer",peers)
 
     }
     func connected(notification: NSNotification){
         print("connected")
+        
+        statusLabel("Connected")
+
+        
         transitionForNextScene()
     }
     
@@ -75,6 +93,8 @@ class PlayerListScene: SKScene {
                     for peer in peers! {
                         if peer.displayName == (peerNode as! SKLabelNode).text {
                             connector.invitePeer(peer)
+                            
+                            statusLabel("Connecting....")
                         }
                     }
                 }
