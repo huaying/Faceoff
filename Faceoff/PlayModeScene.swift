@@ -12,7 +12,7 @@ class PlayModeScene: SKScene {
     var 選擇單人遊戲按鈕: SKNode! = nil
     var 選擇雙人遊戲按鈕: SKNode! = nil
     var 返回按鈕: SKNode! = nil
-    
+
     override func didMoveToView(view: SKView) {
         選擇單人遊戲按鈕 = SKSpriteNode(color: UIColor.grayColor(), size: CGSize(width: 200, height: 40))
         選擇單人遊戲按鈕.position = CGPoint(x:CGRectGetMidX(self.frame),y:CGRectGetMidY(self.frame)+CGFloat(50.0))
@@ -63,6 +63,7 @@ class PlayModeScene: SKScene {
                 let nextScene = PlayerListScene(size: scene!.size)
                 nextScene.scaleMode = SKSceneScaleMode.AspectFill
                 transitionForNextScene(nextScene)
+
                 
             }else if 返回按鈕.containsPoint(location){
                 返回按鈕.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
@@ -75,7 +76,7 @@ class PlayModeScene: SKScene {
     
     func transitionForNextScene(nextScene: SKScene){
         let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)
-        
+        //removeAllChildren()
         scene?.view?.presentScene(nextScene, transition: transition)
     }
     

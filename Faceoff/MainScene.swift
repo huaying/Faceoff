@@ -30,6 +30,8 @@ class MainScene: SKScene, UINavigationControllerDelegate, UIImagePickerControlle
     var 進入遊戲按鈕: SKNode! = nil
     
     override func didMoveToView(view: SKView) {
+        
+        
         製造角色按鈕 = SKSpriteNode(color: UIColor.grayColor(), size: CGSize(width: 200, height: 40))
         製造角色按鈕.position = CGPoint(x:CGRectGetMidX(self.frame),y:CGRectGetMidY(self.frame)+CGFloat(25.0))
         addChild(製造角色按鈕)

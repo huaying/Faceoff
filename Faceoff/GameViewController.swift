@@ -36,7 +36,7 @@ class GameViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        musicPlayer = setupAudioPlayerWithFile("fighton", type: "mp3")
+        musicPlayer = setupAudioPlayerWithFile("fighton", type: "wav")
         musicPlayer.numberOfLoops = -1
         //musicPlayer.play()
         // 如果開始了就停止播放

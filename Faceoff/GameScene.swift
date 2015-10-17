@@ -233,6 +233,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var OppArmedStat = false
     var fighting = false
     var roundOver = true
+    var countdown_num = 3;
+    var countDownVideoNode = SKVideoNode()
     
     var 大炮按钮: SKNode! = nil
     var 火箭按钮: SKNode! = nil
@@ -427,7 +429,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         fighting = false
         score = 0
         statusLabel()
-        
+        roundCount = 0
+
         
         removeAllChildren()
         
@@ -438,7 +441,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     func restartRound() {
         attackCount = 0
-        
         removeAllChildren()
         
         /*
@@ -505,8 +507,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if let roundCount = receivedData["roundCount"] as? Int{
             
-            print("?????")
-            if roundCount == 3 {
+            if roundCount == 2 {
                 loadAlert(attacker.position)
             }
         }
@@ -515,7 +516,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let fightingSign = receivedData["fightingSign"] as? Bool{
             fighting = fightingSign
             print("fightingSign: ", fighting)
-            restartRound()
+            //restartRound()
         }
         
         
@@ -539,11 +540,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         
         if let tappp = receivedData["tap"] as? Int{
+            
+            
             beamMove(CGFloat(-tappp))
             print(tappp);
+            
+
         }
         
-        if let x = receivedData["attack_xPos"] as? CGFloat{
+        /*
+        if let _ = receivedData["attack_xPos"] as? CGFloat{
             
             if let y = receivedData["attack_yPos"] as? CGFloat{
                 
@@ -569,8 +575,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
             }
         }
+        */
         
         if let index = receivedData["didAttack"] as? Int{
+            
+            self.fighting = false;
+
             
             if(selfArmedStat && OppArmedStat){
                 setWeapon(selected_weapon)
@@ -645,7 +655,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             if (retry.name == FaceoffGameSceneChildName.RetryButtonName.rawValue) {
                 retry.runAction(SKAction.sequence([SKAction.setTexture(SKTexture(imageNamed: "button_retry_down"), resize: false), SKAction.waitForDuration(0.3)]), completion: {[unowned self] () -> Void in
+                    
+                    
                     self.restart()
+                    
                     })
             }
             return
@@ -661,10 +674,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             if(fighting) {
                 
-                if hero.containsPoint(location){
+                if attacker.containsPoint(location){
                     //tapCount++;
-                    beamMove(CGFloat(10))
-                    appDelegate.connector.sendData(["tap": 10])
+                    beamMove(CGFloat(15))
+                    appDelegate.connector.sendData(["tap": 15])
                 }
                 
             }
@@ -812,9 +825,9 @@ private extension GameScene {
         attacker.xScale = 0.30
         attacker.yScale = 0.30
         attacker.zPosition = FaceoffGameSceneZposition.HeroZposition.rawValue
-        attacker.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(16, 18))
-        attacker.physicsBody?.affectedByGravity = false
-        attacker.physicsBody?.allowsRotation = false
+        //attacker.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(16, 18))
+        //attacker.physicsBody?.affectedByGravity = false
+        //attacker.physicsBody?.allowsRotation = false
         
         addChild(attacker)
         
@@ -831,8 +844,8 @@ private extension GameScene {
         hero.zPosition = FaceoffGameSceneZposition.HeroZposition.rawValue;
         //hero.zPosition = FaceoffGameSceneZposition.HeroZposition.rawValue
         //hero.physicsBody = SKPhysicsBody(rectangleOfSize: hero.frame.size)
-        hero.physicsBody?.affectedByGravity = false
-        hero.physicsBody?.allowsRotation = false
+        //hero.physicsBody?.affectedByGravity = false
+        //hero.physicsBody?.allowsRotation = false
         addChild(hero)
     }
     
@@ -1001,7 +1014,11 @@ private extension GameScene {
             
             
             self.loadBeam()
+            self.LoadVideo("countdown3.mp4") // run function to load video
+            self.countDown()
             
+            
+            /*
             //var x = CGFloat(arc4random_uniform(UInt32(self.frame.size.width-100)))
             var y = CGFloat(arc4random_uniform(UInt32(50)))
             self.loadattack((self.view?.bounds.size.width)!/2, yPos: y+70)
@@ -1009,7 +1026,7 @@ private extension GameScene {
             //x = CGFloat(arc4random_uniform(UInt32(self.frame.size.width-100)))
             y = CGFloat(arc4random_uniform(UInt32(50)))
             self.loadattack2((self.view?.bounds.size.width)!/2, yPos: y+70)
-
+            */
             
             Fight.runAction(action_combine) { () -> Void in
                 
@@ -1062,6 +1079,210 @@ private extension GameScene {
     
     func showBeginText(){
         
+    }
+    
+    func LoadVideo(FileToPlay:String)
+    {
+
+        countDownVideoNode =  SKVideoNode (videoFileNamed:FileToPlay)// fill spritenode with video file
+        countDownVideoNode.position = CGPointMake(size.width/2, size.height/2);  // set size
+        countDownVideoNode.name = "VideoSprite" // give it a name
+        countDownVideoNode.zPosition = 1 // set its z position
+        countDownVideoNode.play()// play video
+        countDownVideoNode.alpha = 0.0
+
+        
+        switch UIDevice.currentDevice().userInterfaceIdiom {
+        case .Phone:
+            break
+        case .Pad:
+            countDownVideoNode.size = CGSizeMake((self.view?.bounds.size.width)!*2.5, (self.view?.bounds.size.height)!*1.0)
+            break
+        case .Unspecified:
+
+            break
+        }
+        
+        addChild(countDownVideoNode)// add video node to the sceene
+        
+        countDownVideoNode.runAction(SKAction.fadeAlphaTo(1, duration: 1.0))
+
+        
+    }
+    
+    func countDown(){
+        
+        let wait = SKAction.waitForDuration(5.0);
+
+        runAction(wait, completion: {[unowned self] () -> Void in
+            
+                self.countDownVideoNode.runAction(SKAction.fadeAlphaTo(0, duration: 1.0))
+            
+            if(self.beam.position.y > (self.view?.bounds.size.height)!/2){
+                
+                
+                self.beam.runAction(SKAction.sequence([SKAction.moveToY(0, duration: 0.5),SKAction.fadeAlphaTo(0, duration: 0.5)]), completion: {[unowned self] () -> Void in
+                    
+
+                    self.attack = SKSpriteNode(imageNamed: "attackIcon4")
+                    self.attack.name = "attack1"
+                    self.attack.position = CGPoint(x: self.attacker.position.x + 10 , y: self.attacker.position.y)
+                    self.attack.xScale = 0.5
+                    self.attack.yScale = 0.5
+                    self.attack.zPosition = FaceoffGameSceneZposition.HeroZposition.rawValue + 10
+                    self.addChild(self.attack)
+
+                    let rotate = SKAction.repeatAction(SKAction.rotateByAngle(CGFloat(M_PI), duration:0.5), count: 10)
+                    let action_array:Array<SKAction> = [SKAction.scaleBy(5.0, duration: 0.5),
+                        SKAction.fadeOutWithDuration(1.0), rotate]
+                    let action_combine = SKAction.group(action_array)
+                    self.attack.runAction(action_combine)
+                    
+                    self.appDelegate.connector.sendData(["didAttack": self.selectedIndex])
+                    
+                    if self.selectedIndex == 0 {
+                        
+                        self.oneAttackCircle(0, index: self.selectedIndex)
+                    }
+                    else if self.selectedIndex == 1 {
+                        self.rocketAttack(0, index: self.selectedIndex)
+                    }
+                    else  {
+                        self.oneAttackStraight(0, index: self.selectedIndex)
+                    }
+                    
+                    let seconds = 2.0
+                    let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
+                    let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+                    
+                    dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+                        
+                        if(self.fighting){
+                            
+                            self.attackCount++
+                            
+                            self.appDelegate.connector.sendData(["roundCount": self.attackCount])
+                            
+                            
+                            if self.attackCount == 2 {
+                                self.loadAlert(self.hero.position)
+                            }
+                            
+                            //self.restartRound()
+                            self.fighting = false;
+                            
+                            //round three, game over
+                            if (self.roundCount == 3) {
+                                self.appDelegate.connector.sendData(["fightingSign": false])
+                                self.appDelegate.connector.sendData(["gameOverSign": true])
+                                self.gameOver = true
+                                
+                                
+                                self.beam.removeFromParent()
+                                self.loadGameOverLayer()
+                                
+                                return
+                                
+                            }else{
+                                
+                                self.appDelegate.connector.sendData(["fightingSign": false])
+                                
+                            }
+
+                            
+                        }
+                        
+                    })
+                    
+                    
+                    })
+                
+                
+            }
+            else if(self.beam.position.y == (self.view?.bounds.size.height)!/2){
+                
+                self.beam.runAction(SKAction.sequence([SKAction.moveToY((self.view?.bounds.size.height)!/2, duration: 0.5),SKAction.fadeAlphaTo(0, duration: 0.5)]), completion: {[unowned self] () -> Void in
+                    
+                    self.appDelegate.connector.sendData(["didAttack": self.selectedIndex])
+                    
+                    if self.selectedIndex == 0 {
+                        
+                        self.oneAttackCircle(0, index: self.selectedIndex)
+                    }
+                    else if self.selectedIndex == 1 {
+                        self.rocketAttack(0, index: self.selectedIndex)
+                    }
+                    else  {
+                        self.oneAttackStraight(0, index: self.selectedIndex)
+                    }
+                
+                    
+                    let seconds = 2.5
+                    let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
+                    let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+                    
+                    dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+                        
+                        if(self.fighting){
+                            
+                            self.attackCount++
+                            
+                            self.appDelegate.connector.sendData(["roundCount": self.attackCount])
+                            
+                            
+                            if self.attackCount == 2 {
+                                self.loadAlert(self.hero.position)
+                            }
+                            
+                            //self.restartRound()
+                            self.fighting = false;
+                            
+                            //round three, game over
+                            if (self.roundCount == 3) {
+                                self.appDelegate.connector.sendData(["fightingSign": false])
+                                self.appDelegate.connector.sendData(["gameOverSign": true])
+                                self.gameOver = true
+                                
+                                
+                                self.beam.removeFromParent()
+                                self.loadGameOverLayer()
+                                
+                                return
+                                
+                            }else{
+                                
+                                self.appDelegate.connector.sendData(["fightingSign": false])
+                                
+                            }
+
+                            
+                        }
+                        
+                    })
+                    
+                    
+                    })
+
+                
+            }
+            else{
+                self.beam.runAction(SKAction.sequence([SKAction.moveToY((self.view?.bounds.size.height)!, duration: 0.5),SKAction.fadeAlphaTo(0, duration: 0.5)]))
+                
+                let seconds = 2.5
+                let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
+                let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+                
+                dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+                    self.fighting = false;
+
+                })
+
+            }
+            
+            
+            
+            
+        })
     }
     
     func starEmitterActionAtPosition(position: CGPoint) -> SKAction {
