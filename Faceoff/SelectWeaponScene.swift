@@ -111,9 +111,9 @@ class SelectWeaponScene: SKScene {
         confirm_btn.name = "confirm_btn"
         confirm_btn.zPosition = 1.0
         
-        return_btn = SKSpriteNode(imageNamed:"Back")
-        return_btn.xScale = 0.6
-        return_btn.yScale = 0.6
+        return_btn = SKSpriteNode(imageNamed:"Back_Btn")
+        return_btn.xScale = 0.3
+        return_btn.yScale = 0.3
         return_btn.position = CGPoint(x:CGRectGetMidX(self.frame)+10, y:CGRectGetMidY(self.frame)-260)
         return_btn.name = "return_btn"
         return_btn.zPosition = 1.0

@@ -17,6 +17,7 @@ class PlayerListScene: SKScene {
     var peers: [MCPeerID]?
     var scrollnode = ScrollNode()
     var statusnode = SKLabelNode(fontNamed: "Chalkduster")
+    var 返回按鈕: SKNode! = nil
     
     override func didMoveToView(view: SKView) {
         
@@ -29,6 +30,17 @@ class PlayerListScene: SKScene {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "invited:", name: "invitedNotification", object: nil)
         
+        返回按鈕 = SKSpriteNode(color: UIColor.grayColor(), size: CGSize(width: 50, height: 30))
+        返回按鈕.position = CGPoint(x:CGRectGetMinX(self.frame)+40,y:CGRectGetMinY(self.frame)+CGFloat(30.0))
+        addChild(返回按鈕)
+        
+        let 返回文字 = SKLabelNode(fontNamed:"Chalkduster")
+        返回文字.text = "Back";
+        返回文字.fontSize = 14;
+        返回文字.position = CGPoint(x:CGFloat(0),y:CGFloat(-5))
+        返回按鈕.addChild(返回文字)
+        
+
         
         addChild(scrollnode)
         
@@ -53,6 +65,7 @@ class PlayerListScene: SKScene {
                 scrollnode.addChild(peerNode)
             }
         }
+
     }
     
     func statusLabel(statusName: String) -> SKLabelNode{
@@ -90,6 +103,8 @@ class PlayerListScene: SKScene {
         print("connected")
         
         statusLabel("Connected")
+        
+        
         transitionForNextScene()
     }
     
@@ -107,6 +122,17 @@ class PlayerListScene: SKScene {
                         }
                     }
                 }
+            }
+        }
+        if let location = touches.first?.locationInNode(self){
+            if 返回按鈕.containsPoint(location){
+                返回按鈕.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
+                
+                let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)
+                let nextScene = MainScene(size: scene!.size)
+                nextScene.scaleMode = SKSceneScaleMode.AspectFill
+                
+                scene?.view?.presentScene(nextScene, transition: transition)
             }
         }
     }
