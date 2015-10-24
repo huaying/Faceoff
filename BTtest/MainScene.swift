@@ -70,24 +70,12 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
                 製造角色按鈕.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
               
                 takePictures()
-                
-                
-                
-//                let transition = SKTransition.revealWithDirection(SKTransitionDirection.Left, duration: 0.5)
-//                
-//                let nextScene = PlayModeScene(size: scene!.size)
-//                nextScene.scaleMode = .AspectFill
-//                let Texture = SKTexture(image: finalImg)
-//               let TransNode = SKSpriteNode(texture:Texture)
-//
-//
-//                
-//                scene?.view?.presentScene(nextScene, transition: transition)
-
-
+                print("fuckthecamara")
                 
             }
-            if 進入遊戲按鈕.containsPoint(location){
+                
+            
+            else if 進入遊戲按鈕.containsPoint(location){
                 進入遊戲按鈕.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
                 
                 let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)
@@ -97,14 +85,14 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
                 
                 scene?.view?.presentScene(nextScene, transition: transition)
             }
-            if testImage.containsPoint(location){
+            else if testImage.containsPoint(location){
                 testImage.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
-              
-                let Texture = SKTexture(image: finalImg)
-                let TransNode = SKSpriteNode(texture:Texture)
-                TransNode.position = CGPoint(x:CGRectGetMidX(self.frame)+CGFloat(50.0),y:CGRectGetMidY(self.frame))
-                addChild(TransNode)
-                
+              print("test Image")
+//                let Texture = SKTexture(image: finalImg)
+//                let TransNode = SKSpriteNode(texture:Texture)
+//                TransNode.position = CGPoint(x:CGRectGetMidX(self.frame)+CGFloat(50.0),y:CGRectGetMidY(self.frame))
+//                addChild(TransNode)
+//                
             }
 
             
