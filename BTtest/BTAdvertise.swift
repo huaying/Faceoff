@@ -115,13 +115,42 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
         
         //var pointToSend = CGPointMake(x, y)
         let space = " "
-        let string_x_y = x.description + space + y.description
+        let string_x_y = "normal " + x.description + space + y.description
         let data = string_x_y.dataUsingEncoding(NSUTF8StringEncoding)
 
+        //let data = NSData(bytes: &pointToSend, length: sizeof(CGPoint))
+                
+        self.characteristic.value = data;
+        self.peripheralManager.updateValue(data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)
+        
+    }
+    
+    func updateUltimate(x: CGFloat, y:CGFloat, w:CGFloat) {
+        
+        //var pointToSend = CGPointMake(x, y)
+        let space = " "
+        let string_x_y = "ultimate " + x.description + space + y.description + space + w.description
+        let data = string_x_y.dataUsingEncoding(NSUTF8StringEncoding)
+        
         //let data = NSData(bytes: &pointToSend, length: sizeof(CGPoint))
         
         self.characteristic.value = data;
         self.peripheralManager.updateValue(data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)
+        
+    }
+    
+    func updateApponentPos(x: CGFloat, y:CGFloat, w:CGFloat) {
+        
+        //var pointToSend = CGPointMake(x, y)
+        let space = " "
+        let string_x_y = "ultimate " + x.description + space + y.description + space + w.description
+        let data = string_x_y.dataUsingEncoding(NSUTF8StringEncoding)
+        
+        //let data = NSData(bytes: &pointToSend, length: sizeof(CGPoint))
+        
+        self.characteristic.value = data;
+        self.peripheralManager.updateValue(data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)
+        
     }
     
     

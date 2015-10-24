@@ -124,13 +124,27 @@ class BTService: NSObject, CBPeripheralDelegate {
         
         let out: String = NSString(data:characteristic.value!, encoding:NSUTF8StringEncoding)! as String
         
-        //print(out)
+        print(out)
+        
+        var fullNameArr = out.characters.split {$0 == " "}.map { String($0) }
         
         let connectionDetails = ["point": out]
+
+        if(fullNameArr[0] == "ultimate"){
+            
+            NSNotificationCenter.defaultCenter().postNotificationName("getUltimateLocation", object: self, userInfo: connectionDetails)
+            
+            
+        }
+        else if(fullNameArr[0] == "normal"){
+            
+            NSNotificationCenter.defaultCenter().postNotificationName("getLocation", object: self, userInfo: connectionDetails)
+            
+        }
+
         
         
-       NSNotificationCenter.defaultCenter().postNotificationName("getLocation", object: self, userInfo: connectionDetails)
-        
+  
         /*
         let properties = (CBCharacteristicProperties.Notify |
         CBCharacteristicProperties.Read |

@@ -39,6 +39,22 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
 
         // Configure the view.
+//        let skView = self.view as! SKView
+//        skView.showsFPS = true
+//        skView.showsNodeCount = true
+//        
+//        /* Sprite Kit applies additional optimizations to improve rendering performance */
+//        skView.ignoresSiblingOrder = true
+//        
+//        /* Set the scale mode to scale to fit the window */
+//        
+//        
+//        let scene = MainScene(size: skView.frame.size)
+//        scene.scaleMode = .AspectFill
+//        scene.scaleMode = .ResizeFill
+//        skView.presentScene(scene)
+        
+        let scene = MainScene(size: view.bounds.size)
         let skView = self.view as! SKView
         skView.showsFPS = true
         skView.showsNodeCount = true
@@ -47,11 +63,10 @@ class GameViewController: UIViewController {
         skView.ignoresSiblingOrder = true
         
         /* Set the scale mode to scale to fit the window */
-        //scene.scaleMode = .AspectFill
-        
-        let scene = GameScene(size: skView.frame.size)
-        scene.scaleMode = .ResizeFill
+        scene.scaleMode = .AspectFill
         skView.presentScene(scene)
+        
+        
         
         
         // Pause the view (and thus the game) when the app is interrupted or backgrounded
@@ -116,7 +131,7 @@ class GameViewController: UIViewController {
                     alert.delegate = self
                     alert.addButtonWithTitle("OK")
                     alert.addButtonWithTitle("Cancel")
-                    alert.show()
+                    //alert.show()
                     
                     //self.imgBluetoothStatus.image = UIImage(named: "Bluetooth_Disconnected")
                 }
@@ -132,12 +147,18 @@ class GameViewController: UIViewController {
     }
 
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        
+        return UIInterfaceOrientationMask.LandscapeLeft
+    }
+    /*
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
             return .AllButUpsideDown
         } else {
             return .All
         }
     }
+    */
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
