@@ -24,7 +24,7 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
         super.init()
 	
         
-        let peripheralQueue = dispatch_queue_create("com.raywenderlich", DISPATCH_QUEUE_SERIAL)
+        let peripheralQueue = dispatch_queue_create("com.Faceoff", DISPATCH_QUEUE_SERIAL)
         self.peripheralManager = CBPeripheralManager(delegate: self, queue: peripheralQueue)
     }
     

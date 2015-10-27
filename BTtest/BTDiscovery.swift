@@ -19,7 +19,7 @@ class BTDiscovery: NSObject, CBCentralManagerDelegate {
   override init() {
 	super.init()
 	
-	let centralQueue = dispatch_queue_create("com.raywenderlich", DISPATCH_QUEUE_SERIAL)
+	let centralQueue = dispatch_queue_create("com.Faceoff", DISPATCH_QUEUE_SERIAL)
 	centralManager = CBCentralManager(delegate: self, queue: centralQueue)
     
   }
@@ -142,31 +142,31 @@ class BTDiscovery: NSObject, CBCentralManagerDelegate {
         break
       
     case CBCentralManagerState.Unauthorized:
-        print("Hello new Print with new line2");
+        print("Hello new Print with new Unauthorized");
 
       // Indicate to user that the iOS device does not support BLE.
       break
       
     case CBCentralManagerState.Unknown:
-        print("Hello new Print with new line3");
+        print("Hello new Print with new Unknown");
 
       // Wait for another event
         break
       
     case CBCentralManagerState.PoweredOn:
-        print("Hello new Print with new line4");
+        print("Hello new Print with new PoweredOn");
 
         self.startScanning()
         break
       
     case CBCentralManagerState.Resetting:
-        print("Hello new Print with new line5");
+        print("Hello new Print with new Resetting");
 
         self.clearDevices()
         break
       
     case CBCentralManagerState.Unsupported:
-        print("Hello new Print with new line6");
+        print("Hello new Print with new Unsupported");
 
         break
     }

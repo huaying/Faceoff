@@ -60,7 +60,7 @@ class PlayModeScene: SKScene {
             }else if 選擇雙人遊戲按鈕.containsPoint(location){
                 選擇雙人遊戲按鈕.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
                 print("multiplayer")
-                let nextScene = GameScene(size: scene!.size)
+                let nextScene = BuildConnectionScene(size: scene!.size)
                 nextScene.scaleMode = SKSceneScaleMode.AspectFill
                 transitionForNextScene(nextScene)
                 

@@ -66,6 +66,8 @@
 		A305A4081BDB3FB6004B6186 /* siren1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A305A3FE1BDB3FB6004B6186 /* siren1.mp3 */; settings = {ASSET_TAGS = (); }; };
 		A305A40E1BDB3FFA004B6186 /* Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = A305A40D1BDB3FFA004B6186 /* Defined.swift */; settings = {ASSET_TAGS = (); }; };
 		A305A4101BDB4076004B6186 /* PlayModeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A305A40F1BDB4076004B6186 /* PlayModeScene.swift */; settings = {ASSET_TAGS = (); }; };
+		A3ED08F11BE0032600B60AFF /* BuildConnectionScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3ED08F01BE0032600B60AFF /* BuildConnectionScene.swift */; settings = {ASSET_TAGS = (); }; };
+		A3ED08F31BE0064000B60AFF /* ScrollNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3ED08F21BE0064000B60AFF /* ScrollNode.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -151,6 +153,8 @@
 		A305A3FE1BDB3FB6004B6186 /* siren1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = siren1.mp3; sourceTree = "<group>"; };
 		A305A40D1BDB3FFA004B6186 /* Defined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Defined.swift; sourceTree = "<group>"; };
 		A305A40F1BDB4076004B6186 /* PlayModeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayModeScene.swift; sourceTree = "<group>"; };
+		A3ED08F01BE0032600B60AFF /* BuildConnectionScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildConnectionScene.swift; sourceTree = "<group>"; };
+		A3ED08F21BE0064000B60AFF /* ScrollNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -266,10 +270,12 @@
 				71E8A0D51BD5D6A2002832EE /* BTDiscovery.swift */,
 				71E8A0D81BD5D6FB002832EE /* BTService.swift */,
 				71E8A0A41BD4605C002832EE /* GameScene.sks */,
+				A3ED08F01BE0032600B60AFF /* BuildConnectionScene.swift */,
 				A305A40F1BDB4076004B6186 /* PlayModeScene.swift */,
 				71E8A0A61BD4605C002832EE /* GameScene.swift */,
 				71B30A2B1BD6222400ABAAFC /* GameOverScene.swift */,
 				A305A3F21BDB3E45004B6186 /* MainScene.swift */,
+				A3ED08F21BE0064000B60AFF /* ScrollNode.swift */,
 				71E8A0A81BD4605C002832EE /* GameViewController.swift */,
 				71E8A0AA1BD4605C002832EE /* Main.storyboard */,
 				71E8A0AD1BD4605C002832EE /* Assets.xcassets */,
@@ -492,9 +498,11 @@
 				71E8A0D71BD5D6A2002832EE /* BTDiscovery.swift in Sources */,
 				71B30A2C1BD6222400ABAAFC /* GameOverScene.swift in Sources */,
 				A305A4101BDB4076004B6186 /* PlayModeScene.swift in Sources */,
+				A3ED08F31BE0064000B60AFF /* ScrollNode.swift in Sources */,
 				71E8A0D61BD5D6A2002832EE /* BTAdvertise.swift in Sources */,
 				71E8A0D91BD5D6FB002832EE /* BTService.swift in Sources */,
 				A305A40E1BDB3FFA004B6186 /* Defined.swift in Sources */,
+				A3ED08F11BE0032600B60AFF /* BuildConnectionScene.swift in Sources */,
 				A305A3F31BDB3E45004B6186 /* MainScene.swift in Sources */,
 				71E8A0A91BD4605C002832EE /* GameViewController.swift in Sources */,
 				71E8A0A31BD4605C002832EE /* AppDelegate.swift in Sources */,

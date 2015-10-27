@@ -76,14 +76,14 @@ class GameViewController: UIViewController {
 
         // Watch Bluetooth connection
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("connectionChanged:"), name: BLEServiceChangedStatusNotification, object: nil)
-        
-        // Start the Bluetooth advertise process
-        btAdvertiseSharedInstance
-        
-        // Start the Bluetooth discovery process
-        btDiscoverySharedInstance
-        
-        
+//
+//        // Start the Bluetooth advertise process
+//        btAdvertiseSharedInstance
+//        
+//        // Start the Bluetooth discovery process
+//        btDiscoverySharedInstance
+//        
+//        
 
     }
     
