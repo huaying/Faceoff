@@ -125,7 +125,7 @@
 		71E4433D1BD7C753001D50BD /* background3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background3.jpg; sourceTree = "<group>"; };
 		71E4433F1BD7C79D001D50BD /* background4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background4.jpg; sourceTree = "<group>"; };
 		71E443411BD7C809001D50BD /* background5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background5.jpg; sourceTree = "<group>"; };
-		71E8A09F1BD4605C002832EE /* BTtest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BTtest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		71E8A09F1BD4605C002832EE /* Faceoff.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Faceoff.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71E8A0A21BD4605C002832EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71E8A0A41BD4605C002832EE /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		71E8A0A61BD4605C002832EE /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -134,10 +134,10 @@
 		71E8A0AD1BD4605C002832EE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		71E8A0B01BD4605C002832EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		71E8A0B21BD4605C002832EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		71E8A0B71BD4605C002832EE /* BTtestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BTtestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		71E8A0B71BD4605C002832EE /* FaceoffTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FaceoffTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		71E8A0BB1BD4605C002832EE /* FaceoffTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceoffTests.swift; sourceTree = "<group>"; };
 		71E8A0BD1BD4605C002832EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		71E8A0C21BD4605C002832EE /* BTtestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BTtestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		71E8A0C21BD4605C002832EE /* FaceoffUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FaceoffUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		71E8A0C61BD4605C002832EE /* FaceoffUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceoffUITests.swift; sourceTree = "<group>"; };
 		71E8A0C81BD4605C002832EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71E8A0D41BD5D6A2002832EE /* BTAdvertise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTAdvertise.swift; sourceTree = "<group>"; };
@@ -245,9 +245,9 @@
 		71E8A0A01BD4605C002832EE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				71E8A09F1BD4605C002832EE /* BTtest.app */,
-				71E8A0B71BD4605C002832EE /* BTtestTests.xctest */,
-				71E8A0C21BD4605C002832EE /* BTtestUITests.xctest */,
+				71E8A09F1BD4605C002832EE /* Faceoff.app */,
+				71E8A0B71BD4605C002832EE /* FaceoffTests.xctest */,
+				71E8A0C21BD4605C002832EE /* FaceoffUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -297,9 +297,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		71E8A09E1BD4605C002832EE /* BTtest */ = {
+		71E8A09E1BD4605C002832EE /* Faceoff */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 71E8A0CB1BD4605C002832EE /* Build configuration list for PBXNativeTarget "BTtest" */;
+			buildConfigurationList = 71E8A0CB1BD4605C002832EE /* Build configuration list for PBXNativeTarget "Faceoff" */;
 			buildPhases = (
 				71E8A09B1BD4605C002832EE /* Sources */,
 				71E8A09C1BD4605C002832EE /* Frameworks */,
@@ -309,14 +309,14 @@
 			);
 			dependencies = (
 			);
-			name = BTtest;
+			name = Faceoff;
 			productName = BTtest;
-			productReference = 71E8A09F1BD4605C002832EE /* BTtest.app */;
+			productReference = 71E8A09F1BD4605C002832EE /* Faceoff.app */;
 			productType = "com.apple.product-type.application";
 		};
-		71E8A0B61BD4605C002832EE /* BTtestTests */ = {
+		71E8A0B61BD4605C002832EE /* FaceoffTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 71E8A0CE1BD4605C002832EE /* Build configuration list for PBXNativeTarget "BTtestTests" */;
+			buildConfigurationList = 71E8A0CE1BD4605C002832EE /* Build configuration list for PBXNativeTarget "FaceoffTests" */;
 			buildPhases = (
 				71E8A0B31BD4605C002832EE /* Sources */,
 				71E8A0B41BD4605C002832EE /* Frameworks */,
@@ -327,14 +327,14 @@
 			dependencies = (
 				71E8A0B91BD4605C002832EE /* PBXTargetDependency */,
 			);
-			name = BTtestTests;
+			name = FaceoffTests;
 			productName = BTtestTests;
-			productReference = 71E8A0B71BD4605C002832EE /* BTtestTests.xctest */;
+			productReference = 71E8A0B71BD4605C002832EE /* FaceoffTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		71E8A0C11BD4605C002832EE /* BTtestUITests */ = {
+		71E8A0C11BD4605C002832EE /* FaceoffUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 71E8A0D11BD4605C002832EE /* Build configuration list for PBXNativeTarget "BTtestUITests" */;
+			buildConfigurationList = 71E8A0D11BD4605C002832EE /* Build configuration list for PBXNativeTarget "FaceoffUITests" */;
 			buildPhases = (
 				71E8A0BE1BD4605C002832EE /* Sources */,
 				71E8A0BF1BD4605C002832EE /* Frameworks */,
@@ -345,9 +345,9 @@
 			dependencies = (
 				71E8A0C41BD4605C002832EE /* PBXTargetDependency */,
 			);
-			name = BTtestUITests;
+			name = FaceoffUITests;
 			productName = BTtestUITests;
-			productReference = 71E8A0C21BD4605C002832EE /* BTtestUITests.xctest */;
+			productReference = 71E8A0C21BD4605C002832EE /* FaceoffUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -386,9 +386,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				71E8A09E1BD4605C002832EE /* BTtest */,
-				71E8A0B61BD4605C002832EE /* BTtestTests */,
-				71E8A0C11BD4605C002832EE /* BTtestUITests */,
+				71E8A09E1BD4605C002832EE /* Faceoff */,
+				71E8A0B61BD4605C002832EE /* FaceoffTests */,
+				71E8A0C11BD4605C002832EE /* FaceoffUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -499,12 +499,12 @@
 /* Begin PBXTargetDependency section */
 		71E8A0B91BD4605C002832EE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 71E8A09E1BD4605C002832EE /* BTtest */;
+			target = 71E8A09E1BD4605C002832EE /* Faceoff */;
 			targetProxy = 71E8A0B81BD4605C002832EE /* PBXContainerItemProxy */;
 		};
 		71E8A0C41BD4605C002832EE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 71E8A09E1BD4605C002832EE /* BTtest */;
+			target = 71E8A09E1BD4605C002832EE /* Faceoff */;
 			targetProxy = 71E8A0C31BD4605C002832EE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -702,7 +702,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		71E8A0CB1BD4605C002832EE /* Build configuration list for PBXNativeTarget "BTtest" */ = {
+		71E8A0CB1BD4605C002832EE /* Build configuration list for PBXNativeTarget "Faceoff" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				71E8A0CC1BD4605C002832EE /* Debug */,
@@ -711,7 +711,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		71E8A0CE1BD4605C002832EE /* Build configuration list for PBXNativeTarget "BTtestTests" */ = {
+		71E8A0CE1BD4605C002832EE /* Build configuration list for PBXNativeTarget "FaceoffTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				71E8A0CF1BD4605C002832EE /* Debug */,
@@ -720,7 +720,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		71E8A0D11BD4605C002832EE /* Build configuration list for PBXNativeTarget "BTtestUITests" */ = {
+		71E8A0D11BD4605C002832EE /* Build configuration list for PBXNativeTarget "FaceoffUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				71E8A0D21BD4605C002832EE /* Debug */,
