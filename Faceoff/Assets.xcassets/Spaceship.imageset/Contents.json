@@ -2,8 +2,8 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Spaceship.png",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "Spaceship.png"
     },
     {
       "idiom" : "universal",

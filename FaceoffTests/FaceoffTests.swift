@@ -1,15 +1,16 @@
 //
-//  FaceoffTests.swift
-//  FaceoffTests
+//  BTtestTests.swift
+//  BTtestTests
 //
-//  Created by Huaying Tsai on 9/20/15.
-//  Copyright © 2015 huaying. All rights reserved.
+//  Created by Shao-Hsuan Liang on 10/18/15.
+//  Copyright © 2015 Liang. All rights reserved.
 //
 
 import XCTest
-@testable import Faceoff
+@testable import FaceoffTests
 
-class FaceoffTests: XCTestCase {
+
+class BTtestTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

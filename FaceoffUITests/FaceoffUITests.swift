@@ -1,9 +1,9 @@
 //
-//  FaceoffUITests.swift
-//  FaceoffUITests
+//  BTtestUITests.swift
+//  BTtestUITests
 //
-//  Created by Huaying Tsai on 9/20/15.
-//  Copyright © 2015 huaying. All rights reserved.
+//  Created by Shao-Hsuan Liang on 10/18/15.
+//  Copyright © 2015 Liang. All rights reserved.
 //
 
 import XCTest

@@ -1,24 +1,44 @@
 //
 //  GameViewController.swift
-//  Faceoff
+//  BTtest
 //
-//  Created by Huaying Tsai on 9/20/15.
-//  Copyright (c) 2015 huaying. All rights reserved.
+//  Created by Shao-Hsuan Liang on 10/18/15.
+//  Copyright (c) 2015 Liang. All rights reserved.
 //
 
 import UIKit
 import SpriteKit
-import AVFoundation
+
+extension SKNode {
+    class func unarchiveFromFile(file : String) -> SKNode? {
+        if let path = NSBundle.mainBundle().pathForResource(file, ofType: "sks") {
+            
+            var sceneData: NSData?
+            do {
+                sceneData = try  NSData(contentsOfFile: path, options: .DataReadingMappedIfSafe)
+            } catch _ as NSError {
+                
+            }
+            
+            //var sceneData = NSData(contentsOfFile: path, options: .DataReadingMappedIfSafe, error: nil)!
+            let archiver = NSKeyedUnarchiver(forReadingWithData: sceneData!)
+            
+            archiver.setClass(self.classForKeyedUnarchiver(), forClassName: "SKScene")
+            let scene = archiver.decodeObjectForKey(NSKeyedArchiveRootObjectKey) as! GameScene
+            archiver.finishDecoding()
+            return scene
+        } else {
+            return nil
+        }
+    }
+}
 
 class GameViewController: UIViewController {
-    
-    
-    var musicPlayer:AVAudioPlayer!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //let scene = SelectWeaponScene(size: view.bounds.size)
-        let scene = MainScene(size: view.bounds.size)
+        // Configure the view.
         let skView = self.view as! SKView
         skView.showsFPS = true
         skView.showsNodeCount = true
@@ -27,39 +47,97 @@ class GameViewController: UIViewController {
         skView.ignoresSiblingOrder = true
         
         /* Set the scale mode to scale to fit the window */
-        scene.scaleMode = .AspectFill
+        //scene.scaleMode = .AspectFill
+        
+        
+        // Pause the view (and thus the game) when the app is interrupted or backgrounded
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleApplicationWillResignActive:", name: UIApplicationWillResignActiveNotification, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleApplicationDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
+
+        // Watch Bluetooth connection
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("connectionChanged:"), name: BLEServiceChangedStatusNotification, object: nil)
+        
+        // Start the Bluetooth advertise process
+        btAdvertiseSharedInstance
+        
+        // Start the Bluetooth discovery process
+        btDiscoverySharedInstance
+        
+        let scene = GameScene(size: skView.frame.size)
+        scene.scaleMode = .ResizeFill
         skView.presentScene(scene)
         
 
-    }
 
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        musicPlayer = setupAudioPlayerWithFile("fighton", type: "wav")
-        musicPlayer.numberOfLoops = -1
-        //musicPlayer.play()
-        // 如果開始了就停止播放
     }
     
-    func setupAudioPlayerWithFile(file:NSString, type:NSString) -> AVAudioPlayer  {
-        let url = NSBundle.mainBundle().URLForResource(file as String, withExtension: type as String)
-        var audioPlayer:AVAudioPlayer?
+    func handleApplicationWillResignActive (note: NSNotification) {
         
-        do {
-            try audioPlayer = AVAudioPlayer(contentsOfURL: url!)
-        } catch {
-            print("NO AUDIO PLAYER")
-        }
+        let skView = self.view as! SKView
+        skView.paused = true
+    }
+    
+    func handleApplicationDidBecomeActive (note: NSNotification) {
         
-        return audioPlayer!
+        let skView = self.view as! SKView
+        skView.paused = false
     }
 
     
+    func connectionChanged(notification: NSNotification) {
+        // Connection status changed. Indicate on GUI.
+        let userInfo = notification.userInfo as! [String: Bool]
+        
+        dispatch_async(dispatch_get_main_queue(), {
+            // Set image based on connection status
+            if let isConnected: Bool = userInfo["isConnected"] {
+                if isConnected {
+                    
+                    
+                    let tit = NSLocalizedString("Alert", comment: "")
+                    let msg = NSLocalizedString("Received from Central!", comment: "")
+                    let alert:UIAlertView = UIAlertView()
+                    alert.title = tit
+                    alert.message = msg
+                    alert.delegate = self
+                    alert.addButtonWithTitle("OK")
+                    alert.addButtonWithTitle("Cancel")
+                    //alert.show()
+                    
+                    NSNotificationCenter.defaultCenter().postNotificationName("beginFight", object: self)
+                    
+                    
+                } else {
+                    
+                    let tit = NSLocalizedString("Alert", comment: "")
+                    let msg = NSLocalizedString("Not Connected!", comment: "")
+                    let alert:UIAlertView = UIAlertView()
+                    alert.title = tit
+                    alert.message = msg
+                    alert.delegate = self
+                    alert.addButtonWithTitle("OK")
+                    alert.addButtonWithTitle("Cancel")
+                    //alert.show()
+                    
+                    //self.imgBluetoothStatus.image = UIImage(named: "Bluetooth_Disconnected")
+                }
+            }
+        });
+    }
+    
+
+    
+
     override func shouldAutorotate() -> Bool {
         return true
     }
 
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        
+        return UIInterfaceOrientationMask.LandscapeLeft
+    }
+    /*
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
             return .AllButUpsideDown
@@ -67,6 +145,7 @@ class GameViewController: UIViewController {
             return .All
         }
     }
+    */
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
