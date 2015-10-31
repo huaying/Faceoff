@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Faceoff.xcodeproj">
+      location = "self:/Users/Ray/Downloads/BTtest-1-1/Faceoff.xcodeproj">
    </FileRef>
 </Workspace>

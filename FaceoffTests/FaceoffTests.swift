@@ -1,15 +1,16 @@
 //
-//  FaceoffTests.swift
-//  FaceoffTests
+//  BTtestTests.swift
+//  BTtestTests
 //
-//  Created by Huaying Tsai on 9/14/15.
-//  Copyright (c) 2015 huaying. All rights reserved.
+//  Created by Shao-Hsuan Liang on 10/18/15.
+//  Copyright © 2015 Liang. All rights reserved.
 //
 
-import UIKit
 import XCTest
+@testable import FaceoffTests
 
-class FaceoffTests: XCTestCase {
+
+class BTtestTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
@@ -23,12 +24,12 @@ class FaceoffTests: XCTestCase {
     
     func testExample() {
         // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measureBlock() {
+        self.measureBlock {
             // Put the code you want to measure the time of here.
         }
     }
