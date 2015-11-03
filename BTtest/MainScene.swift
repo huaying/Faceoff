@@ -25,36 +25,47 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
     var finalImg : UIImage!
     var imgForPlayer : UIImage!
     
+    var btn:UIButton = UIButton()
+    
     var 製造角色按鈕: SKNode! = nil
     var 進入遊戲按鈕: SKNode! = nil
     var testImage: SKNode! = nil
+    let background: SKNode! = SKSpriteNode(imageNamed: "spaceship1.jpg")
     
     override func didMoveToView(view: SKView) {
         
-        testImage = SKSpriteNode(color: UIColor.grayColor(), size: CGSize(width: 200, height: 40))
+        testImage = SKSpriteNode(color: UIColor.redColor().colorWithAlphaComponent(0.3), size: CGSize(width: 200, height: 40))
         testImage.position = CGPoint(x:CGRectGetMidX(self.frame),y:CGRectGetMidY(self.frame)+CGFloat(75.0))
         addChild(testImage)
-        
+
         let testtext = SKLabelNode(fontNamed:"Chalkduster")
         testtext.text = "Test Image";
         testtext.fontSize = 14;
         testtext.position = CGPoint(x:CGFloat(0),y:CGFloat(-5))
         testImage.addChild(testtext)
         
-        製造角色按鈕 = SKSpriteNode(color: UIColor.grayColor(), size: CGSize(width: 200, height: 40))
+        background.position = CGPoint(x: frame.midX, y: frame.midY)
+        background.xScale = 0.75
+        background.yScale = 0.75
+        background.zPosition = -100
+        addChild(background)
+        
+        
+  
+        製造角色按鈕 = SKSpriteNode(color: UIColor.redColor().colorWithAlphaComponent(0.3), size: CGSize(width: 200, height: 40))
         製造角色按鈕.position = CGPoint(x:CGRectGetMidX(self.frame),y:CGRectGetMidY(self.frame)+CGFloat(25.0))
         addChild(製造角色按鈕)
-        
-        
         let 製造角色文字 = SKLabelNode(fontNamed:"Chalkduster")
         製造角色文字.text = "Create a character";
         製造角色文字.fontSize = 14;
         製造角色文字.position = CGPoint(x:CGFloat(0),y:CGFloat(-5))
         製造角色按鈕.addChild(製造角色文字)
+
         
-        進入遊戲按鈕 = SKSpriteNode(color: UIColor.grayColor(), size: CGSize(width: 200, height: 40))
+        
+        進入遊戲按鈕 = SKSpriteNode(color: UIColor.redColor().colorWithAlphaComponent(0.3), size: CGSize(width: 200, height: 40))
         進入遊戲按鈕.position = CGPoint(x:CGRectGetMidX(self.frame),y:CGRectGetMidY(self.frame)-CGFloat(25.0))
-                addChild(進入遊戲按鈕)
+        addChild(進入遊戲按鈕)
         
         let 進入遊戲文字 = SKLabelNode(fontNamed:"Chalkduster")
         進入遊戲文字.text = "Play";
@@ -79,7 +90,7 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
                 進入遊戲按鈕.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
                 
                 let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)
-                
+                removeAllChildren()
                 let nextScene = PlayModeScene(size: scene!.size)
                 nextScene.scaleMode = .AspectFill
                 

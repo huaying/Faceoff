@@ -9,6 +9,7 @@
 import Foundation
 import SpriteKit
 import CoreBluetooth
+import UIKit
 
 let btAdvertiseSharedInstance = BTAdvertise();
 
@@ -24,7 +25,7 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
         super.init()
 	
         
-        let peripheralQueue = dispatch_queue_create("com.Faceoff", DISPATCH_QUEUE_SERIAL)
+        let peripheralQueue = dispatch_queue_create("com.raywenderlich", DISPATCH_QUEUE_SERIAL)
         self.peripheralManager = CBPeripheralManager(delegate: self, queue: peripheralQueue)
     }
     
@@ -82,6 +83,7 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
         }
         
         print("サービス追加成功！")
+        //self.peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey:[BLEServiceUUID],CBAdvertisementDataLocalNameKey:UIDevice.currentDevice().name])
         self.peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey:[BLEServiceUUID]])
 
         
@@ -139,12 +141,54 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
         
     }
     
-    func updateApponentPos(x: CGFloat, y:CGFloat, w:CGFloat) {
+    func updateBonusBullet(x: CGFloat, y:CGFloat, type:String) {
+        
+        //var pointToSend = CGPointMake(x, y)
+        let space = " "
+        let string_x_y = "bonusHitOpponent " + type + space + y.description + space + x.description
+        //print("type:" + string_x_y)
+        let data = string_x_y.dataUsingEncoding(NSUTF8StringEncoding)
+        
+        //let data = NSData(bytes: &pointToSend, length: sizeof(CGPoint))
+        
+        self.characteristic.value = data;
+        self.peripheralManager.updateValue(data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)
+        
+    }
+    
+    func updateOpponentPos(x: CGFloat, y:CGFloat, w:CGFloat) {
         
         //var pointToSend = CGPointMake(x, y)
         let space = " "
         let string_x_y = "ultimate " + x.description + space + y.description + space + w.description
         let data = string_x_y.dataUsingEncoding(NSUTF8StringEncoding)
+        
+        //let data = NSData(bytes: &pointToSend, length: sizeof(CGPoint))
+        
+        self.characteristic.value = data;
+        self.peripheralManager.updateValue(data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)
+        
+    }
+    
+    func updateUltimateHintPos(x: CGFloat, y:CGFloat) {
+        
+        //var pointToSend = CGPointMake(x, y)
+        let space = " "
+        let string_x_y = "ultimateHint " + x.description + space + y.description
+        let data = string_x_y.dataUsingEncoding(NSUTF8StringEncoding)
+        
+        //let data = NSData(bytes: &pointToSend, length: sizeof(CGPoint))
+        
+        self.characteristic.value = data;
+        self.peripheralManager.updateValue(data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)
+        
+    }
+    
+    func updateHitOpponent(health: CGFloat) {
+        
+        //var pointToSend = CGPointMake(x, y)
+        let string_health = "hitOpponent " + health.description
+        let data = string_health.dataUsingEncoding(NSUTF8StringEncoding)
         
         //let data = NSData(bytes: &pointToSend, length: sizeof(CGPoint))
         

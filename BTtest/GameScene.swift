@@ -42,12 +42,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let kShipCategory: UInt32 = 0x1 << 2
     let kSceneEdgeCategory: UInt32 = 0x1 << 3
     let kInvaderFiredBulletCategory: UInt32 = 0x1 << 4
+    let bulletCategory:UInt32 = 0x1 << 5
+    let kStarBonusCategory: UInt32 = 0x1 << 6
+
     
+    // Bullet type
+    enum BulletType: String {
+        case ShipFired = "ShipFired"
+        case InvaderFired = "InvaderFired"
+        case BonusBullet = "BonusBullet"
+        var description: String {
+            return self.rawValue
+        }
+        case Bonus
+
+    }
+    
+    /*
     // Bullet type
     enum BulletType {
         case ShipFired
         case InvaderFired
     }
+*/
     
     // Invader movement direction
     enum InvaderMovementDirection {
@@ -122,7 +139,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var laser_width = 400.0
     let action = SKAction.shake(0.5, amplitudeX: 10, amplitudeY: 10)
     //var laser = SKShapeNode(rectOfSize: CGSize(width: 200, height: 400))
-    var laser : SKSpriteNode! = nil
+    //var laser : SKSpriteNode! = nil
     var mutex = false
     var bulletDidFire = false
     var startMoving = true;
@@ -131,13 +148,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var animation = SKAction()
     var diff = 0.0
     var laser_final_width = 0.0
+    var BGM : AVAudioPlayer! = nil
     var kameCharge : AVAudioPlayer! = nil
     var kameEmmit : AVAudioPlayer! = nil
+    var WarningSiren : AVAudioPlayer! = nil
 
     //--------------------------
     
-    var timer : NSTimer! = nil
+    
+    var ultimateTimer : NSTimer! = nil
     var timer2 : NSTimer! = nil
+    var mpTimer : NSTimer! = nil
+    var oppoMpTimer : NSTimer! = nil
 
     var emitter :SKEmitterNode! = nil
     var profemitter :SKEmitterNode! = nil
@@ -148,8 +170,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var healthBarBack = SKSpriteNode()
     var latestMinusHealth : CGFloat = 0.0
     var latesHealth : CGFloat = 0.0
+    
+    var opponenthealthBar = SKSpriteNode()
+    var opponenthealthBarBack = SKSpriteNode()
+    var opponentlatestMinusHealth : CGFloat = 0.0
+    var opponentlatesHealth : CGFloat = 0.0
+    
+    var MpBar = SKSpriteNode()
+    var opponentMpBar = SKSpriteNode()
+    var mpValue : CGFloat = 0.0
+    var opponentMpValue : CGFloat = 0.0
+
     let kBar = "ship"
-    let kBarSize = CGSize(width:100, height: 5)
+    var ultimateHint : SKSpriteNode! = nil
+
+    
+    //////bonus bullet//////
+    let starBonusName = "starbonusnode"
+    let bulletName = "bulletnode"
+    let playerName = "playernode"
+    let starName = "starnode"
+    var weaponType = BulletType.ShipFired
+    
+    
+    func randomNumber(maximum: CGFloat) -> CGFloat {
+        
+        let maxInt = UInt32(maximum)
+        
+        let result = arc4random_uniform(maxInt)
+        
+        return CGFloat(result)
+    }
     
 
     
@@ -170,17 +221,74 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.physicsWorld.contactDelegate = self
         }
         
-        laser = SKSpriteNode(imageNamed: "a01")
+        let laser = SKSpriteNode(imageNamed: "a01")
         laser.name = "laser"
         laser.size.width = 400
         self.initEnergyBlastScene()
         animation = SKAction.animateWithTextures(energyBlastAnim, timePerFrame: 0.1)
         
         // Watch Bluetooth connection
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("beginFight"), name: "beginFight", object: nil)
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("ApponentFireShipBullets:"), name: "getLocation", object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("ApponentFireShipUltimate:"), name: "getUltimateLocation", object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("ultimateHint:"), name: "getUltimateHint", object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("hitOpponent:"), name: "hitOpponent", object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("bonusHitOpponent:"), name: "bonusHitOpponent", object: nil)
 
+        
+        //opponentlatesHealth = (self.view?.bounds.size.height)!
+        
+        /////////////////////////bonus bullet////////////////////////////
+        let slideStarBonus = SKAction.sequence([SKAction.runBlock({
+            
+            let starBonusNode = self.makeBulletOfType(BulletType.Bonus)
+            
+            let direction = arc4random_uniform(3)
+            
+            var xPower: CGFloat?
+            
+            var yPower: CGFloat?
+            
+            // top
+            if(direction == 0) {
+                xPower = (self.randomNumber(20) - 10) / 10
+                
+                yPower = self.randomNumber(15) / 15 * -1
+                
+                starBonusNode.position = CGPointMake(starBonusNode.size.width / 2 + self.randomNumber(self.size.width - starBonusNode.size.width * 2), self.size.height - starBonusNode.size.height / 2)
+            }
+            // left
+            if(direction == 1) {
+                xPower = self.randomNumber(15) / 15
+                
+                yPower = (self.randomNumber(20) - 10) / 10
+                
+                starBonusNode.position = CGPointMake(starBonusNode.size.width / 2, starBonusNode.size.height / 2 + self.randomNumber(self.size.height - starBonusNode.size.height * 2))
+            }
+            
+            // right
+            if(direction == 2) {
+                xPower = self.randomNumber(15) / 15 * -1
+                
+                yPower = (self.randomNumber(20) - 10) / 10
+                
+                starBonusNode.position = CGPointMake(self.size.width - starBonusNode.size.width / 2, starBonusNode.size.height / 2 + self.randomNumber(self.size.height - starBonusNode.size.height * 2))
+            }
+            
+            self.addChild(starBonusNode)
+            
+            starBonusNode.physicsBody?.applyImpulse(CGVectorMake(xPower!, yPower!))
+            
+        }), SKAction.waitForDuration(15.0)])
+        
+        self.runAction(SKAction.repeatAction(slideStarBonus, count: 500))
+        
         
     }
     
@@ -206,7 +314,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         setupShip()
         
+        setupHealthBar()
+        
+        setupOpponentHealthBar()
+        
+        setupMpBar()
+        
+        setupOpponentMpBar()
+        
         loadBackground()
+        
+        qq()
         
         //setupHud()
         
@@ -316,23 +434,124 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    func setupShip() {
+    
+    
+    func setupHealthBar() {
         
-        // 1
-        ship = self.makeShip()
-        
-        // 2
-        ship.position = CGPointMake(self.size.width / 2, kShipSize.height / 2)
-        
+        /*
         healthBarBack = self.makeHealthBarBack()
         healthBarBack.position = CGPoint(x: ship.position.x, y: ship.position.y + 50)
         healthBar = self.makeHealthBar()
         healthBar.position = CGPoint(x: ship.position.x, y: ship.position.y + 50)
+        */
+
         
-        self.addChild(ship)
+        healthBarBack = self.makeHealthBarBack()
+        healthBarBack.position = CGPoint(x: (self.view?.bounds.size.width)!-2.5, y: (self.view?.bounds.size.height)!/2)
+        healthBar = self.makeHealthBar()
+        healthBar.position = CGPoint(x: (self.view?.bounds.size.width)!-2.5, y: (self.view?.bounds.size.height)!/2)
+        
         self.addChild(healthBarBack)
         self.addChild(healthBar)
     }
+    
+    func setupOpponentHealthBar() {
+        
+        /*
+        healthBarBack = self.makeHealthBarBack()
+        healthBarBack.position = CGPoint(x: ship.position.x, y: ship.position.y + 50)
+        healthBar = self.makeHealthBar()
+        healthBar.position = CGPoint(x: ship.position.x, y: ship.position.y + 50)
+        */
+        
+        
+        opponenthealthBarBack = self.makeHealthBarBack()
+        opponenthealthBarBack.position = CGPoint(x: 2.5, y: (self.view?.bounds.size.height)!/2)
+        opponenthealthBar = self.makeHealthBar()
+        opponenthealthBar.position = CGPoint(x: 2.5, y: (self.view?.bounds.size.height)!/2)
+        
+        self.addChild(opponenthealthBarBack)
+        self.addChild(opponenthealthBar)
+    }
+    
+    func setupMpBar() {
+        
+        mpValue = (self.view?.bounds.size.height)!
+
+        MpBar = self.makeMpBar()
+        MpBar.position = CGPoint(x: (self.view?.bounds.size.width)!-10, y: (self.view?.bounds.size.height)!/2)
+        
+        self.addChild(MpBar)
+        
+        /*
+        let circlePath = UIBezierPath(arcCenter: CGPoint(x: ship.size.width / 2.0, y: ship.size.height / 2.0), radius: (ship.size.width + 10)/2, startAngle: 0.0, endAngle: CGFloat(M_PI * 2.0), clockwise: true)
+        
+        // Setup the CAShapeLayer with the path, colors, and line width
+        MpBar = CAShapeLayer()
+        MpBar.path = circlePath.CGPath
+        MpBar.fillColor = UIColor.clearColor().CGColor
+        MpBar.strokeColor = UIColor.redColor().CGColor
+        MpBar.lineWidth = 5.0
+        
+        // Don't draw the circle initially
+        MpBar.strokeEnd = 1.0
+        
+        // Add the circleLayer to the view's layer's sublayers
+        self.view!.layer.addSublayer(MpBar)
+        
+        //self.addChild(MpBar)
+        */
+    }
+    
+    func setupOpponentMpBar() {
+        
+        opponentMpValue = (self.view?.bounds.size.height)!
+        
+        opponentMpBar = self.makeMpBar()
+        opponentMpBar.position = CGPoint(x: 10, y: (self.view?.bounds.size.height)!/2)
+        
+        self.addChild(opponentMpBar)
+    }
+    
+    func setupShip() {
+        
+        // 1
+        ship = self.makeShip()
+        // 2
+        ship.position = CGPointMake(self.size.width / 2, kShipSize.height / 2)
+        
+        self.addChild(ship)
+    }
+    
+    
+    func qq() {
+        
+        // 1
+        var qqq = self.makeShip()
+        // 2
+        qqq.position = CGPointMake(40, 40)
+        qqq.xScale = 0.4;
+        qqq.yScale = 0.4;
+        
+        self.addChild(qqq)
+        
+        qqq = self.makeShip()
+
+        qqq.position = CGPointMake(40, 90)
+        qqq.xScale = 0.4;
+        qqq.yScale = 0.4;
+        
+        self.addChild(qqq)
+        
+        qqq = self.makeShip()
+        
+        qqq.position = CGPointMake(40, 140)
+        qqq.xScale = 0.4;
+        qqq.yScale = 0.4;
+        
+        self.addChild(qqq)
+    }
+    
     
     func makeShip() -> SKSpriteNode {
         
@@ -366,6 +585,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func makeHealthBar() -> SKSpriteNode {
         
+        let kBarSize = CGSize(width:5, height: (self.view?.bounds.height)!)
+
         let bar = SKSpriteNode(color: SKColor.redColor(), size: kBarSize)
         bar.name = kBar
 
@@ -375,8 +596,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     func makeHealthBarBack() -> SKSpriteNode {
         
+        let kBarSize = CGSize(width:5, height: (self.view?.bounds.height)!)
+        
         let bar = SKSpriteNode(color: SKColor.grayColor(), size: kBarSize)
         bar.name = kBar
+        
+        return bar
+    }
+    
+    func makeMpBar() -> SKSpriteNode {
+        
+        let kBarSize = CGSize(width:5, height: (self.view?.bounds.height)!)
+        
+        let bar = SKSpriteNode(color: SKColor.blueColor(), size: kBarSize)
+        bar.name = kBar
+        
         
         return bar
     }
@@ -394,7 +628,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.text = String(format: "Score: %04u", 0)
         
         // 3
-        print(self.size.height)
+        //print(self.size.height)
         scoreLabel.position = CGPointMake(self.frame.size.width / 2, self.size.height - (40 + scoreLabel.frame.size.height/2))
         self.addChild(scoreLabel)
         
@@ -444,6 +678,43 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             bullet.physicsBody!.contactTestBitMask = kShipCategory
             bullet.physicsBody!.collisionBitMask = 0x0
             
+        case .Bonus:
+            bullet = SKSpriteNode(imageNamed: "StarBonus")
+            
+            bullet.name = starName
+            bullet.xScale = 0.12
+            bullet.yScale = 0.12
+            
+            /*
+            bullet.position = CGPointMake(0 + bullet.size.width / 2, randomNumber(self.size.height / 2) + self.size.height / 4)
+            */
+            
+            /*
+            bullet.position = CGPointMake(0 + bullet.size.width / 2, randomNumber(self.size.height / 16) + self.size.height * 15 / 16 - bullet.size.width / 2)
+            */
+            
+            //bullet.position = CGPointMake(bullet.size.width / 2 + randomNumber(self.size.width - bullet.size.width * 2), bullet.size.height / 2 + randomNumber(self.size.height - bullet.size.height * 2))
+            bullet.physicsBody = SKPhysicsBody(circleOfRadius: bullet.size.height / 5)
+            bullet.physicsBody?.usesPreciseCollisionDetection = true
+            bullet.physicsBody?.affectedByGravity = false
+            bullet.physicsBody?.categoryBitMask = kStarBonusCategory
+            bullet.physicsBody?.contactTestBitMask = kShipCategory
+            bullet.physicsBody?.collisionBitMask = 0x0
+            
+        case .BonusBullet:
+            bullet = SKSpriteNode(imageNamed: "DoubleBonus")
+            
+            bullet.name = starBonusName
+            bullet.xScale = 0.20
+            bullet.yScale = 0.20
+            bullet.position = CGPointMake(0 + bullet.size.width / 2, randomNumber(self.size.height / 2) + self.size.height / 4)
+            bullet.physicsBody = SKPhysicsBody(circleOfRadius: bullet.size.height / 5)
+            bullet.physicsBody?.usesPreciseCollisionDetection = true
+            bullet.physicsBody?.affectedByGravity = false
+            bullet.physicsBody?.categoryBitMask = bulletCategory
+            bullet.physicsBody?.contactTestBitMask = kShipCategory
+            bullet.physicsBody?.collisionBitMask = 0x0
+
         default:
             bullet = nil
         }
@@ -469,6 +740,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if(startMoving){
             self.processUserMotionForUpdate(currentTime)
         }
+        
+        self.MpIncrease(currentTime)
+        
         
         //self.moveInvadersForUpdate(currentTime)
         
@@ -567,8 +841,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
                 //}
                 
-                healthBar.position = CGPoint(x: ship.position.x - (latestMinusHealth/2), y: ship.position.y + 65)
-                healthBarBack.position = CGPoint(x: ship.position.x, y: ship.position.y + 65)
+                //healthBar.position = CGPoint(x: ship.position.x - (latestMinusHealth/2), y: ship.position.y + 65)
+                //healthBarBack.position = CGPoint(x: ship.position.x, y: ship.position.y + 65)
                 
                 if(profemitter != nil){
                     profemitter.position = ship.position
@@ -777,6 +1051,48 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // 1
         //if existingBullet == nil {
+        
+        //if let ship = self.childNodeWithName(kShipName) {
+        var bullet: SKSpriteNode?
+        if weaponType == BulletType.ShipFired {
+            bullet = self.makeBulletOfType(.ShipFired)
+        }
+            
+        else if weaponType == BulletType.BonusBullet {
+            bullet = self.makeBulletOfType(.BonusBullet)
+        }
+        
+        // 2
+        bullet!.position = CGPoint(x: ship.position.x, y: ship.position.y + ship.frame.size.height + bullet!.frame.size.height / 4)
+        
+        // 3
+        let bulletDestination = CGPoint(x: ship.position.x, y: self.frame.size.height + bullet!.frame.size.height / 2)
+        
+        // 4
+        self.fireBullet(bullet!, toDestination: bulletDestination, withDuration: 1.0, andSoundFileName: "ShipBullet.wav", fromWhom:0)
+        
+        //print(ship.position.x)
+        
+        if weaponType == BulletType.ShipFired {
+            btAdvertiseSharedInstance.update((self.view?.bounds.size.width)!-ship.position.x, y: ship.position.y)
+        }
+            
+        else if weaponType == BulletType.BonusBullet {
+            btAdvertiseSharedInstance.updateBonusBullet((self.view?.bounds.size.width)!-ship.position.x, y: ship.position.y, type: BulletType.BonusBullet.description)
+        }
+        
+        //}
+        //}
+    }
+
+    /*
+    func fireShipBullets() {
+        
+        
+        //let existingBullet = self.childNodeWithName(kShipFiredBulletName)
+        
+        // 1
+        //if existingBullet == nil {
             
             //if let ship = self.childNodeWithName(kShipName) {
                 
@@ -799,6 +1115,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             //}
         //}
     }
+    */
     
     func ApponentFireShipBullets(notification: NSNotification) {
         
@@ -840,11 +1157,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func fireShipUltimate() {
         
+        /*
+
         if laser != nil{
             laser.removeFromParent()
         }
+        */
+        let laser = SKSpriteNode(imageNamed: "a01")
+        laser.name = "laser"
+        laser.size.width = 400
         
-        laser = SKSpriteNode(imageNamed: "a01")
         laser.size.width = CGFloat(laser_final_width)
         laser.size.height = CGFloat(laser_height)
         //laser.size.height = (self.view?.bounds.height)!
@@ -858,8 +1180,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         laser.runAction(animation, completion:
             {
-                self.laser.removeFromParent()
+                laser.removeFromParent()
         })
+        
         
 
     }
@@ -880,20 +1203,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //let f_y = CGFloat((y as NSString).floatValue);
         laser_final_width = (w as NSString).doubleValue;
 
-        print(laser_final_width)
+        //print(laser_final_width)
 
-
+        /*
         if laser != nil{
             laser.removeFromParent()
         }
+        */
         
-        laser = SKSpriteNode(imageNamed: "a01")
+        let laser = SKSpriteNode(imageNamed: "a01")
+        laser.name = "laser"
+        laser.size.width = 400
+        
         laser.size.width = CGFloat(laser_final_width)
         laser.size.height = CGFloat(laser_height)
         laser.position = CGPoint(x: f_x, y: 0)
         
         laser.name = kShipFiredUltimateName
-        laser.physicsBody = SKPhysicsBody(rectangleOfSize: laser.frame.size)
+        let pb = CGSizeMake(laser.frame.size.width-35, laser.frame.size.height)
+        laser.physicsBody = SKPhysicsBody(rectangleOfSize: pb)
         laser.physicsBody!.dynamic = true
         laser.physicsBody!.affectedByGravity = false
         laser.physicsBody!.categoryBitMask = kShipFiredBulletCategory
@@ -908,10 +1236,172 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         laser.runAction(animation, completion:
             {
-                self.laser.removeFromParent()
+                laser.removeFromParent()
         })
+        
+        if ultimateHint != nil{
+            ultimateHint.removeFromParent()
+            self.WarningSiren.pause()
+            
+            do {
+                try self.kameCharge = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("kameEmmit", ofType: "wav")!))
+                
+                self.kameCharge.play()
+            } catch {
+                print(error)
+            }
+
+        }
+        
+        if(oppoMpTimer != nil){
+            oppoMpTimer.invalidate()
+            oppoMpTimer = nil
+            
+        }
+    }
+    
+    func ultimateHint(notification: NSNotification){
+        
+        
+        let userInfo = notification.userInfo as! Dictionary<String, AnyObject>
+        let string_point: String = userInfo["point"] as! String
+        
+        var fullNameArr = string_point.characters.split {$0 == " "}.map { String($0) }
+        let x: String = fullNameArr[1]
+        //let y: String = fullNameArr[2]
+        
+        let f_x = CGFloat((x as NSString).floatValue);
+        //let f_y = CGFloat((y as NSString).floatValue);
+        
+        
+        ultimateHint = SKSpriteNode(imageNamed: "warning")
+        ultimateHint.position = CGPoint(x: f_x, y: ((self.view?.bounds.height)! - 20))
+        self.addChild(ultimateHint)
+        let fadeIn = SKAction.fadeInWithDuration(0.1)
+        let fadeOut = SKAction.fadeOutWithDuration(0.1)
+
+        ultimateHint.runAction(SKAction.repeatActionForever(SKAction.sequence([fadeOut,fadeIn])))
+        do {
+            try self.WarningSiren = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("Warning", ofType: "wav")!))
+            
+            self.WarningSiren.play()
+        } catch {
+            print(error)
+        }
+
+        //ultimateHint.runAction(SKAction.playSoundFileNamed("Warning.wav", waitForCompletion: false))
+
+        
+        
+        if(oppoMpTimer != nil){
+            oppoMpTimer.invalidate()
+            oppoMpTimer = nil
+
+        }
+        
+        oppoMpTimer = NSTimer(timeInterval: 0.01, target: self, selector: Selector("MpDecrease:"), userInfo: 1, repeats: true)
+        NSRunLoop.mainRunLoop().addTimer(oppoMpTimer, forMode: NSDefaultRunLoopMode)
+        
+        //oppoMpTimer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: "MpDecrease:", userInfo: 1, repeats: true)
+        
+        //print(f_x)
+    
+        
+    }
+    
+    func winAlert(){
+        
+
+        
+    }
+    
+    func hitOpponent(notification: NSNotification){
+        
+        
+        let userInfo = notification.userInfo as! Dictionary<String, AnyObject>
+        let string_point: String = userInfo["point"] as! String
+        
+        var fullNameArr = string_point.characters.split {$0 == " "}.map { String($0) }
+        let health: String = fullNameArr[1]
+        //let y: String = fullNameArr[2]
+        
+        let minust_health = CGFloat((health as NSString).floatValue);
+        //let f_y = CGFloat((y as NSString).floatValue);
+        
+        
+        //print(minust_health)
+
+        if(minust_health <= 0){
+            
+            self.userInteractionEnabled = false
+            
+            if(ultimateTimer != nil){
+                ultimateTimer.invalidate()
+                ultimateTimer = nil
+            }
+
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                
+                if self.emitter != nil {
+                    self.emitter.removeFromParent()
+                }
+                
+                let alert = UIAlertView(title: "",
+                    message: "YOU WIN!",
+                    delegate: self,
+                    cancelButtonTitle: "OK")
+                
+                alert.show()
+                
+                
+            })
+        }
+
+        
+        //print((self.view?.bounds.height)! - minust_health)
+
+        
+        opponentlatesHealth = (self.view?.bounds.height)! - minust_health
+
+        if(opponentlatesHealth <= 0){
+            
+            opponentlatesHealth = (self.view?.bounds.height)!
+            
+            opponenthealthBar.position = CGPoint(x: 2.5, y: (self.view?.bounds.size.height)!/2)
+            opponenthealthBarBack.position = CGPoint(x: 2.5, y: (self.view?.bounds.size.height)!/2)
+            
+        }
+        opponenthealthBar.size = CGSize(width: 5 ,height: opponentlatesHealth)
+        opponenthealthBar.position = CGPoint(x: 2.5, y: (self.view?.bounds.size.height)!/2 + minust_health/2)
+        
+        //print("++++++++++++++++")
+
     }
 
+    func bonusHitOpponent(notification: NSNotification){
+        let userInfo = notification.userInfo as! Dictionary<String, AnyObject>
+        let string_point: String = userInfo["point"] as! String
+        //print("bonus bullet")
+        
+        var fullNameArr = string_point.characters.split {$0 == " "}.map { String($0) }
+        let x: String = fullNameArr[3]
+        //let y: String = fullNameArr[2]
+        let type: String = fullNameArr[1]
+        
+        if type == BulletType.BonusBullet.description {
+            let f_x = CGFloat((x as NSString).floatValue);
+            
+            let bullet = self.makeBulletOfType(BulletType.BonusBullet)
+            
+            bullet!.position = CGPoint(x: f_x, y: self.frame.size.height)
+            
+            // 3
+            let bulletDestination = CGPoint(x: ship.position.x, y: 0)
+            
+            // 4
+            self.fireBullet(bullet!, toDestination: bulletDestination, withDuration: 1.0, andSoundFileName: "ShipBullet.wav", fromWhom:1)
+        }
+    }
     
     func profEmitterActionAtPosition(position: CGPoint) -> SKAction {
         let sksPath = NSBundle.mainBundle().pathForResource("profExplosion", ofType: "sks")
@@ -948,6 +1438,54 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         })
     }
     
+    
+    func beginFight(){
+        
+        self.userInteractionEnabled = false
+
+        let Ready = SKSpriteNode(imageNamed:"Ready")
+        Ready.xScale = 0.5
+        Ready.yScale = 0.5
+        Ready.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+        addChild(Ready)
+        
+        let ready_action_array:Array<SKAction> = [SKAction.fadeInWithDuration(1.0),
+            SKAction.scaleTo(2.0, duration: 2.0),SKAction.fadeOutWithDuration(2.0)]
+        let ready_action_combine = SKAction.group(ready_action_array)
+        
+        
+        Ready.runAction(ready_action_combine) { () -> Void in
+            
+            let fight_action_array:Array<SKAction> = [SKAction.fadeInWithDuration(1.0),
+                SKAction.scaleTo(10.0, duration: 2.0),
+                SKAction.fadeOutWithDuration(1.0)]
+            let action_combine = SKAction.group(fight_action_array)
+            
+            let Fight = SKSpriteNode(imageNamed:"Fight")
+            Fight.xScale = 0.5
+            Fight.yScale = 0.5
+            Fight.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+            Fight.runAction(SKAction.playSoundFileNamed("fight.wav", waitForCompletion: false))
+            self.addChild(Fight)
+            
+            self.userInteractionEnabled = true
+            
+            do {
+                try self.BGM = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("BGM", ofType: "wav")!))
+                
+                self.BGM.play()
+            } catch {
+                print(error)
+            }
+
+            Fight.runAction(action_combine) { () -> Void in
+                
+                //weapon.position = self.weapon1_ori_pos
+            }
+            
+        }
+    }
+    
     // User Tap Helpers
 
     func delay(delay:Double, closure:()->()) {
@@ -956,7 +1494,116 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             dispatch_time( DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), closure)
     }
 
+    func MpIncrease(currentTime: CFTimeInterval){
+        
+        if(mpValue < self.view?.bounds.size.height){
+            
+            mpValue += 1
+            MpBar.size = CGSize(width: 5 ,height: mpValue)
+            
+            let minus = (self.view?.bounds.size.height)! - mpValue
+            
+            MpBar.position = CGPoint(x: (self.view?.bounds.size.width)!-10 , y: (self.view?.bounds.size.height)!/2 - minus/2)
+        }
+        
+        if(opponentMpValue < self.view?.bounds.size.height){
+            
+            opponentMpValue += 1
+            opponentMpBar.size = CGSize(width: 5 ,height: opponentMpValue)
+            
+            let minus = (self.view?.bounds.size.height)! - opponentMpValue
+            
+            opponentMpBar.position = CGPoint(x: 10 , y: (self.view?.bounds.size.height)!/2 + minus/2)
+        }
+        
+    }
+    
+    func MpDecrease(timer:NSTimer) {
+        
+        let userOrOpponent = timer.userInfo as! Int
+        
+        
+        if(userOrOpponent == 0){
+            
+            if(mpValue >= 3){
+                
+                mpValue -= 3
+                MpBar.size = CGSize(width: 5 ,height: mpValue)
+                
+                let minus = (self.view?.bounds.size.height)! - mpValue
+                
+                MpBar.position = CGPoint(x: (self.view?.bounds.size.width)!-10 , y: (self.view?.bounds.size.height)!/2 - minus/2)
+                
+                /*
+                if(mpValue <= 0){
+                
+                
+                let timestamp = NSDate().timeIntervalSince1970
+                
+                diff = timestamp - lastTimeStamp
+                
+                if(diff > 3.0) {
+                laser_final_width = laser_width
+                } else {
+                laser_final_width = laser_width * (diff / 3.0)
+                }
+                
+                self.kameCharge.pause()
+                do {
+                try self.kameEmmit = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("kameEmmit", ofType: "wav")!))
+                
+                self.kameEmmit.play()
+                } catch {
+                print(error)
+                }
+                
+                self.fireShipUltimate()
+                
+                btAdvertiseSharedInstance.updateUltimate((self.view?.bounds.size.width)!-ship.position.x, y: ship.position.y, w: CGFloat(laser_final_width))
+                
+                self.userInteractionEnabled = true
+                self.bulletDidFire = true
+                
+                mutex = false
+                startMoving = true;
+                
+                }
+                */
+            }
+            
+            /*
+            else{
+                
+                if(ultimateTimer != nil){
+                    ultimateTimer.invalidate()
+                    ultimateTimer = nil
+                    
+                    emitter.removeFromParent()
+                }
+            }
+            */
+        }
+        else if(userOrOpponent == 1){
+            
+            if(opponentMpValue >= 3){
+                
+                
+                opponentMpValue -= 3
+                opponentMpBar.size = CGSize(width: 5 ,height: opponentMpValue)
+                
+                let minus = (self.view?.bounds.size.height)! - opponentMpValue
+                
+                opponentMpBar.position = CGPoint(x: 10 , y: (self.view?.bounds.size.height)!/2 + minus/2)
+            }
+        }
+        
+        
+        
+        
+    }
+    
     func update() {
+        
         
         self.bulletDidFire = false
         
@@ -986,32 +1633,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 print(error)
             }
             
+            mpTimer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: "MpDecrease:", userInfo: 0, repeats: true)
+            
+
+            
+            btAdvertiseSharedInstance.updateUltimateHintPos((self.view?.bounds.size.width)!-ship.position.x, y: ship.position.y)
+            
         }
 
     }
-    
-    func update2() {
 
-    }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         /* Called when a touch begins */
-        
-        
-        startMoving = false;
-        self.userInteractionEnabled = false
         
         for touch in touches {
             lastTimeStamp = touch.timestamp
         }
         
-
+        startMoving = false;
+        self.userInteractionEnabled = false
+        
         self.fireShipBullets()
-        if(timer != nil){
-            timer.invalidate()
-            timer = nil
+        
+        if(ultimateTimer != nil){
+            ultimateTimer.invalidate()
+            ultimateTimer = nil
         }
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: "update", userInfo: nil, repeats: false)
+        ultimateTimer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: "update", userInfo: nil, repeats: false)
 
 
         /*
@@ -1069,8 +1718,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             self.fireShipUltimate()
             
-            
             btAdvertiseSharedInstance.updateUltimate((self.view?.bounds.size.width)!-ship.position.x, y: ship.position.y, w: CGFloat(laser_final_width))
+            /*
+            if(mpValue>3){
+                print("幹幹")
+                print(mpValue)
+                btAdvertiseSharedInstance.updateUltimate((self.view?.bounds.size.width)!-ship.position.x, y: ship.position.y, w: CGFloat(laser_final_width))
+            }
+            */
 
         }
         
@@ -1079,6 +1734,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         mutex = false
         startMoving = true;
+        
+        if(mpTimer != nil){
+            mpTimer.invalidate()
+            mpTimer = nil
+        }
+
 
         /*
         if let touch: UITouch? = touches.first {
@@ -1119,7 +1780,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if contact as SKPhysicsContact? != nil {
             self.contactQueue.append(contact)
-            print("!!!!!");
+            
+            if contact.bodyA.node?.parent == nil || contact.bodyB.node?.parent == nil {
+                return
+            }
+            
+            let nodeNames = [contact.bodyA.node!.name!, contact.bodyB.node!.name!]
+            
+            if (nodeNames as NSArray).containsObject(kShipName) && (nodeNames as NSArray).containsObject(starName) {
+                contact.bodyB.node?.removeFromParent()
+                weaponType = .BonusBullet
+                return
+            }
             
             let action = SKAction.shake(0.5, amplitudeX: 10, amplitudeY: 10)
             ship?.runAction(action)
@@ -1185,89 +1857,122 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             //contact.bodyA.node!.removeFromParent()
             contact.bodyB.node!.removeFromParent()
             
+            decreaseHealth(2.5)
             
-            latestMinusHealth += 2.5
-            latesHealth = 100 - latestMinusHealth
+            //print(latesHealth)
             
-            if(latesHealth <= 50 && latesHealth > 0){
-                if(profemitter == nil){
-                    self.profEmitterActionAtPosition(self.ship.position)
-                }
-            }
-            else if(latesHealth <= 0){
-                latestMinusHealth = 0
-                latesHealth = 100
-                self.profemitter.removeFromParent()
-                
-                healthBar.position = CGPoint(x: ship.position.x, y: ship.position.y)
-                healthBarBack.position = CGPoint(x: ship.position.x, y: ship.position.y)
-                
-                let alert:UIAlertView = UIAlertView()
-                alert.title = ""
-                alert.message = "YOU LOSE"
-                alert.delegate = self
-                alert.addButtonWithTitle("OK")
-                alert.addButtonWithTitle("Cancel")
-                alert.show()
-
-            }
-            healthBar.size = CGSize(width: latesHealth ,height: 5)
-            
-            print(latesHealth)
-            
-            // 4
-            //self.adjustScoreBy(100)
         }
         else if (nodeNames as NSArray).containsObject(kShipName) && (nodeNames as NSArray).containsObject(kShipFiredUltimateName) {
             
+            weaponType = BulletType.ShipFired
             // Ship bullet hit an invader
             self.runAction(SKAction.playSoundFileNamed("InvaderHit.wav", waitForCompletion: false))
+            
             //contact.bodyA.node!.removeFromParent()
             //contact.bodyB.node!.removeFromParent()
             // 4
 
-            
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
             
-            latestMinusHealth += CGFloat(laser_final_width)/5.0
-            latesHealth = 100 - latestMinusHealth
-            
-            if(latesHealth <= 50 && latesHealth > 0){
-                if(profemitter == nil){
-                    self.profEmitterActionAtPosition(self.ship.position)
-                }
-            }
-            else if(latesHealth <= 0){
-                latestMinusHealth = 0
-                latesHealth = 100
-                self.profemitter.removeFromParent()
-                
-                healthBar.position = CGPoint(x: ship.position.x, y: ship.position.y)
-                healthBarBack.position = CGPoint(x: ship.position.x, y: ship.position.y)
-                
-                
-                let alert:UIAlertView = UIAlertView()
-                alert.title = ""
-                alert.message = "YOU LOSE"
-                alert.delegate = self
-                alert.addButtonWithTitle("OK")
-                alert.addButtonWithTitle("Cancel")
-                alert.show()
-            }
-            healthBar.size = CGSize(width: latesHealth ,height: 5)
-            
-            print(latesHealth)
+            decreaseHealth(CGFloat(laser_final_width)/5.0)
 
+            //print(latesHealth)
             
+        }
+        
+        else if (nodeNames as NSArray).containsObject(kShipName) && (nodeNames as NSArray).containsObject(starBonusName) {
             
-            //self.adjustScoreBy(100)
+            // Ship bullet hit an invader
+            self.runAction(SKAction.playSoundFileNamed("InvaderHit.wav", waitForCompletion: false))
+            //contact.bodyA.node!.removeFromParent()
+            contact.bodyB.node!.removeFromParent()
             
+            decreaseHealth(10.0)
+            
+            //print(latesHealth)
         }
     }
     
     
+    func decreaseHealth( minus : CGFloat){
+        
+        latestMinusHealth += minus
+        latesHealth = (self.view?.bounds.height)! - latestMinusHealth
+        
+        if(latesHealth <= 50 && latesHealth > 0){
+            if(profemitter == nil){
+                self.profEmitterActionAtPosition(self.ship.position)
+            }
+        }
+        else if(latesHealth <= 0){
+            latestMinusHealth = 0
+            latesHealth = (self.view?.bounds.height)!
+            self.profemitter.removeFromParent()
+            
+            healthBar.position = CGPoint(x: (self.view?.bounds.size.width)!-2.5, y: (self.view?.bounds.size.height)!/2)
+            healthBarBack.position = CGPoint(x: (self.view?.bounds.size.width)!-2.5, y: (self.view?.bounds.size.height)!/2)
+            
+            //healthBar.position = CGPoint(x: ship.position.x, y: ship.position.y)
+            //healthBarBack.position = CGPoint(x: ship.position.x, y: ship.position.y)
+            
+            self.userInteractionEnabled = false
+
+            let alert = UIAlertView(title: "",
+                message: "YOU LOSE!",
+                delegate: self,
+                cancelButtonTitle: "OK")
+            
+            alert.show()
+            
+        }
+        healthBar.size = CGSize(width: 5 ,height: latesHealth)
+        healthBar.position = CGPoint(x: (self.view?.bounds.size.width)!-2.5, y: (self.view?.bounds.size.height)!/2 - latestMinusHealth/2)
+        
+        btAdvertiseSharedInstance.updateHitOpponent(latestMinusHealth)
+
+        
+    }
     
-    
+    func alertView(View: UIAlertView!, clickedButtonAtIndex buttonIndex: Int){
+        
+        self.userInteractionEnabled = true
+        
+        setupHealthBar()
+        setupOpponentHealthBar()
+        //setupMpBar()
+        //setupOpponentMpBar()
+        
+        latestMinusHealth = 0
+        opponentlatestMinusHealth = 0
+        latesHealth = (self.view?.bounds.height)!
+        opponentlatesHealth = (self.view?.bounds.height)!
+        mpValue = (self.view?.bounds.height)!
+        opponentMpValue = (self.view?.bounds.height)!
+
+        //let minus = (self.view?.bounds.size.height)! - mpValue
+        
+        MpBar.position = CGPoint(x: (self.view?.bounds.size.width)!-10 , y: (self.view?.bounds.size.height)!/2)
+        MpBar.size = CGSize(width: 5 ,height: mpValue)
+        
+        opponentMpBar.position = CGPoint(x: 10 , y: (self.view?.bounds.size.height)!/2)
+        opponentMpBar.size = CGSize(width: 5 ,height: opponentMpValue)
+
+        /*
+        switch buttonIndex{
+            
+        case 0:
+            NSLog("Dismiss");
+            break;
+        default:
+            self.userInteractionEnabled = true
+            NSLog("Default");
+            break;
+        
+        }
+        */
+        
+
+    }
     
     // Game End Helpers
     
@@ -1347,7 +2052,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
             
             sprite.runAction(SKAction.repeatActionForever(action))
-            print(location)
+            //print(location)
             
             self.addChild(sprite)
             

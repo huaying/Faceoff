@@ -19,10 +19,18 @@ class BuildConnectionScene: SKScene {
     var statusnode = SKLabelNode(fontNamed: "Chalkduster")
     var 返回按鈕: SKNode! = nil
     var 遊戲按鈕: SKNode! = nil
+    let background: SKNode! = SKSpriteNode(imageNamed: "spaceship4.jpg")
+
      
     override func didMoveToView(view: SKView) {
         
+        background.position = CGPoint(x: frame.midX, y: frame.midY)
+        background.scene?.size = frame.size
+        background.xScale = 0.45
+        background.yScale = 0.45
+        background.zPosition = -100
         
+        addChild(background)
      
         // Start the Bluetooth advertise process
         btAdvertiseSharedInstance
@@ -35,7 +43,7 @@ class BuildConnectionScene: SKScene {
         
         
         
-        返回按鈕 = SKSpriteNode(color: UIColor.grayColor(), size: CGSize(width: 50, height: 30))
+        返回按鈕 = SKSpriteNode(color: UIColor.redColor().colorWithAlphaComponent(0.3), size: CGSize(width: 50, height: 30))
         返回按鈕.position = CGPoint(x:CGRectGetMinX(self.frame)+40,y:CGRectGetMinY(self.frame)+CGFloat(30.0))
         addChild(返回按鈕)
         
@@ -46,7 +54,7 @@ class BuildConnectionScene: SKScene {
         返回按鈕.addChild(返回文字)
 
         
-        遊戲按鈕 = SKSpriteNode(color: UIColor.grayColor(), size: CGSize(width: 50, height: 30))
+        遊戲按鈕 = SKSpriteNode(color: UIColor.redColor().colorWithAlphaComponent(0.3), size: CGSize(width: 50, height: 30))
         遊戲按鈕.position = CGPoint(x:CGRectGetMaxX(self.frame)-40,y:CGRectGetMinY(self.frame)+CGFloat(30.0))
         addChild(遊戲按鈕)
         
@@ -154,7 +162,7 @@ class BuildConnectionScene: SKScene {
         if let location = touches.first?.locationInNode(self){
             if 遊戲按鈕.containsPoint(location){
                 遊戲按鈕.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
-                let nextScene = GameScene(size: scene!.size)
+                let nextScene = SelectWeaponScene(size: scene!.size)
                 transitionForNextScene(nextScene)
             }
         }
