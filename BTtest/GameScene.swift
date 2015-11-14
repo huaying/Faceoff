@@ -1749,6 +1749,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                         let cd = CDAnimationBuilder()
                         node.runAction(cd.initCdAnimation("cure"))
                     }
+                    if node.name == "spy" {
+                        let cd = CDAnimationBuilder()
+                        node.runAction(cd.initCdAnimation("spy"))
+                    }
+                    return
                 }
             }
         }
