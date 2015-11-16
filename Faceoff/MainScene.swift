@@ -80,7 +80,7 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
         let mainSlotPlus = SKSpriteNode(texture: plusTexture, size: CGSizeMake(50.0,50.0))
         
         製造角色按鈕.position = CGPoint(x: frame.midX,y: frame.midY - 18)
-        製造角色按鈕.runAction(SKAction.repeatActionForever(SKAction.rotateByAngle(CGFloat(M_PI), duration:0.5)))
+        製造角色按鈕.runAction(SKAction.repeatActionForever(SKAction.rotateByAngle(CGFloat(M_PI), duration:2)))
         mainSlotPlus.position = 製造角色按鈕.position
         mainSlotPlus.runAction(SKAction.repeatActionForever(SKAction.sequence([
             SKAction.fadeInWithDuration(0.5),                  SKAction.waitForDuration(1),
@@ -161,7 +161,7 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
         
         if let pickedCharacter = CharacterManager.getPickedCharacterFromLocalStorage() {
             
-            pickedCharacterNode = SKSpriteNode(texture: SKTexture(image: pickedCharacter),size: CGSizeMake(155,155))
+            pickedCharacterNode = SKSpriteNode(texture: SKTexture(image: pickedCharacter),size: CGSizeMake(100,100))
             pickedCharacterNode!.position = CGPoint(x:frame.midX,y:frame.midY - 18)
             pickedCharacterNode!.zPosition = 1
             addChild(pickedCharacterNode!)
