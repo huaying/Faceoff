@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BTtest/CharacterManager.swift"
-            timestampString = "469239076.278427"
+            timestampString = "469359713.883191"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "22"
@@ -25,13 +25,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BTtest/MainScene.swift"
-            timestampString = "469322518.218624"
+            filePath = "BTtest/CharacterManager.swift"
+            timestampString = "469359832.831725"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
-            landmarkName = "loadSlots()"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "deleteCharacterFromLocalStorage(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BTtest/MainScene.swift"
-            timestampString = "469322518.218624"
+            filePath = "BTtest/CharacterManager.swift"
+            timestampString = "469359832.831725"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
-            landmarkName = "loadSlots()"
+            startingLineNumber = "97"
+            endingLineNumber = "97"
+            landmarkName = "setPickedCharacterNumber(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

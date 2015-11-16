@@ -24,6 +24,7 @@
 		0AA31B2C1BF897B1000DFE4D /* playermodescene_background.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31B2B1BF897B1000DFE4D /* playermodescene_background.gif */; };
 		0AA31B301BF89CFE000DFE4D /* playermodescene_background.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31B2F1BF89CFE000DFE4D /* playermodescene_background.atlas */; };
 		0ACFD4921BF55AEE00563AFB /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACFD4911BF55AEE00563AFB /* CameraViewController.swift */; };
+		0AE37FE11BF9C41B001DF241 /* SKActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE37FE01BF9C41B001DF241 /* SKActionExtension.swift */; };
 		711C3E341BD6DF18000B724D /* animation.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 711C3E331BD6DF18000B724D /* animation.atlas */; };
 		711C3E441BD79074000B724D /* MyParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = 711C3E421BD79074000B724D /* MyParticle.sks */; };
 		711C3E451BD79074000B724D /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 711C3E431BD79074000B724D /* spark.png */; };
@@ -138,6 +139,7 @@
 		0AA31B2B1BF897B1000DFE4D /* playermodescene_background.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = playermodescene_background.gif; sourceTree = "<group>"; };
 		0AA31B2F1BF89CFE000DFE4D /* playermodescene_background.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = playermodescene_background.atlas; sourceTree = "<group>"; };
 		0ACFD4911BF55AEE00563AFB /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		0AE37FE01BF9C41B001DF241 /* SKActionExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKActionExtension.swift; sourceTree = "<group>"; };
 		711C3E331BD6DF18000B724D /* animation.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = animation.atlas; sourceTree = "<group>"; };
 		711C3E421BD79074000B724D /* MyParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle.sks; sourceTree = "<group>"; };
 		711C3E431BD79074000B724D /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 				A364D3A31BF1AE7F00D352B1 /* BTDiscovery.swift */,
 				A364D3A41BF1AE7F00D352B1 /* BTService.swift */,
 				A364D3A51BF1AE7F00D352B1 /* GameScene.swift */,
+				0AE37FE01BF9C41B001DF241 /* SKActionExtension.swift */,
 				A372FC6A1BE93B29005E0DA6 /* SelectWeaponScene.swift */,
 				A305A3F21BDB3E45004B6186 /* MainScene.swift */,
 				A305A40F1BDB4076004B6186 /* PlayModeScene.swift */,
@@ -310,8 +313,8 @@
 				A352D3141BED517D00951A8E /* GameAnimation.swift */,
 			);
 			name = Faceoff;
-			path = BTtest;
-			sourceTree = "<group>";
+			path = "/Users/huayingt/Google Drive/USC/CS/CSCI526/Faceoff/Faceoff/BTtest";
+			sourceTree = "<absolute>";
 		};
 		A30410391BE942F00004D7B1 /* Sprite Images */ = {
 			isa = PBXGroup;
@@ -623,6 +626,7 @@
 				A364D3A91BF1AE7F00D352B1 /* GameScene.swift in Sources */,
 				71E8A0A31BD4605C002832EE /* AppDelegate.swift in Sources */,
 				0AA31AF91BF825B8000DFE4D /* Constants.swift in Sources */,
+				0AE37FE11BF9C41B001DF241 /* SKActionExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

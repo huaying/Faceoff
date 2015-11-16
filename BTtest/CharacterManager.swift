@@ -13,21 +13,20 @@ class CharacterManager {
     
     enum localStorageKeys {
         static let keyOfCandidateNumber = "keyOfCandidateNumber"
+        static let keyOfPickedCharacterNumber = "keyOfPickedCharacterNumber"
     }
     static let maxOfCandidateNumber = 3
     
-    static func getCandidateCharactersFromLocalStorage() -> [UIImage] {
-        var imagePool:[UIImage] = []
-        let numberOfCandidateCharacter = getCandidateCharacterNumber()
+    static func getCandidateCharactersFromLocalStorage() -> [UIImage?] {
+        var imagePool:[UIImage?] = []
         for i in 0..<maxOfCandidateNumber {
-            
-            let currentI = (numberOfCandidateCharacter + i) % maxOfCandidateNumber
-            
-            if let image = getImageFromLocalStorage("Candidate\(currentI)") {
+            if let image = getImageFromLocalStorage("Candidate\(i)") {
                 imagePool.append(image)
+            }else{
+                imagePool.append(nil)
             }
         }
-        return imagePool.reverse()
+        return imagePool
     }
     
     static func getCharacterFromLocalStorage() -> UIImage?{
@@ -37,6 +36,29 @@ class CharacterManager {
         return getImageFromLocalStorage("Candidate\(i)")
     }
     
+    static func getCharacterFromLocalStorage(index: Int) -> UIImage? {
+        return getImageFromLocalStorage("Candidate\(index)")
+    }
+    
+    static func getPickedCharacterFromLocalStorage() -> UIImage?{
+        let pickedId = getPickedCharacterNumber()
+        return getImageFromLocalStorage("Candidate\(pickedId)")
+    }
+    
+    static func deleteCharacterFromLocalStorage(index: Int) {
+        let fileManager = NSFileManager.defaultManager()
+        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        let getImagePath = (paths as NSString).stringByAppendingPathComponent("Candidate\(index).png")
+        
+        do {
+            try fileManager.removeItemAtPath(getImagePath)
+            print("File \(getImagePath) is deleted")
+
+        }catch{
+            print("File \(getImagePath) cannot be deleted")
+        }
+    }
+    
     static func getImageFromLocalStorage(imageName: String) -> UIImage? {
         let fileManager = NSFileManager.defaultManager()
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
@@ -44,21 +66,13 @@ class CharacterManager {
         let getImagePath = (paths as NSString).stringByAppendingPathComponent("\(imageName).png")
     
         if (fileManager.fileExistsAtPath(getImagePath)){
-            print("FILE AVAILABLE")
-            //Pick Image and Use accordingly
+            print("File \(getImagePath) is available")
             let image: UIImage = UIImage(contentsOfFile: getImagePath)!
-            // let data: NSData = UIImagePNGRepresentation(imageis)
             return image
         }else{
-            print("FILE NOT AVAILABLE")
+            print("File \(getImagePath) is not available")
             return nil
         }
-
-    }
-    
-    static func saveCharacterToLocalStorage(image: UIImage){
-        
-        //self.saveImageToLocalStorage("User_Image",image: image)
     }
     
     static func saveCandidateCharacterToLocalStorage(image: UIImage){
@@ -79,13 +93,38 @@ class CharacterManager {
         fileManager.createFileAtPath(filePathToWrite, contents: imageData, attributes: nil)
     }
     
+    static func setPickedCharacterNumber(number: Int){
+        setLocalValue(localStorageKeys.keyOfPickedCharacterNumber, value: number)
+    }
+    
+    static func getPickedCharacterNumber() -> Int {
+        if let number = getLocalValue(localStorageKeys.keyOfPickedCharacterNumber) as? Int {
+            return number
+        }else{
+            return 0
+        }
+    }
+    
+    static func getLocalValue(key :String) -> AnyObject?{
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let value: AnyObject = defaults.objectForKey(key){
+            return value
+        }
+        return nil
+    }
+    
+    static func setLocalValue(key :String,value :AnyObject){
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setObject(value, forKey: key)
+        defaults.synchronize()
+    }
+    
     static func setCandidateCharacterNumber(number: Int) {
         
         let defaults = NSUserDefaults.standardUserDefaults()
         
         defaults.setInteger(number, forKey: localStorageKeys.keyOfCandidateNumber)
         defaults.synchronize()
-        
     }
     
     static func getCandidateCharacterNumber() -> Int{
