@@ -35,8 +35,6 @@
 		71E8A0A91BD4605C002832EE /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E8A0A81BD4605C002832EE /* GameViewController.swift */; };
 		71E8A0AC1BD4605C002832EE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71E8A0AA1BD4605C002832EE /* Main.storyboard */; };
 		71E8A0AE1BD4605C002832EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71E8A0AD1BD4605C002832EE /* Assets.xcassets */; };
-		71E8A0BC1BD4605C002832EE /* BTtestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E8A0BB1BD4605C002832EE /* BTtestTests.swift */; };
-		71E8A0C71BD4605C002832EE /* BTtestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E8A0C61BD4605C002832EE /* BTtestUITests.swift */; };
 		A30410561BE942F00004D7B1 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A304103A1BE942F00004D7B1 /* background.jpg */; };
 		A30410571BE942F00004D7B1 /* background2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A304103B1BE942F00004D7B1 /* background2.jpg */; };
 		A30410581BE942F00004D7B1 /* background3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A304103C1BE942F00004D7B1 /* background3.jpg */; };
@@ -154,11 +152,7 @@
 		71E8A0AD1BD4605C002832EE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		71E8A0B21BD4605C002832EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71E8A0B71BD4605C002832EE /* Faceoff.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Faceoff.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		71E8A0BB1BD4605C002832EE /* BTtestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTtestTests.swift; sourceTree = "<group>"; };
-		71E8A0BD1BD4605C002832EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71E8A0C21BD4605C002832EE /* Faceoff.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Faceoff.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		71E8A0C61BD4605C002832EE /* BTtestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTtestUITests.swift; sourceTree = "<group>"; };
-		71E8A0C81BD4605C002832EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		74F83FD61BF276C30012C07D /* CharacterManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterManager.swift; sourceTree = "<group>"; };
 		A304103A1BE942F00004D7B1 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
 		A304103B1BE942F00004D7B1 /* background2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background2.jpg; sourceTree = "<group>"; };
@@ -268,9 +262,7 @@
 			isa = PBXGroup;
 			children = (
 				A3CCCCBB1BEE901000A94859 /* Defined.swift */,
-				71E8A0A11BD4605C002832EE /* BTtest */,
-				71E8A0BA1BD4605C002832EE /* BTtestTests */,
-				71E8A0C51BD4605C002832EE /* BTtestUITests */,
+				71E8A0A11BD4605C002832EE /* Faceoff */,
 				71E8A0A01BD4605C002832EE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -285,7 +277,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		71E8A0A11BD4605C002832EE /* BTtest */ = {
+		71E8A0A11BD4605C002832EE /* Faceoff */ = {
 			isa = PBXGroup;
 			children = (
 				A32CBE161BF7DDFC007186D9 /* cure.atlas */,
@@ -317,25 +309,8 @@
 				71E8A0B21BD4605C002832EE /* Info.plist */,
 				A352D3141BED517D00951A8E /* GameAnimation.swift */,
 			);
+			name = Faceoff;
 			path = BTtest;
-			sourceTree = "<group>";
-		};
-		71E8A0BA1BD4605C002832EE /* BTtestTests */ = {
-			isa = PBXGroup;
-			children = (
-				71E8A0BB1BD4605C002832EE /* BTtestTests.swift */,
-				71E8A0BD1BD4605C002832EE /* Info.plist */,
-			);
-			path = BTtestTests;
-			sourceTree = "<group>";
-		};
-		71E8A0C51BD4605C002832EE /* BTtestUITests */ = {
-			isa = PBXGroup;
-			children = (
-				71E8A0C61BD4605C002832EE /* BTtestUITests.swift */,
-				71E8A0C81BD4605C002832EE /* Info.plist */,
-			);
-			path = BTtestUITests;
 			sourceTree = "<group>";
 		};
 		A30410391BE942F00004D7B1 /* Sprite Images */ = {
@@ -655,7 +630,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71E8A0BC1BD4605C002832EE /* BTtestTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -663,7 +637,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71E8A0C71BD4605C002832EE /* BTtestUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
