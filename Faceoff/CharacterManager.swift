@@ -12,10 +12,9 @@ import Foundation
 class CharacterManager {
     
     enum localStorageKeys {
-        static let keyOfCandidateNumber = "keyOfCandidateNumber"
         static let keyOfPickedCharacterNumber = "keyOfPickedCharacterNumber"
     }
-    static let maxOfCandidateNumber = 3
+    static let maxOfCandidateNumber = Constants.CharacterManager.maxOfCandidateNumber
     
     static func getCandidateCharactersFromLocalStorage() -> [UIImage?] {
         var imagePool:[UIImage?] = []
@@ -29,14 +28,7 @@ class CharacterManager {
         return imagePool
     }
     
-    static func getCharacterFromLocalStorage() -> UIImage?{
-        //return getImageFromLocalStorage("User_Image")
-        let numberOfCandidateCharacter = getCandidateCharacterNumber()
-        let i = (numberOfCandidateCharacter - 1 + maxOfCandidateNumber) % maxOfCandidateNumber
-        return getImageFromLocalStorage("Candidate\(i)")
-    }
-    
-    static func getCharacterFromLocalStorage(index: Int) -> UIImage? {
+    static func getCharacterFromLocalStorage(index: Int = maxOfCandidateNumber - 1) -> UIImage? {
         return getImageFromLocalStorage("Candidate\(index)")
     }
     
@@ -75,11 +67,9 @@ class CharacterManager {
         }
     }
     
-    static func saveCandidateCharacterToLocalStorage(image: UIImage){
-        
-        self.saveImageToLocalStorage("Candidate\(self.getCandidateCharacterNumber())",image: image)
-        //self.saveCharacterToLocalStorage(image)
-        self.increaseCandidateCharacterNumber()
+    static func saveCandidateCharacterToLocalStorage(image: UIImage, index: Int){
+        self.saveImageToLocalStorage("Candidate\(index)",image: image)
+        setPickedCharacterNumber(index)
     }
     
     static func saveImageToLocalStorage(imageName: String, image: UIImage){
@@ -101,7 +91,7 @@ class CharacterManager {
         if let number = getLocalValue(localStorageKeys.keyOfPickedCharacterNumber) as? Int {
             return number
         }else{
-            return 0
+            return maxOfCandidateNumber - 1
         }
     }
     
@@ -118,40 +108,5 @@ class CharacterManager {
         defaults.setObject(value, forKey: key)
         defaults.synchronize()
     }
-    
-    static func setCandidateCharacterNumber(number: Int) {
-        
-        let defaults = NSUserDefaults.standardUserDefaults()
-        
-        defaults.setInteger(number, forKey: localStorageKeys.keyOfCandidateNumber)
-        defaults.synchronize()
-    }
-    
-    static func getCandidateCharacterNumber() -> Int{
-        
-        let defaults = NSUserDefaults.standardUserDefaults()
-        
-        if let candidateNumber: Int = defaults.integerForKey(localStorageKeys.keyOfCandidateNumber){
-            return candidateNumber
-        }
-        return 0
-    }
-    
-    //increase with loop mode (3)
-    static func increaseCandidateCharacterNumber() {
-        
-        let defaults = NSUserDefaults.standardUserDefaults()
-        
-        if let candidateNumber: Int = defaults.integerForKey(localStorageKeys.keyOfCandidateNumber){
-            if candidateNumber == maxOfCandidateNumber-1 {
-                defaults.setInteger(0, forKey: localStorageKeys.keyOfCandidateNumber)
-            }else{
-                defaults.setInteger(candidateNumber + 1, forKey: localStorageKeys.keyOfCandidateNumber)
-            }
-        }else{
-            defaults.setInteger(1, forKey: localStorageKeys.keyOfCandidateNumber)
-        }
-    }
-    
 
 }

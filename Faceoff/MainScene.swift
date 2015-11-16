@@ -12,80 +12,16 @@ import SpriteKit
 import Foundation
 
 
-class CharacterListNode: SKSpriteNode{
-    var originPosition: CGPoint?
-    
-    func loadPickedBorder(){
-        
-        let borderWidth:CGFloat = 5.0
-        let border = SKShapeNode(circleOfRadius: (frame.size.width/2 - borderWidth + 3))
-        
-        border.name = "Border"
-        border.lineWidth = borderWidth
-        border.strokeColor = UIColor.whiteColor()
-        border.zPosition = 1
-        addChild(border)
-    }
-    
-    func removePickedBorder(){
-        childNodeWithName("Border")?.removeFromParent()
-    }
-    
-    func loadDeleteButton(){
-        let texture = SKTexture(image: UIImage(named: Constants.MainScene.DeleteButton)!)
-        let deleteButton = SKSpriteNode(texture: texture,size: CGSizeMake(45,45))
-        deleteButton.name = "DeleteButton"
-        deleteButton.position = CGPoint(x: frame.width,y: 0)
-        
-        addChild(deleteButton)
-        shake()
-    }
-    
-    func removeDeleteButton(){
-        childNodeWithName("DeleteButton")?.removeFromParent()
-        stopShaking()
-    }
-    
-    func shake(){
-        runAction(SKAction.repeatActionForever(SKAction.shake(5, amplitudeX: 8, amplitudeY: 8, frequency: 0.05)), withKey:"characterDoShake")
-    }
-    
-    func stopShaking(){
-        removeActionForKey("characterDoShake")
-        goBackToOriginalPosition()
-
-    }
-    
-    func setInitialPosition(position :CGPoint){
-        self.position = position
-        originPosition = position
-    }
-    
-    func goBackToOriginalPosition(){
-        if originPosition != nil {
-            position = originPosition!
-        }
-    }
-}
-
 class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerControllerDelegate{
-    
-    var layerView: UIImageView!
-    var finalImg : UIImage!
-    var imgForPlayer : UIImage!
-    
-    let mask = CALayer()
-    
-    
-    var btn:UIButton = UIButton()
     
     var 製造角色按鈕: SKNode! = nil
     var 進入遊戲按鈕: SKNode! = nil
     var 角色們: SKNode! = nil
-    var testImage: SKNode! = nil
     
     var candidateCharacterNodes:[CharacterListNode?] = []
-    
+    var slots:[SKSpriteNode] = []
+    var pickedCharacterNode: SKSpriteNode?
+
     
     override func didMoveToView(view: SKView) {
          print(self.view!.frame.size)
@@ -98,6 +34,7 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
         loadMainSlot()
         loadCharacterSelect()
         loadCharacter()
+        loadPickedChracter()
         
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongTap:")
         
@@ -105,8 +42,8 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
     
     
     NSNotificationCenter.defaultCenter().addObserverForName("PhotoPickerFinishedNotification", object:nil, queue:nil, usingBlock: { note in
+        
             self.loadCharacter()
-            
         })
     }
     
@@ -168,7 +105,6 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
         let texture = SKTexture(image: UIImage(named: Constants.MainScene.Slot)!)
         let plusTexture = SKTexture(image: UIImage(named: Constants.MainScene.Plus)!)
         
-        var slots:[SKSpriteNode] = []
         let width:CGFloat = CGFloat(Constants.MainScene.SlotSize)
         let height:CGFloat = CGFloat(Constants.MainScene.SlotSize)
         for i in 0..<Constants.Character.MaxOfCandidateNumber {
@@ -213,16 +149,34 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
             }
             角色們.zPosition = 1
             addChild(角色們)
-
+            
+            pickCharacter(CharacterManager.getPickedCharacterNumber())
+        }
+        
+    }
+    
+    func loadPickedChracter(){
+        
+        deletePickedCharacter()
+        
+        if let pickedCharacter = CharacterManager.getPickedCharacterFromLocalStorage() {
+            
+            pickedCharacterNode = SKSpriteNode(texture: SKTexture(image: pickedCharacter),size: CGSizeMake(155,155))
+            pickedCharacterNode!.position = CGPoint(x:frame.midX,y:frame.midY - 18)
+            pickedCharacterNode!.zPosition = 1
+            addChild(pickedCharacterNode!)
         }
     }
     
-
+    func deletePickedCharacter(){
+        pickedCharacterNode?.removeFromParent()
+        pickedCharacterNode = nil
+    }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if let location = touches.first?.locationInNode(self){
             //if 製造角色按鈕.containsPoint(location){
-            if hypotf(Float(製造角色按鈕.position.x - location.x), Float(製造角色按鈕.position.y - location.y)) < Float(製造角色按鈕.frame.width/2 - 30) {
+            if pickedCharacterNode == nil && hypotf(Float(製造角色按鈕.position.x - location.x), Float(製造角色按鈕.position.y - location.y)) < Float(製造角色按鈕.frame.width/2 - 30) {
                 製造角色按鈕.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
                 
                 let  vc:UIViewController = self.view!.window!.rootViewController!       
@@ -242,7 +196,7 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
             }
             
             //Execute the block when characted list has been tapped
-            else if 角色們 != nil {
+            if 角色們 != nil {
                 for (i,candidateCharacterNode) in candidateCharacterNodes.enumerate() {
  
                     if let candidateCharacterNode = candidateCharacterNode {
@@ -251,24 +205,55 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
                             
                             let node = nodeAtPoint(location)
                             if node.name == "DeleteButton" {
-                                CharacterManager.deleteCharacterFromLocalStorage(i)
-                                candidateCharacterNode.removeFromParent()
+                                deleteChracter(i)
                                 break
-                            }else {
-                            
-                                for _candidateCharacterNode in candidateCharacterNodes {
-                                    _candidateCharacterNode?.removePickedBorder()
-                                }
-                                candidateCharacterNode.loadPickedBorder()
-                                CharacterManager.setPickedCharacterNumber(i)
                             }
+                            pickCharacter(i)
+                            
                         }
                         candidateCharacterNode.removeDeleteButton()
                     }
                 }
             }
+            
+            if slots.count != 0 {
+                for (i,slot) in slots.enumerate(){
+                    if slot.containsPoint(location) && candidateCharacterNodes[i] == nil {
+                        
+                        let  vc:UIViewController = self.view!.window!.rootViewController!
+                        let cameraViewController = CameraViewController()
+                        cameraViewController.currentPicking = i
+                        vc.presentViewController(cameraViewController, animated: false, completion:nil)
+                    }
+                }
+            }
         }
     }
+    func pickCharacter(index: Int){
+        
+        for candidateCharacterNode in candidateCharacterNodes {
+            candidateCharacterNode?.removePickedBorder()
+        }
+        candidateCharacterNodes[index]?.loadPickedBorder()
+        CharacterManager.setPickedCharacterNumber(index)
+        loadPickedChracter()
+    }
+    
+    func deleteChracter(index: Int){
+        CharacterManager.deleteCharacterFromLocalStorage(index)
+        candidateCharacterNodes[index]?.removeFromParent()
+        candidateCharacterNodes[index] = nil
+        
+        //need pick another existed chracter
+        for i in (0..<Constants.CharacterManager.maxOfCandidateNumber).reverse() {
+            if candidateCharacterNodes[i] != nil {
+                pickCharacter(i)
+                return
+            }
+        }
+        deletePickedCharacter()
+    }
+    
     func handleLongTap(gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.Began{
             if let view = self.view {
@@ -286,11 +271,60 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
             }
         }
     }
-    
+}
 
-
+class CharacterListNode: SKSpriteNode{
+    var originPosition: CGPoint?
     
-    func imagePickingFinished(){
-        loadCharacter()
+    func loadPickedBorder(){
+        
+        let borderWidth:CGFloat = 5.0
+        let border = SKShapeNode(circleOfRadius: (frame.size.width/2 - borderWidth + 3))
+        
+        border.name = "Border"
+        border.lineWidth = borderWidth
+        border.strokeColor = UIColor.whiteColor()
+        border.zPosition = 1
+        addChild(border)
+    }
+    
+    func removePickedBorder(){
+        childNodeWithName("Border")?.removeFromParent()
+    }
+    
+    func loadDeleteButton(){
+        let texture = SKTexture(image: UIImage(named: Constants.MainScene.DeleteButton)!)
+        let deleteButton = SKSpriteNode(texture: texture,size: CGSizeMake(45,45))
+        deleteButton.name = "DeleteButton"
+        deleteButton.position = CGPoint(x: frame.width,y: 0)
+        
+        addChild(deleteButton)
+        shake()
+    }
+    
+    func removeDeleteButton(){
+        childNodeWithName("DeleteButton")?.removeFromParent()
+        stopShaking()
+    }
+    
+    func shake(){
+        runAction(SKAction.repeatActionForever(SKAction.shake(5, amplitudeX: 8, amplitudeY: 8, frequency: 0.05)), withKey:"characterDoShake")
+    }
+    
+    func stopShaking(){
+        removeActionForKey("characterDoShake")
+        goBackToOriginalPosition()
+        
+    }
+    
+    func setInitialPosition(position :CGPoint){
+        self.position = position
+        originPosition = position
+    }
+    
+    func goBackToOriginalPosition(){
+        if originPosition != nil {
+            position = originPosition!
+        }
     }
 }

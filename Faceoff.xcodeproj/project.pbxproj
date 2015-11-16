@@ -139,6 +139,7 @@
 		0AA31B2F1BF89CFE000DFE4D /* playermodescene_background.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = playermodescene_background.atlas; sourceTree = "<group>"; };
 		0ACFD4911BF55AEE00563AFB /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		0AE37FE01BF9C41B001DF241 /* SKActionExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKActionExtension.swift; sourceTree = "<group>"; };
+		0AE37FE21BFA0898001DF241 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		711C3E331BD6DF18000B724D /* animation.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = animation.atlas; sourceTree = "<group>"; };
 		711C3E421BD79074000B724D /* MyParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle.sks; sourceTree = "<group>"; };
 		711C3E431BD79074000B724D /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
@@ -309,6 +310,7 @@
 				71E8A0AD1BD4605C002832EE /* Assets.xcassets */,
 				71E8A0B21BD4605C002832EE /* Info.plist */,
 				A352D3141BED517D00951A8E /* GameAnimation.swift */,
+				0AE37FE21BFA0898001DF241 /* MyPlayground.playground */,
 			);
 			name = Faceoff;
 			path = "/Users/huayingt/Google Drive/USC/CS/CSCI526/Faceoff/Faceoff/Faceoff";

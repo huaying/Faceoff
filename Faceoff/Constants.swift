@@ -34,6 +34,8 @@ struct Constants {
         static let VersusButton = "playermodescene_versus_button.png"
     }
     
-    
+    struct CharacterManager {
+        static let maxOfCandidateNumber = 3
+    }
     
 }

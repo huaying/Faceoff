@@ -16,8 +16,8 @@ class CameraViewController: UIViewController {
     var stillImageOutput: AVCaptureStillImageOutput?
     var previewLayer: AVCaptureVideoPreviewLayer?
     var photoPickButton = UIView()
+    var currentPicking = Constants.CharacterManager.maxOfCandidateNumber - 1
     
-
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         // Do any additional setup after loading the view, typically from a nib.
@@ -88,10 +88,12 @@ class CameraViewController: UIViewController {
                     let dataProvider = CGDataProviderCreateWithCFData(imageData)
                     let cgImageRef = CGImageCreateWithJPEGDataProvider(dataProvider, nil, true, CGColorRenderingIntent.RenderingIntentDefault)
                     
-                    let image = UIImage(CGImage: cgImageRef!, scale: 10, orientation: UIImageOrientation.Up)
+                    let image = UIImage(CGImage: cgImageRef!, scale: 5, orientation: UIImageOrientation.Up)
                   
-                    CharacterManager.saveCandidateCharacterToLocalStorage(self.cropImageToCircle(image))
-                    //CharacterManager.saveCharacterToLocalStorage(self.cropImageToCircle(image))
+                    
+                    CharacterManager.saveCandidateCharacterToLocalStorage(self.cropImageToCircle(image), index: self.currentPicking)
+                    //CharacterManager.saveCandidateCharacterToLocalStorage(self.cropImageToCircle(image))
+ 
                     
                     self.dismissViewControllerAnimated(true, completion: {
                         NSNotificationCenter.defaultCenter().postNotificationName("PhotoPickerFinishedNotification", object: self, userInfo: nil)
