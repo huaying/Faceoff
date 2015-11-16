@@ -57,9 +57,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         case Bonus
 
     }
-    
 
-    
     // Invader movement direction
     enum InvaderMovementDirection {
         case Right
@@ -329,27 +327,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
         
     func createContent() {
-        
-        
+
         physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
-        
         physicsBody!.categoryBitMask = kSceneEdgeCategory
         
-        
         setupShip()
-        
         setupHealthBar()
-        
         setupOpponentHealthBar()
-        
         setupMpBar()
-        
         setupOpponentMpBar()
-        
         loadBackground()
-        
         burnTimerStart()
-        
         frozenTimerStart()
         
         //qq()
@@ -376,8 +364,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
  
-    
-    
     func setupHealthBar() {
         
         /*
@@ -387,7 +373,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         healthBar.position = CGPoint(x: ship.position.x, y: ship.position.y + 50)
         */
 
-        
         healthBarBack = self.makeHealthBarBack()
         healthBarBack.position = CGPoint(x: (self.view?.bounds.size.width)!-2.5, y: (self.view?.bounds.size.height)!/2)
         healthBar = self.makeHealthBar()
@@ -405,7 +390,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         healthBar = self.makeHealthBar()
         healthBar.position = CGPoint(x: ship.position.x, y: ship.position.y + 50)
         */
-        
         
         opponenthealthBarBack = self.makeHealthBarBack()
         opponenthealthBarBack.position = CGPoint(x: 2.5, y: (self.view?.bounds.size.height)!/2)
@@ -465,45 +449,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(ship)
     }
     
-    
-    /*func qq() {
-        
-        // 1
-        var qqq = self.makeShip()
-        // 2
-        qqq.position = CGPointMake(40, 40)
-        qqq.xScale = 0.4;
-        qqq.yScale = 0.4;
-        
-        self.addChild(qqq)
-        
-        qqq = self.makeShip()
-
-        qqq.position = CGPointMake(40, 90)
-        qqq.xScale = 0.4;
-        qqq.yScale = 0.4;
-        
-        self.addChild(qqq)
-        
-        qqq = self.makeShip()
-        
-        qqq.position = CGPointMake(40, 140)
-        qqq.xScale = 0.4;
-        qqq.yScale = 0.4;
-        
-        self.addChild(qqq)
-    }*/
-    
     func loadWeapons(imageName:[String]){
-        
-        print(imageName)
+    
         weapons = [
             addSprite(weaponsStringArray[Int(imageName[0])!], location: CGPoint(x: scene!.size.width-30,y: 195.0),scale: 1, z:-1),
             addSprite(weaponsStringArray[Int(imageName[1])!], location: CGPoint(x: scene!.size.width-30,y: 130.0),scale: 1, z:-1),
             addSprite(weaponsStringArray[Int(imageName[2])!], location: CGPoint(x: scene!.size.width-30,y: 65.0),scale: 1, z:-1),
-            
         ]
-        
     }
     
     func addSprite(imageNamed: String, location: CGPoint, scale: CGFloat, z:CGFloat) -> SKSpriteNode {
@@ -526,27 +478,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let ship = SKSpriteNode(texture: texture)
         ship.color = UIColor.greenColor()
         ship.name = kShipName
-        //ship.xScale = 0.15
-        //ship.yScale = 0.15
-        
-        // Physic
-        // 1
+
         ship.physicsBody = SKPhysicsBody(rectangleOfSize: ship.frame.size)
-        // 2
         ship.physicsBody!.dynamic = true
-        // 3
         ship.physicsBody!.affectedByGravity = false
-        // 4
         ship.physicsBody!.mass = 0.02
         ship.physicsBody!.friction = 0.0
 
         
         // ship's bitmask setup
-        // 1
         ship.physicsBody!.categoryBitMask = kShipCategory
-        // 2
         ship.physicsBody!.contactTestBitMask = 0x0
-        // 3
         ship.physicsBody!.collisionBitMask = kSceneEdgeCategory
         ship.zPosition = 1000
         
@@ -664,40 +606,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     // Scene Update
-    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
         if self.isGameOver() {
-            
             self.endGame()
         }
         
         self.processContactsForUpdate(currentTime)
-        
         self.processUserTapsForUpdate(currentTime)
-        
         if(startMoving){
             self.processUserMotionForUpdate(currentTime)
         }
         
         self.MpIncrease(currentTime)
-        
         btAdvertiseSharedInstance.updateOpponentRealTimePos((self.view?.bounds.size.width)!-ship.position.x, y: ship.position.y)
         
 
-        
         //self.moveInvadersForUpdate(currentTime)
-        
         //self.fireInvaderBulletsForUpdate(currentTime)
     }
     
     
     // Scene Update Helpers
-    
     func moveInvadersForUpdate(currentTime: CFTimeInterval) {
-        
-        // 1
+
         if (currentTime - self.timeOfLastMove < self.timePerMove) {
             return
         }
@@ -705,10 +638,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // logic to change movement direction
         self.determineInvaderMovementDirection()
         
-        // 2
         enumerateChildNodesWithName(kInvaderName) {
             node, stop in
-            
             switch self.invaderMovementDirection {
             case .Right:
                 node.position = CGPointMake(node.position.x + 10, node.position.y)

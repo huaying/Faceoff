@@ -8,6 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		0AA31AE71BF6B2EC000DFE4D /* CharacterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F83FD61BF276C30012C07D /* CharacterManager.swift */; };
+		0AA31AEB1BF821CA000DFE4D /* mainscene_backgound.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31AEA1BF821CA000DFE4D /* mainscene_backgound.jpg */; };
+		0AA31AED1BF824B4000DFE4D /* mainscene_slot.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31AEC1BF824B4000DFE4D /* mainscene_slot.png */; };
+		0AA31AEF1BF824CC000DFE4D /* mainscene_start_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31AEE1BF824CC000DFE4D /* mainscene_start_button.png */; };
+		0AA31AF11BF824DF000DFE4D /* mainscene_mainslot.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31AF01BF824DF000DFE4D /* mainscene_mainslot.png */; };
+		0AA31AF31BF824F8000DFE4D /* mainscene_character_list.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31AF21BF824F8000DFE4D /* mainscene_character_list.png */; };
+		0AA31AF51BF8250D000DFE4D /* mainscene_delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31AF41BF8250D000DFE4D /* mainscene_delete.png */; };
+		0AA31AF91BF825B8000DFE4D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA31AF81BF825B8000DFE4D /* Constants.swift */; };
+		0AA31AFC1BF83739000DFE4D /* mainscene_character_select.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31AFB1BF83739000DFE4D /* mainscene_character_select.png */; };
+		0AA31AFE1BF85A61000DFE4D /* mainscene_mainslotwithoutplus.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31AFD1BF85A61000DFE4D /* mainscene_mainslotwithoutplus.png */; };
+		0AA31B001BF85A7B000DFE4D /* mainscene_plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31AFF1BF85A7B000DFE4D /* mainscene_plus.png */; };
+		0AA31B271BF8941A000DFE4D /* playermodescene_back_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31B231BF8941A000DFE4D /* playermodescene_back_button.png */; };
+		0AA31B291BF8941A000DFE4D /* playermodescene_story_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31B251BF8941A000DFE4D /* playermodescene_story_button.png */; };
+		0AA31B2A1BF8941A000DFE4D /* playermodescene_versus_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31B261BF8941A000DFE4D /* playermodescene_versus_button.png */; };
+		0AA31B2C1BF897B1000DFE4D /* playermodescene_background.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31B2B1BF897B1000DFE4D /* playermodescene_background.gif */; };
+		0AA31B301BF89CFE000DFE4D /* playermodescene_background.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31B2F1BF89CFE000DFE4D /* playermodescene_background.atlas */; };
 		0ACFD4921BF55AEE00563AFB /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACFD4911BF55AEE00563AFB /* CameraViewController.swift */; };
 		711C3E341BD6DF18000B724D /* animation.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 711C3E331BD6DF18000B724D /* animation.atlas */; };
 		711C3E441BD79074000B724D /* MyParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = 711C3E421BD79074000B724D /* MyParticle.sks */; };
@@ -108,6 +123,22 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0AA31AEA1BF821CA000DFE4D /* mainscene_backgound.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mainscene_backgound.jpg; sourceTree = "<group>"; };
+		0AA31AEC1BF824B4000DFE4D /* mainscene_slot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_slot.png; sourceTree = "<group>"; };
+		0AA31AEE1BF824CC000DFE4D /* mainscene_start_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_start_button.png; sourceTree = "<group>"; };
+		0AA31AF01BF824DF000DFE4D /* mainscene_mainslot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_mainslot.png; sourceTree = "<group>"; };
+		0AA31AF21BF824F8000DFE4D /* mainscene_character_list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_character_list.png; sourceTree = "<group>"; };
+		0AA31AF41BF8250D000DFE4D /* mainscene_delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_delete.png; sourceTree = "<group>"; };
+		0AA31AF81BF825B8000DFE4D /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		0AA31AFA1BF82B34000DFE4D /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
+		0AA31AFB1BF83739000DFE4D /* mainscene_character_select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_character_select.png; sourceTree = "<group>"; };
+		0AA31AFD1BF85A61000DFE4D /* mainscene_mainslotwithoutplus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_mainslotwithoutplus.png; sourceTree = "<group>"; };
+		0AA31AFF1BF85A7B000DFE4D /* mainscene_plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_plus.png; sourceTree = "<group>"; };
+		0AA31B231BF8941A000DFE4D /* playermodescene_back_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playermodescene_back_button.png; sourceTree = "<group>"; };
+		0AA31B251BF8941A000DFE4D /* playermodescene_story_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playermodescene_story_button.png; sourceTree = "<group>"; };
+		0AA31B261BF8941A000DFE4D /* playermodescene_versus_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playermodescene_versus_button.png; sourceTree = "<group>"; };
+		0AA31B2B1BF897B1000DFE4D /* playermodescene_background.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = playermodescene_background.gif; sourceTree = "<group>"; };
+		0AA31B2F1BF89CFE000DFE4D /* playermodescene_background.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = playermodescene_background.atlas; sourceTree = "<group>"; };
 		0ACFD4911BF55AEE00563AFB /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		711C3E331BD6DF18000B724D /* animation.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = animation.atlas; sourceTree = "<group>"; };
 		711C3E421BD79074000B724D /* MyParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle.sks; sourceTree = "<group>"; };
@@ -115,17 +146,17 @@
 		711C3E461BD790B1000B724D /* profExplosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = profExplosion.sks; sourceTree = "<group>"; };
 		711C3E471BD790B1000B724D /* profParticle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profParticle.png; sourceTree = "<group>"; };
 		71B30A2B1BD6222400ABAAFC /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
-		71E8A09F1BD4605C002832EE /* BTtest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BTtest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		71E8A09F1BD4605C002832EE /* Faceoff.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Faceoff.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71E8A0A21BD4605C002832EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71E8A0A41BD4605C002832EE /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		71E8A0A81BD4605C002832EE /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		71E8A0AB1BD4605C002832EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		71E8A0AD1BD4605C002832EE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		71E8A0B21BD4605C002832EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		71E8A0B71BD4605C002832EE /* BTtestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BTtestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		71E8A0B71BD4605C002832EE /* Faceoff.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Faceoff.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		71E8A0BB1BD4605C002832EE /* BTtestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTtestTests.swift; sourceTree = "<group>"; };
 		71E8A0BD1BD4605C002832EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		71E8A0C21BD4605C002832EE /* BTtestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BTtestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		71E8A0C21BD4605C002832EE /* Faceoff.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Faceoff.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		71E8A0C61BD4605C002832EE /* BTtestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTtestUITests.swift; sourceTree = "<group>"; };
 		71E8A0C81BD4605C002832EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		74F83FD61BF276C30012C07D /* CharacterManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterManager.swift; sourceTree = "<group>"; };
@@ -247,9 +278,9 @@
 		71E8A0A01BD4605C002832EE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				71E8A09F1BD4605C002832EE /* BTtest.app */,
-				71E8A0B71BD4605C002832EE /* BTtestTests.xctest */,
-				71E8A0C21BD4605C002832EE /* BTtestUITests.xctest */,
+				71E8A09F1BD4605C002832EE /* Faceoff.app */,
+				71E8A0B71BD4605C002832EE /* Faceoff.xctest */,
+				71E8A0C21BD4605C002832EE /* Faceoff.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -264,10 +295,11 @@
 				711C3E411BD79074000B724D /* Sprite Particle */,
 				711C3E331BD6DF18000B724D /* animation.atlas */,
 				71E8A0A21BD4605C002832EE /* AppDelegate.swift */,
+				0AA31AF81BF825B8000DFE4D /* Constants.swift */,
+				0AA31AFA1BF82B34000DFE4D /* MyPlayground.playground */,
 				71E8A0A41BD4605C002832EE /* GameScene.sks */,
 				A3ED08F01BE0032600B60AFF /* BuildConnectionScene.swift */,
 				A32CBE181BF7DE0E007186D9 /* CDAnimationBuilder.swift */,
-				A305A40F1BDB4076004B6186 /* PlayModeScene.swift */,
 				71B30A2B1BD6222400ABAAFC /* GameOverScene.swift */,
 				A364D3A21BF1AE7F00D352B1 /* BTAdvertise.swift */,
 				A364D3A31BF1AE7F00D352B1 /* BTDiscovery.swift */,
@@ -275,6 +307,7 @@
 				A364D3A51BF1AE7F00D352B1 /* GameScene.swift */,
 				A372FC6A1BE93B29005E0DA6 /* SelectWeaponScene.swift */,
 				A305A3F21BDB3E45004B6186 /* MainScene.swift */,
+				A305A40F1BDB4076004B6186 /* PlayModeScene.swift */,
 				74F83FD61BF276C30012C07D /* CharacterManager.swift */,
 				A3ED08F21BE0064000B60AFF /* ScrollNode.swift */,
 				71E8A0A81BD4605C002832EE /* GameViewController.swift */,
@@ -308,6 +341,20 @@
 		A30410391BE942F00004D7B1 /* Sprite Images */ = {
 			isa = PBXGroup;
 			children = (
+				0AA31AEE1BF824CC000DFE4D /* mainscene_start_button.png */,
+				0AA31AEC1BF824B4000DFE4D /* mainscene_slot.png */,
+				0AA31AFD1BF85A61000DFE4D /* mainscene_mainslotwithoutplus.png */,
+				0AA31AF01BF824DF000DFE4D /* mainscene_mainslot.png */,
+				0AA31AFF1BF85A7B000DFE4D /* mainscene_plus.png */,
+				0AA31AF21BF824F8000DFE4D /* mainscene_character_list.png */,
+				0AA31AF41BF8250D000DFE4D /* mainscene_delete.png */,
+				0AA31AFB1BF83739000DFE4D /* mainscene_character_select.png */,
+				0AA31AEA1BF821CA000DFE4D /* mainscene_backgound.jpg */,
+				0AA31B2B1BF897B1000DFE4D /* playermodescene_background.gif */,
+				0AA31B231BF8941A000DFE4D /* playermodescene_back_button.png */,
+				0AA31B251BF8941A000DFE4D /* playermodescene_story_button.png */,
+				0AA31B261BF8941A000DFE4D /* playermodescene_versus_button.png */,
+				0AA31B2F1BF89CFE000DFE4D /* playermodescene_background.atlas */,
 				A304103A1BE942F00004D7B1 /* background.jpg */,
 				A304103B1BE942F00004D7B1 /* background2.jpg */,
 				A304103C1BE942F00004D7B1 /* background3.jpg */,
@@ -382,9 +429,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		71E8A09E1BD4605C002832EE /* BTtest */ = {
+		71E8A09E1BD4605C002832EE /* Faceoff */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 71E8A0CB1BD4605C002832EE /* Build configuration list for PBXNativeTarget "BTtest" */;
+			buildConfigurationList = 71E8A0CB1BD4605C002832EE /* Build configuration list for PBXNativeTarget "Faceoff" */;
 			buildPhases = (
 				71E8A09B1BD4605C002832EE /* Sources */,
 				71E8A09C1BD4605C002832EE /* Frameworks */,
@@ -394,14 +441,14 @@
 			);
 			dependencies = (
 			);
-			name = BTtest;
+			name = Faceoff;
 			productName = BTtest;
-			productReference = 71E8A09F1BD4605C002832EE /* BTtest.app */;
+			productReference = 71E8A09F1BD4605C002832EE /* Faceoff.app */;
 			productType = "com.apple.product-type.application";
 		};
-		71E8A0B61BD4605C002832EE /* BTtestTests */ = {
+		71E8A0B61BD4605C002832EE /* FaceoffTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 71E8A0CE1BD4605C002832EE /* Build configuration list for PBXNativeTarget "BTtestTests" */;
+			buildConfigurationList = 71E8A0CE1BD4605C002832EE /* Build configuration list for PBXNativeTarget "FaceoffTests" */;
 			buildPhases = (
 				71E8A0B31BD4605C002832EE /* Sources */,
 				71E8A0B41BD4605C002832EE /* Frameworks */,
@@ -412,14 +459,14 @@
 			dependencies = (
 				71E8A0B91BD4605C002832EE /* PBXTargetDependency */,
 			);
-			name = BTtestTests;
+			name = FaceoffTests;
 			productName = BTtestTests;
-			productReference = 71E8A0B71BD4605C002832EE /* BTtestTests.xctest */;
+			productReference = 71E8A0B71BD4605C002832EE /* Faceoff.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		71E8A0C11BD4605C002832EE /* BTtestUITests */ = {
+		71E8A0C11BD4605C002832EE /* FaceoffUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 71E8A0D11BD4605C002832EE /* Build configuration list for PBXNativeTarget "BTtestUITests" */;
+			buildConfigurationList = 71E8A0D11BD4605C002832EE /* Build configuration list for PBXNativeTarget "FaceoffUITests" */;
 			buildPhases = (
 				71E8A0BE1BD4605C002832EE /* Sources */,
 				71E8A0BF1BD4605C002832EE /* Frameworks */,
@@ -430,9 +477,9 @@
 			dependencies = (
 				71E8A0C41BD4605C002832EE /* PBXTargetDependency */,
 			);
-			name = BTtestUITests;
+			name = FaceoffUITests;
 			productName = BTtestUITests;
-			productReference = 71E8A0C21BD4605C002832EE /* BTtestUITests.xctest */;
+			productReference = 71E8A0C21BD4605C002832EE /* Faceoff.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -446,7 +493,7 @@
 				TargetAttributes = {
 					71E8A09E1BD4605C002832EE = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 8G7BV8AWXA;
+						DevelopmentTeam = 5XLQ67P82L;
 					};
 					71E8A0B61BD4605C002832EE = {
 						CreatedOnToolsVersion = 7.0;
@@ -458,7 +505,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 71E8A09A1BD4605C002832EE /* Build configuration list for PBXProject "BTtest" */;
+			buildConfigurationList = 71E8A09A1BD4605C002832EE /* Build configuration list for PBXProject "Faceoff" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -471,9 +518,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				71E8A09E1BD4605C002832EE /* BTtest */,
-				71E8A0B61BD4605C002832EE /* BTtestTests */,
-				71E8A0C11BD4605C002832EE /* BTtestUITests */,
+				71E8A09E1BD4605C002832EE /* Faceoff */,
+				71E8A0B61BD4605C002832EE /* FaceoffTests */,
+				71E8A0C11BD4605C002832EE /* FaceoffUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -486,19 +533,23 @@
 				A30410581BE942F00004D7B1 /* background3.jpg in Resources */,
 				711C3E451BD79074000B724D /* spark.png in Resources */,
 				A304105B1BE942F00004D7B1 /* DoubleBonus.png in Resources */,
+				0AA31AEB1BF821CA000DFE4D /* mainscene_backgound.jpg in Resources */,
 				A3CCCCB41BEE8F0300A94859 /* kameEmmit2.wav in Resources */,
 				A304106B1BE942F00004D7B1 /* Missel_hit@2x.png in Resources */,
 				71E8A0A51BD4605C002832EE /* GameScene.sks in Resources */,
 				A30410821BE951B00004D7B1 /* spaceship3.jpg in Resources */,
 				711C3E341BD6DF18000B724D /* animation.atlas in Resources */,
 				A3CCCCAE1BEE8F0300A94859 /* BGM.wav in Resources */,
+				0AA31AF11BF824DF000DFE4D /* mainscene_mainslot.png in Resources */,
 				A30410561BE942F00004D7B1 /* background.jpg in Resources */,
+				0AA31AF31BF824F8000DFE4D /* mainscene_character_list.png in Resources */,
 				A304105C1BE942F00004D7B1 /* Fight.png in Resources */,
 				A3CCCCB61BEE8F0300A94859 /* ShipBullet2.wav in Resources */,
 				A3CCCCB71BEE8F0300A94859 /* ShipHit.wav in Resources */,
 				A3CCCCB21BEE8F0300A94859 /* kameCharge.wav in Resources */,
 				A3CCCCB31BEE8F0300A94859 /* kameEmmit.wav in Resources */,
 				A32CBE131BF7DDCF007186D9 /* spy.atlas in Resources */,
+				0AA31B2A1BF8941A000DFE4D /* playermodescene_versus_button.png in Resources */,
 				71E8A0AE1BD4605C002832EE /* Assets.xcassets in Resources */,
 				A30410751BE949E50004D7B1 /* spaceship1.jpg in Resources */,
 				A32CBE261BF7DF59007186D9 /* spy.png in Resources */,
@@ -507,6 +558,7 @@
 				A304105A1BE942F00004D7B1 /* background5.jpg in Resources */,
 				A30410591BE942F00004D7B1 /* background4.jpg in Resources */,
 				A30410621BE942F00004D7B1 /* InvaderB_00.png in Resources */,
+				0AA31AED1BF824B4000DFE4D /* mainscene_slot.png in Resources */,
 				A304106D1BE942F00004D7B1 /* Ready.png in Resources */,
 				A304106F1BE942F00004D7B1 /* Ship@2x.png in Resources */,
 				A304105F1BE942F00004D7B1 /* InvaderA_00@2x.png in Resources */,
@@ -518,23 +570,31 @@
 				A30410661BE942F00004D7B1 /* InvaderC_00.png in Resources */,
 				71E8A0AC1BD4605C002832EE /* Main.storyboard in Resources */,
 				A30410811BE951B00004D7B1 /* spaceship2.jpg in Resources */,
+				0AA31AFE1BF85A61000DFE4D /* mainscene_mainslotwithoutplus.png in Resources */,
 				A30410651BE942F00004D7B1 /* InvaderB_01@2x.png in Resources */,
+				0AA31AF51BF8250D000DFE4D /* mainscene_delete.png in Resources */,
 				A3CCCCB11BEE8F0300A94859 /* InvaderHit.wav in Resources */,
+				0AA31AFC1BF83739000DFE4D /* mainscene_character_select.png in Resources */,
 				A327BF6E1BF7D14300631160 /* burn@2x.png in Resources */,
 				A30410631BE942F00004D7B1 /* InvaderB_00@2x.png in Resources */,
 				A30410831BE951B00004D7B1 /* spaceship4.jpg in Resources */,
 				711C3E491BD790B1000B724D /* profParticle.png in Resources */,
+				0AA31B001BF85A7B000DFE4D /* mainscene_plus.png in Resources */,
 				711C3E441BD79074000B724D /* MyParticle.sks in Resources */,
 				A304106C1BE942F00004D7B1 /* prof@2x.png in Resources */,
 				A304105D1BE942F00004D7B1 /* headdd.png in Resources */,
 				A3CCCCB51BEE8F0300A94859 /* ShipBullet.wav in Resources */,
+				0AA31B271BF8941A000DFE4D /* playermodescene_back_button.png in Resources */,
+				0AA31AEF1BF824CC000DFE4D /* mainscene_start_button.png in Resources */,
 				A30410571BE942F00004D7B1 /* background2.jpg in Resources */,
 				A32CBE221BF7DF59007186D9 /* energyBlast.png in Resources */,
+				0AA31B291BF8941A000DFE4D /* playermodescene_story_button.png in Resources */,
 				A304106E1BE942F00004D7B1 /* Ship.png in Resources */,
 				A30410611BE942F00004D7B1 /* InvaderA_01@2x.png in Resources */,
 				A3CCCCB81BEE8F0300A94859 /* Warning.wav in Resources */,
 				A3CCCCB01BEE8F0300A94859 /* InvaderBullet.wav in Resources */,
 				A304106A1BE942F00004D7B1 /* Missel@2x.png in Resources */,
+				0AA31B301BF89CFE000DFE4D /* playermodescene_background.atlas in Resources */,
 				A32CBE231BF7DF59007186D9 /* fire.png in Resources */,
 				A30410711BE942F00004D7B1 /* warning@2x.png in Resources */,
 				A32CBE211BF7DF59007186D9 /* cure.png in Resources */,
@@ -542,6 +602,7 @@
 				A3A117A61BF7D926009678F4 /* freeze@2x.png in Resources */,
 				A3CCCCAF1BEE8F0300A94859 /* fight.wav in Resources */,
 				A32CBE171BF7DDFC007186D9 /* cure.atlas in Resources */,
+				0AA31B2C1BF897B1000DFE4D /* playermodescene_background.gif in Resources */,
 				A30410701BE942F00004D7B1 /* StarBonus.png in Resources */,
 				A34494E11BF1E59D002B0FE4 /* button.wav in Resources */,
 				A30410691BE942F00004D7B1 /* InvaderC_01@2x.png in Resources */,
@@ -586,6 +647,7 @@
 				A364D3A81BF1AE7F00D352B1 /* BTService.swift in Sources */,
 				A364D3A91BF1AE7F00D352B1 /* GameScene.swift in Sources */,
 				71E8A0A31BD4605C002832EE /* AppDelegate.swift in Sources */,
+				0AA31AF91BF825B8000DFE4D /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -610,12 +672,12 @@
 /* Begin PBXTargetDependency section */
 		71E8A0B91BD4605C002832EE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 71E8A09E1BD4605C002832EE /* BTtest */;
+			target = 71E8A09E1BD4605C002832EE /* Faceoff */;
 			targetProxy = 71E8A0B81BD4605C002832EE /* PBXContainerItemProxy */;
 		};
 		71E8A0C41BD4605C002832EE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 71E8A09E1BD4605C002832EE /* BTtest */;
+			target = 71E8A09E1BD4605C002832EE /* Faceoff */;
 			targetProxy = 71E8A0C31BD4605C002832EE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -720,10 +782,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = BTtest/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = sc.Faceoff.1;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = huayingt.Faceoff;
+				PRODUCT_NAME = Faceoff;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -736,10 +798,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = BTtest/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = sc.Faceoff.1;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = huayingt.Faceoff;
+				PRODUCT_NAME = Faceoff;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -753,8 +815,8 @@
 				INFOPLIST_FILE = BTtestTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.BTtestTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BTtest.app/BTtest";
+				PRODUCT_NAME = Faceoff;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Faceoff.app/Faceoff";
 			};
 			name = Debug;
 		};
@@ -765,8 +827,8 @@
 				INFOPLIST_FILE = BTtestTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.BTtestTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BTtest.app/BTtest";
+				PRODUCT_NAME = Faceoff;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Faceoff.app/Faceoff";
 			};
 			name = Release;
 		};
@@ -777,7 +839,7 @@
 				INFOPLIST_FILE = BTtestUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.BTtestUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Faceoff;
 				TEST_TARGET_NAME = BTtest;
 				USES_XCTRUNNER = YES;
 			};
@@ -789,7 +851,7 @@
 				INFOPLIST_FILE = BTtestUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.BTtestUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Faceoff;
 				TEST_TARGET_NAME = BTtest;
 				USES_XCTRUNNER = YES;
 			};
@@ -798,7 +860,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		71E8A09A1BD4605C002832EE /* Build configuration list for PBXProject "BTtest" */ = {
+		71E8A09A1BD4605C002832EE /* Build configuration list for PBXProject "Faceoff" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				71E8A0C91BD4605C002832EE /* Debug */,
@@ -807,7 +869,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		71E8A0CB1BD4605C002832EE /* Build configuration list for PBXNativeTarget "BTtest" */ = {
+		71E8A0CB1BD4605C002832EE /* Build configuration list for PBXNativeTarget "Faceoff" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				71E8A0CC1BD4605C002832EE /* Debug */,
@@ -816,7 +878,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		71E8A0CE1BD4605C002832EE /* Build configuration list for PBXNativeTarget "BTtestTests" */ = {
+		71E8A0CE1BD4605C002832EE /* Build configuration list for PBXNativeTarget "FaceoffTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				71E8A0CF1BD4605C002832EE /* Debug */,
@@ -825,7 +887,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		71E8A0D11BD4605C002832EE /* Build configuration list for PBXNativeTarget "BTtestUITests" */ = {
+		71E8A0D11BD4605C002832EE /* Build configuration list for PBXNativeTarget "FaceoffUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				71E8A0D21BD4605C002832EE /* Debug */,

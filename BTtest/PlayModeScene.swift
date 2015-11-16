@@ -14,46 +14,58 @@ class PlayModeScene: SKScene {
     var 返回按鈕: SKNode! = nil
     let background: SKNode! = SKSpriteNode(imageNamed: "spaceship2.jpg")
     var Img: UIImage! = nil
+    
     override func didMoveToView(view: SKView) {
         
+        loadBackground()
+        loadBackButton()
+        loadStoryButton()
+        loadVersusButton()
     
-        選擇單人遊戲按鈕 = SKSpriteNode(color: UIColor.blueColor().colorWithAlphaComponent(0.3), size: CGSize(width: 200, height: 40))
-        選擇單人遊戲按鈕.position = CGPoint(x:CGRectGetMidX(self.frame),y:CGRectGetMidY(self.frame)+CGFloat(75.0))
+    }
+    func loadBackground(){
+        let background = SKSpriteNode(texture: nil, size: frame.size)
+    
+        let textureAtlas = SKTextureAtlas(named: Constants.PlayModeScene.Background)
+        var textures: [SKTexture] = []
+        var animation:SKAction!
+        
+        for index in 1...textureAtlas.textureNames.count {
+            let imgName = String(format: "\(Constants.PlayModeScene.Background)%02d", index)
+            textures.append(textureAtlas.textureNamed(imgName))
+        }
+        animation = SKAction.animateWithTextures(textures, timePerFrame: 0.15)
+        background.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
+        background.alpha = 0.5
+        background.zPosition = -10
+        addChild(background)
+        background.runAction(SKAction.repeatActionForever(animation))
+    }
+    func loadBackButton(){
+        
+        let texture = SKTexture(image: UIImage(named: Constants.PlayModeScene.BackButton)!)
+        返回按鈕 = SKSpriteNode(texture: texture, size: CGSizeMake(184.0,57.0))
+        返回按鈕.position = CGPoint(x:返回按鈕.frame.width/2,y: 返回按鈕.frame.height/2)
+        addChild(返回按鈕)
+    }
+    
+    func loadStoryButton(){
+        
+        let texture = SKTexture(image: UIImage(named: Constants.PlayModeScene.StoryButton)!)
+        選擇單人遊戲按鈕 = SKSpriteNode(texture: texture, size: CGSizeMake(130.0,41.0))
+        選擇單人遊戲按鈕.position = CGPoint(x:frame.midX - 80,y: frame.midY + 80)
+        print(選擇單人遊戲按鈕.position)
         addChild(選擇單人遊戲按鈕)
         
-        let 製造角色文字 = SKLabelNode(fontNamed:"Chalkduster")
-        製造角色文字.text = "Fight";
-        製造角色文字.fontSize = 14;
-        製造角色文字.position = CGPoint(x:CGFloat(0),y:CGFloat(-5))
-        選擇單人遊戲按鈕.addChild(製造角色文字)
+    }
+    
+    func loadVersusButton(){
         
-        選擇雙人遊戲按鈕 = SKSpriteNode(color: UIColor.blueColor().colorWithAlphaComponent(0.3), size: CGSize(width: 200, height: 40))
-        選擇雙人遊戲按鈕.position = CGPoint(x:CGRectGetMidX(self.frame),y:CGRectGetMidY(self.frame)+CGFloat(25.0))
-        addChild(選擇雙人遊戲按鈕)
-        
-        let 進入遊戲文字 = SKLabelNode(fontNamed:"Chalkduster")
-        進入遊戲文字.text = "2-Players Fight";
-        進入遊戲文字.fontSize = 14;
-        進入遊戲文字.position = CGPoint(x:CGFloat(0),y:CGFloat(-5))
-        選擇雙人遊戲按鈕.addChild(進入遊戲文字)
-        
-        返回按鈕 = SKSpriteNode(color: UIColor.blueColor().colorWithAlphaComponent(0.3), size: CGSize(width: 200, height: 40))
-        返回按鈕.position = CGPoint(x:CGRectGetMidX(self.frame),y:CGRectGetMidY(self.frame)-CGFloat(25.0))
-        addChild(返回按鈕)
-        
-        let 返回文字 = SKLabelNode(fontNamed:"Chalkduster")
-        返回文字.text = "Back";
-        返回文字.fontSize = 14;
-        返回文字.position = CGPoint(x:CGFloat(0),y:CGFloat(-5))
-        返回按鈕.addChild(返回文字)
+        let texture = SKTexture(image: UIImage(named: Constants.PlayModeScene.VersusButton)!)
+        選擇雙人遊戲按鈕 = SKSpriteNode(texture: texture, size: CGSizeMake(130.0,41.0))
+        選擇雙人遊戲按鈕.position = CGPoint(x:frame.midX - 80,y: frame.midY + 40)
+        addChild(選擇雙人遊戲按鈕)        
 
-        background.position = CGPoint(x: frame.midX, y: frame.midY)
-        background.scene?.size = frame.size
-        background.setScale(1.0)
-        background.zPosition = -100
-        addChild(background)
-
-        
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -82,6 +94,8 @@ class PlayModeScene: SKScene {
             }
         }
     }
+    
+
     
     func transitionForNextScene(nextScene: SKScene){
         let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)

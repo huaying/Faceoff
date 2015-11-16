@@ -17,7 +17,6 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
     var finalImg : UIImage!
     var imgForPlayer : UIImage!
     
-    let logo = UIImage(named: "headdd")!
     let mask = CALayer()
     
     
@@ -27,50 +26,116 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
     var 進入遊戲按鈕: SKNode! = nil
     var 角色們: SKNode! = nil
     var testImage: SKNode! = nil
-    let background: SKNode! = SKSpriteNode(imageNamed: "spaceship1.jpg")
     
     var candidateCharacterNodes:[SKSpriteNode] = []
     
     
     override func didMoveToView(view: SKView) {
+         print(self.view!.frame.size)
         
-        background.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
-        background.xScale = 0.75
-        background.yScale = 0.75
-        background.zPosition = -100
-        addChild(background)
-        
-        製造角色按鈕 = SKSpriteNode(color: UIColor.redColor().colorWithAlphaComponent(0.3), size: CGSize(width: 200, height: 40))
-        製造角色按鈕.position = CGPoint(x:CGRectGetMidX(self.frame),y:CGRectGetMidY(self.frame)+CGFloat(50.0))
-        addChild(製造角色按鈕)
-        let 製造角色文字 = SKLabelNode(fontNamed:"Chalkduster")
-        製造角色文字.text = "Create a character";
-        製造角色文字.fontSize = 14;
-        製造角色文字.position = CGPoint(x:CGFloat(0),y:CGFloat(-5))
-        製造角色按鈕.addChild(製造角色文字)
-   
-        進入遊戲按鈕 = SKSpriteNode(color: UIColor.redColor().colorWithAlphaComponent(0.3), size: CGSize(width: 200, height: 40))
-        進入遊戲按鈕.position = CGPoint(x:CGRectGetMidX(self.frame),y:CGRectGetMidY(self.frame)-CGFloat(0.0))
-        addChild(進入遊戲按鈕)
-        
-        let 進入遊戲文字 = SKLabelNode(fontNamed:"Chalkduster")
-        進入遊戲文字.text = "Play";
-        進入遊戲文字.fontSize = 14;
-        進入遊戲文字.position = CGPoint(x:CGFloat(0),y:CGFloat(-5))
-        
-        進入遊戲按鈕.addChild(進入遊戲文字)
-        
+        loadBackground()
+        loadStartButton()
+        loadCharacterList()
+        loadSlots()
+        loadMainSlot()
+        loadCharacterSelect()
         loadCharacter()
         
-        NSNotificationCenter.defaultCenter().addObserverForName("PhotoPickerFinishedNotification", object:nil, queue:nil, usingBlock: { note in
+        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongTap:")
+        
+        self.view!.addGestureRecognizer(gestureRecognizer)
+    
+    
+    NSNotificationCenter.defaultCenter().addObserverForName("PhotoPickerFinishedNotification", object:nil, queue:nil, usingBlock: { note in
             self.loadCharacter()
             
         })
     }
     
+    func loadBackground(){
+        let texture = SKTexture(image: UIImage(named: Constants.MainScene.Background)!)
+        let background = SKSpriteNode(texture: texture, size: frame.size)
+       
+        background.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
+        background.zPosition = -10
+        addChild(background)
+        
+    }
+    func loadCharacterList(){
+        let texture = SKTexture(image: UIImage(named: Constants.MainScene.CharacterList)!)
+        let wordCharacterList = SKSpriteNode(texture: texture, size: CGSizeMake(111.0,37.0))
+        
+        wordCharacterList.position = CGPoint(x: wordCharacterList.frame.width/2 + 15.0, y: self.frame.height-wordCharacterList.frame.height/2 - 33)
+        addChild(wordCharacterList)
+    }
     
+    func loadCharacterSelect(){
+        let texture = SKTexture(image: UIImage(named: Constants.MainScene.CharacterSelect)!)
+        let characterSelect = SKSpriteNode(texture: texture, size: CGSizeMake(270.0,30.0))
+        
+        characterSelect.position = CGPoint(x: self.frame.midX , y: self.frame.height - 50)
+        addChild(characterSelect)
+    }
+    
+    
+    func loadMainSlot(){
+        let texture = SKTexture(image: UIImage(named: Constants.MainScene.MainSlot)!)
+        let plusTexture = SKTexture(image: UIImage(named: Constants.MainScene.Plus)!)
+        製造角色按鈕 = SKSpriteNode(texture: texture, size: CGSizeMake(250.0,250.0))
+        let mainSlotPlus = SKSpriteNode(texture: plusTexture, size: CGSizeMake(50.0,50.0))
+        
+        製造角色按鈕.position = CGPoint(x: frame.midX,y: frame.midY - 18)
+        製造角色按鈕.runAction(SKAction.repeatActionForever(SKAction.rotateByAngle(CGFloat(M_PI), duration:0.5)))
+        mainSlotPlus.position = 製造角色按鈕.position
+        mainSlotPlus.runAction(SKAction.repeatActionForever(SKAction.sequence([
+            SKAction.fadeInWithDuration(0.5),                  SKAction.waitForDuration(1),
+            SKAction.fadeOutWithDuration(0.5)
+            ]))
+        )
+        
+        addChild(製造角色按鈕)
+        addChild(mainSlotPlus)
+        
+    }
+    
+    func loadStartButton(){
+        
+        let texture = SKTexture(image: UIImage(named: Constants.MainScene.StartButton)!)
+        進入遊戲按鈕 = SKSpriteNode(texture: texture, size: CGSizeMake(184.0,57.0))
+        進入遊戲按鈕.position = CGPoint(x:frame.width - 進入遊戲按鈕.frame.width/2,y: 進入遊戲按鈕.frame.height/2)
+        addChild(進入遊戲按鈕)
+    }
+    
+    func loadSlots(){
+        let texture = SKTexture(image: UIImage(named: Constants.MainScene.Slot)!)
+        let plusTexture = SKTexture(image: UIImage(named: Constants.MainScene.Plus)!)
+        
+        var slots:[SKSpriteNode] = []
+        let width:CGFloat = CGFloat(Constants.MainScene.SlotSize)
+        let height:CGFloat = CGFloat(Constants.MainScene.SlotSize)
+        for i in 0..<Constants.Character.MaxOfCandidateNumber {
+            let slot = SKSpriteNode(texture: texture, size: CGSizeMake(width,height))
+            
+            let slotPlus = SKSpriteNode(texture: plusTexture, size: CGSizeMake(20.0,20.0))
+            
+           slotPlus.runAction(SKAction.repeatActionForever(SKAction.sequence([
+                    SKAction.fadeInWithDuration(0.5),                  SKAction.waitForDuration(0.5),
+                    SKAction.fadeOutWithDuration(0.5)
+                ]))
+            )
+            
+            slots.append(slot)
+            slot.position = CGPoint(x: slot.frame.width/2 + 15 , y: CGFloat(75 + (i*90)))
+            slot.addChild(slotPlus)
+            addChild(slot)
+        }
+    }
+
     func loadCharacter(){
         
+        let width:CGFloat = CGFloat(Constants.MainScene.SlotSize)
+        let height:CGFloat = CGFloat(Constants.MainScene.SlotSize)
+
         if let candidateCharacters: [UIImage] = CharacterManager.getCandidateCharactersFromLocalStorage(){
             if 角色們 != nil && 角色們.parent != nil {
                 角色們.removeFromParent()
@@ -79,18 +144,16 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
             candidateCharacterNodes = []
             for (i,candidateCharacter) in candidateCharacters.enumerate() {
                 
-                let candidateCharacterNode = SKSpriteNode(texture: SKTexture(image: candidateCharacter))
+                let candidateCharacterNode = SKSpriteNode(texture: SKTexture(image: candidateCharacter),size: CGSizeMake(width,height))
                 candidateCharacterNodes.append(candidateCharacterNode)
                 
                 if i == 0 {
                     chooseCharacter(candidateCharacterNode)
                 }
-                candidateCharacterNode.position.x = 100.0*CGFloat(i)
+                candidateCharacterNode.position = CGPoint(x: candidateCharacterNode.frame.width/2 + 15 , y: CGFloat(75 + (i*90)))
                 角色們.addChild(candidateCharacterNode)
-                
+                角色們.zPosition = 1
             }
-            print(CGRectGetMidX(self.frame),CGRectGetMidX(角色們.frame))
-            角色們.position = CGPoint(x:CGRectGetMidX(self.frame)-CGRectGetMidX(角色們.calculateAccumulatedFrame()),y:CGRectGetMidY(self.frame)-CGFloat(100.0))
             addChild(角色們)
 
         }
@@ -132,16 +195,35 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
                 scene?.view?.presentScene(nextScene, transition: transition)
             }
         }
-        if let location = touches.first?.locationInNode(角色們){
-            
-            for (i,candidateCharacterNode) in candidateCharacterNodes.enumerate() {
-                if candidateCharacterNode.containsPoint(location){
-                    chooseCharacter(candidateCharacterNode)
+        if 角色們 != nil {
+            if let location = touches.first?.locationInNode(角色們){
+                for candidateCharacterNode in candidateCharacterNodes {
+                    if candidateCharacterNode.containsPoint(location){
+                        chooseCharacter(candidateCharacterNode)
+                    }
                 }
             }
-
         }
     }
+    
+    func handleLongTap(gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.Began{
+            if let view = self.view {
+                let touchLocationInView: CGPoint = gestureRecognizer.locationInView(view)
+                let touchLocationInScene:CGPoint = self.convertPointFromView(touchLocationInView)
+                
+                for candidateCharacterNode in candidateCharacterNodes {
+                    if candidateCharacterNode.containsPoint(touchLocationInScene){
+                        let texture = SKTexture(image: UIImage(named: Constants.MainScene.DeleteButton)!)
+                        let deleteButton = SKSpriteNode(texture: texture,size: CGSizeMake(20,20))
+                        deleteButton.position = CGPoint(x: candidateCharacterNode.frame.width/2-5,y: candidateCharacterNode.frame.height/2-5)
+                        candidateCharacterNode.addChild(deleteButton)
+                    }
+                }
+            }
+        }
+    }
+    
     
     func imagePickingFinished(){
         loadCharacter()

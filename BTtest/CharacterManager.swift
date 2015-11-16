@@ -5,6 +5,7 @@
 //  Created by Huaying Tsai on 11/10/15.
 //  Copyright © 2015 Liang. All rights reserved.
 //
+
 import UIKit
 import Foundation
 
@@ -113,7 +114,5 @@ class CharacterManager {
         }
     }
     
-    static func rearrageCandidateCharacters(freshCharacterIndex: Int){
-        
-    }
+
 }

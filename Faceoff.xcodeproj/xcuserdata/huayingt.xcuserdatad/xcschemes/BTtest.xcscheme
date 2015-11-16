@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "71E8A09E1BD4605C002832EE"
-               BuildableName = "BTtest.app"
-               BlueprintName = "BTtest"
-               ReferencedContainer = "container:BTtest.xcodeproj">
+               BuildableName = "Faceoff.app"
+               BlueprintName = "Faceoff"
+               ReferencedContainer = "container:Faceoff.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "71E8A0B61BD4605C002832EE"
-               BuildableName = "BTtestTests.xctest"
-               BlueprintName = "BTtestTests"
-               ReferencedContainer = "container:BTtest.xcodeproj">
+               BuildableName = "Faceoff.xctest"
+               BlueprintName = "FaceoffTests"
+               ReferencedContainer = "container:Faceoff.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "71E8A0C11BD4605C002832EE"
-               BuildableName = "BTtestUITests.xctest"
-               BlueprintName = "BTtestUITests"
-               ReferencedContainer = "container:BTtest.xcodeproj">
+               BuildableName = "Faceoff.xctest"
+               BlueprintName = "FaceoffUITests"
+               ReferencedContainer = "container:Faceoff.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -53,9 +53,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "71E8A09E1BD4605C002832EE"
-            BuildableName = "BTtest.app"
-            BlueprintName = "BTtest"
-            ReferencedContainer = "container:BTtest.xcodeproj">
+            BuildableName = "Faceoff.app"
+            BlueprintName = "Faceoff"
+            ReferencedContainer = "container:Faceoff.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -76,9 +76,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "71E8A09E1BD4605C002832EE"
-            BuildableName = "BTtest.app"
-            BlueprintName = "BTtest"
-            ReferencedContainer = "container:BTtest.xcodeproj">
+            BuildableName = "Faceoff.app"
+            BlueprintName = "Faceoff"
+            ReferencedContainer = "container:Faceoff.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -95,9 +95,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "71E8A09E1BD4605C002832EE"
-            BuildableName = "BTtest.app"
-            BlueprintName = "BTtest"
-            ReferencedContainer = "container:BTtest.xcodeproj">
+            BuildableName = "Faceoff.app"
+            BlueprintName = "Faceoff"
+            ReferencedContainer = "container:Faceoff.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
