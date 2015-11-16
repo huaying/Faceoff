@@ -129,7 +129,6 @@
 		0AA31AF21BF824F8000DFE4D /* mainscene_character_list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_character_list.png; sourceTree = "<group>"; };
 		0AA31AF41BF8250D000DFE4D /* mainscene_delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_delete.png; sourceTree = "<group>"; };
 		0AA31AF81BF825B8000DFE4D /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		0AA31AFA1BF82B34000DFE4D /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		0AA31AFB1BF83739000DFE4D /* mainscene_character_select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_character_select.png; sourceTree = "<group>"; };
 		0AA31AFD1BF85A61000DFE4D /* mainscene_mainslotwithoutplus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_mainslotwithoutplus.png; sourceTree = "<group>"; };
 		0AA31AFF1BF85A7B000DFE4D /* mainscene_plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_plus.png; sourceTree = "<group>"; };
@@ -290,7 +289,6 @@
 				711C3E331BD6DF18000B724D /* animation.atlas */,
 				71E8A0A21BD4605C002832EE /* AppDelegate.swift */,
 				0AA31AF81BF825B8000DFE4D /* Constants.swift */,
-				0AA31AFA1BF82B34000DFE4D /* MyPlayground.playground */,
 				71E8A0A41BD4605C002832EE /* GameScene.sks */,
 				A3ED08F01BE0032600B60AFF /* BuildConnectionScene.swift */,
 				A32CBE181BF7DE0E007186D9 /* CDAnimationBuilder.swift */,
@@ -313,7 +311,7 @@
 				A352D3141BED517D00951A8E /* GameAnimation.swift */,
 			);
 			name = Faceoff;
-			path = "/Users/huayingt/Google Drive/USC/CS/CSCI526/Faceoff/Faceoff/BTtest";
+			path = "/Users/huayingt/Google Drive/USC/CS/CSCI526/Faceoff/Faceoff/Faceoff";
 			sourceTree = "<absolute>";
 		};
 		A30410391BE942F00004D7B1 /* Sprite Images */ = {
@@ -758,7 +756,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = BTtest/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Faceoff/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = huayingt.Faceoff;
@@ -774,7 +772,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = BTtest/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Faceoff/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = huayingt.Faceoff;
