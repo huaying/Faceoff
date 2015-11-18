@@ -53,18 +53,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         case None
     }
     
-    //1
-    enum InvaderType {
-        case A
-        case B
-        case C
-    }
     
-    //2
-    let kInvaderSize = CGSize(width: 24, height: 16)
-    let kInvaderGridSpacing = CGSize(width: 12, height: 12)
-    let kInvaderRowCount = 6
-    let kInvaderColCount = 6
     
     // 3
     let kInvaderName = "invader"
@@ -199,7 +188,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
-        
         if let index = scene!.userData?.valueForKey("Ray") as? String {
             //print(index)
             
@@ -237,7 +225,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         
         // Watch Bluetooth connection
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("beginFight"), name: "beginFight", object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("ApponentFireShipBullets:"), name: "getLocation", object: nil)
@@ -258,17 +245,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let slideStarBonus = SKAction.sequence([SKAction.runBlock({
             
             let starBonusNode = self.makeBulletOfType(BulletType.Bonus)
-            
             let direction = arc4random_uniform(3)
-            
             var xPower: CGFloat?
-            
             var yPower: CGFloat?
             
             // top
             if(direction == 0) {
                 xPower = (self.randomNumber(20) - 10) / 10
-                
                 yPower = self.randomNumber(15) / 15 * -1
                 
                 starBonusNode.position = CGPointMake(starBonusNode.size.width / 2 + self.randomNumber(self.size.width - starBonusNode.size.width * 2), self.size.height - starBonusNode.size.height / 2)
@@ -276,7 +259,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // left
             if(direction == 1) {
                 xPower = self.randomNumber(15) / 15
-                
                 yPower = (self.randomNumber(20) - 10) / 10
                 
                 starBonusNode.position = CGPointMake(starBonusNode.size.width / 2, starBonusNode.size.height / 2 + self.randomNumber(self.size.height - starBonusNode.size.height * 2))
@@ -285,16 +267,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // right
             if(direction == 2) {
                 xPower = self.randomNumber(15) / 15 * -1
-                
                 yPower = (self.randomNumber(20) - 10) / 10
                 
                 starBonusNode.position = CGPointMake(self.size.width - starBonusNode.size.width / 2, starBonusNode.size.height / 2 + self.randomNumber(self.size.height - starBonusNode.size.height * 2))
             }
             
             self.addChild(starBonusNode)
-            
             starBonusNode.physicsBody?.applyImpulse(CGVectorMake(xPower!, yPower!))
-            
         }), SKAction.waitForDuration(15.0)])
         
         self.runAction(SKAction.repeatAction(slideStarBonus, count: 500))
@@ -327,12 +306,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         burnTimerStart()
         frozenTimerStart()
         
-        //qq()
-        
-        //setupHud()
-        
-        // 2 black space color
-        self.backgroundColor = SKColor.blackColor()
     }
     
     func loadBackground() {
@@ -343,7 +316,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             node.yScale = 0.5
             node.position = CGPoint(x: frame.midX, y: frame.midY)
             node.zPosition = -100
-            //    self.physicsWorld.gravity = CGVectorMake(0, gravity)
+            //self.physicsWorld.gravity = CGVectorMake(0, gravity)
             
             addChild(node)
             return
@@ -461,7 +434,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func makeShip() -> SKSpriteNode {
         
-        let texture = SKTexture(image: CharacterManager.getCharacterFromLocalStorage()!)
+        var texture: SKTexture!
+        if let img = CharacterManager.getCharacterFromLocalStorage() {
+            texture = SKTexture(image: img)
+        }else{
+            texture = SKTexture(imageNamed: "prof")
+        }
         let ship = SKSpriteNode(texture: texture)
         ship.xScale = 0.5
         ship.yScale = 0.5
@@ -555,16 +533,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             bullet.name = starName
             bullet.xScale = 0.12
             bullet.yScale = 0.12
-            
-            /*
-            bullet.position = CGPointMake(0 + bullet.size.width / 2, randomNumber(self.size.height / 2) + self.size.height / 4)
-            */
-            
-            /*
-            bullet.position = CGPointMake(0 + bullet.size.width / 2, randomNumber(self.size.height / 16) + self.size.height * 15 / 16 - bullet.size.width / 2)
-            */
-            
-            //bullet.position = CGPointMake(bullet.size.width / 2 + randomNumber(self.size.width - bullet.size.width * 2), bullet.size.height / 2 + randomNumber(self.size.height - bullet.size.height * 2))
             bullet.physicsBody = SKPhysicsBody(circleOfRadius: bullet.size.height / 5)
             bullet.physicsBody?.usesPreciseCollisionDetection = true
             bullet.physicsBody?.affectedByGravity = false
@@ -611,75 +579,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.MpIncrease(currentTime)
         btAdvertiseSharedInstance.updateOpponentRealTimePos((self.view?.bounds.size.width)!-ship.position.x, y: ship.position.y)
         
-
-        //self.moveInvadersForUpdate(currentTime)
-        //self.fireInvaderBulletsForUpdate(currentTime)
     }
     
     
-    // Scene Update Helpers
-    func moveInvadersForUpdate(currentTime: CFTimeInterval) {
-
-        if (currentTime - self.timeOfLastMove < self.timePerMove) {
-            return
-        }
-        
-        // logic to change movement direction
-        self.determineInvaderMovementDirection()
-        
-        enumerateChildNodesWithName(kInvaderName) {
-            node, stop in
-            switch self.invaderMovementDirection {
-            case .Right:
-                node.position = CGPointMake(node.position.x + 10, node.position.y)
-            case .Left:
-                node.position = CGPointMake(node.position.x - 10, node.position.y)
-            case .DownThenLeft, .DownThenRight:
-                node.position = CGPointMake(node.position.x, node.position.y - 10)
-            case .None:
-                break
-            default:
-                break
-            }
-            
-            // 3
-            self.timeOfLastMove = currentTime
-            
-        }
-    }
-    
-    func secureChildNodeWithName(name: String) -> SKSpriteNode! {
-        
-        
-        /*
-        var shipNode: SKSpriteNode!
-        
-        // enumerate to find the ship node
-        self.enumerateChildNodesWithName(kShipName) {
-            node, stop in
-            
-            if let aNode : SKNode = node {
-                
-                shipNode = aNode as! SKSpriteNode
-            }
-        }
-        */
-        
-        //shipNode = self.childNodeWithName(kShipName) as! SKSpriteNode
-        
-        // if found return it
-        if ship != nil {
-            return ship
-        } else {
-            return nil
-        }
-    }
     
     func processUserMotionForUpdate(currentTime: CFTimeInterval) {
         
-        // 1
-        //if let ship = self.secureChildNodeWithName(kShipName) as SKSpriteNode! {
-            // 2
+       
             if let data = self.motionManager.accelerometerData {
                 
                 let multiplier = shipVelocity
@@ -692,26 +598,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 frozenEffectImg.physicsBody!.velocity = CGVector(dx: y * multiplier, dy: -x * multiplier )
 
                 
-                
-                // 3
-                //if fabs(data.acceleration.y) > 0.05 {
-                
-                // 4 How do you move the ship?
-                //ship.physicsBody!.applyForce(CGVectorMake(40.0 * CGFloat(data.acceleration.y), 0))
-
-              
-                //}
-                //if fabs(data.acceleration.y) > 0.05 {
-                
-                // 4 How do you move the ship?
-                //ship.physicsBody!.applyForce(CGVectorMake(0, -40.0 * CGFloat(data.acceleration.x)))
-                
-
-                //}
-                
-                //healthBar.position = CGPoint(x: ship.position.x - (latestMinusHealth/2), y: ship.position.y + 65)
-                //healthBarBack.position = CGPoint(x: ship.position.x, y: ship.position.y + 65)
-                
                 if(profemitter != nil){
                     profemitter.position = ship.position
                 }
@@ -720,74 +606,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 burnEffectImg.position = ship.position
 
             }
-        //}
     }
     
     func processUserTapsForUpdate(currentTime: CFTimeInterval) {
         
-       // self.fireShipBullets()
-
-        // 1
         for tapCount in self.tapQueue {
             
             if tapCount == 1 {
-                
-                // 2
                 self.fireShipBullets()
-                
-
             }
             else if tapCount > 1 {
                 
                 self.fireShipBullets()
-                
                 self.fireShipBullets()
                 
             }
-            
-            // 3
             self.tapQueue.removeAtIndex(0)
         }
     }
     
-    
-    func fireInvaderBulletsForUpdate(currentTime: CFTimeInterval) {
-        
-        let existingBullet = self.childNodeWithName(kInvaderFiredBulletName)
-        
-        // 1
-        if existingBullet == nil {
-            
-            var allInvaders = Array<SKNode>()
-            
-            // 2
-            self.enumerateChildNodesWithName(kInvaderName) {
-                node, stop in
-                
-                allInvaders.append(node)
-            }
-            
-            if allInvaders.count > 0 {
-                
-                // 3
-                let allInvadersIndex = Int(arc4random_uniform(UInt32(allInvaders.count)))
-                
-                let invader = allInvaders[allInvadersIndex]
-                
-                // 4
-                let bullet = self.makeBulletOfType(.InvaderFired)
-                bullet.position = CGPoint(x: invader.position.x, y: invader.position.y - invader.frame.size.height / 2 + bullet.frame.size.height / 2)
-                
-                // 5
-                let bulletDestination = CGPoint(x: invader.position.x, y: -(bullet.frame.size.height / 2))
-                
-                // 6
-                self.fireBullet(bullet, toDestination: bulletDestination, withDuration: 2.0, andSoundFileName: "InvaderBullet.wav", fromWhom:1)
-            }
-        }
-    }
-    
-    
+
     func processContactsForUpdate(currentTime: CFTimeInterval) {
         
         for contact in self.contactQueue {
@@ -799,84 +637,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    // Invader Movement Helpers
-    
-    func adjustInvaderMovementToTimePerMove(newTimerPerMove: CFTimeInterval) {
-        
-        // 1
-        if newTimerPerMove <= 0 {
-            return
-        }
-        
-        // 2
-        let ratio: CGFloat = CGFloat(self.timePerMove / newTimerPerMove)
-        self.timePerMove = newTimerPerMove
-        
-        enumerateChildNodesWithName(kInvaderName) {
-            node, stop in
-            // 3
-            node.speed = node.speed * ratio
-        }
-    }
-    
-    func determineInvaderMovementDirection() {
-        
-        // 1
-        var proposedMovementDirection: InvaderMovementDirection = self.invaderMovementDirection
-        
-        // 2
-        enumerateChildNodesWithName(kInvaderName) {
-            node, stop in
-            
-            switch self.invaderMovementDirection {
-                
-            case .Right:
-                //3
-                if (CGRectGetMaxX(node.frame) >= node.scene!.size.width - 1.0) {
-                    proposedMovementDirection = .DownThenLeft
-                    
-                    stop.memory = true
-                }
-            case .Left:
-                //4
-                if (CGRectGetMinX(node.frame) <= 1.0) {
-                    proposedMovementDirection = .DownThenRight
-                    
-                    stop.memory = true
-                }
-                
-            case .DownThenLeft:
-                proposedMovementDirection = .Left
-                
-                // Add the following line
-                self.adjustInvaderMovementToTimePerMove(self.timePerMove * 0.8)
-                
-                stop.memory = true
-                
-            case .DownThenRight:
-                proposedMovementDirection = .Right
-                
-                // Add the following line
-                self.adjustInvaderMovementToTimePerMove(self.timePerMove * 0.8)
-                
-                stop.memory = true
-                
-            default:
-                break
-                
-            }
-            
-        }
-        
-        //7
-        if (proposedMovementDirection != self.invaderMovementDirection) {
-            self.invaderMovementDirection = proposedMovementDirection
-        }
-    }
-    
-    
     // Bullet Helpers
-    
     func fireBullet(bullet: SKSpriteNode, toDestination destination:CGPoint, withDuration duration:CFTimeInterval, andSoundFileName soundName: String, fromWhom: Int) {
         
         // 1
@@ -1026,10 +787,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
     }
-
-    
-    
-    
     
     func ApponentFireShipBullets(notification: NSNotification) {
         
@@ -1544,55 +1301,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 let minus = (self.view?.bounds.size.height)! - mpValue
                 
                 MpBar.position = CGPoint(x: (self.view?.bounds.size.width)!-10 , y: (self.view?.bounds.size.height)!/2 - minus/2)
-                
-                /*
-                if(mpValue <= 0){
-                
-                
-                let timestamp = NSDate().timeIntervalSince1970
-                
-                diff = timestamp - lastTimeStamp
-                
-                if(diff > 3.0) {
-                laser_final_width = laser_width
-                } else {
-                laser_final_width = laser_width * (diff / 3.0)
-                }
-                
-                self.kameCharge.pause()
-                do {
-                try self.kameEmmit = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("kameEmmit", ofType: "wav")!))
-                
-                self.kameEmmit.play()
-                } catch {
-                print(error)
-                }
-                
-                self.fireShipUltimate()
-                
-                btAdvertiseSharedInstance.updateUltimate((self.view?.bounds.size.width)!-ship.position.x, y: ship.position.y, w: CGFloat(laser_final_width))
-                
-                self.userInteractionEnabled = true
-                self.bulletDidFire = true
-                
-                mutex = false
-                startMoving = true;
-                
-                }
-                */
             }
-            
-            /*
-            else{
-                
-                if(ultimateTimer != nil){
-                    ultimateTimer.invalidate()
-                    ultimateTimer = nil
-                    
-                    emitter.removeFromParent()
-                }
-            }
-            */
         }
         else if(userOrOpponent == 1){
             
@@ -1607,10 +1316,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 opponentMpBar.position = CGPoint(x: 10 , y: (self.view?.bounds.size.height)!/2 + minus/2)
             }
         }
-        
-        
-        
-        
+  
     }
     
     func update() {
@@ -2092,12 +1798,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         
     }
-    
-    
-    
-    
-    
-    
+
     func alertView(View: UIAlertView!, clickedButtonAtIndex buttonIndex: Int){
         
         self.userInteractionEnabled = true
@@ -2121,21 +1822,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         opponentMpBar.position = CGPoint(x: 10 , y: (self.view?.bounds.size.height)!/2)
         opponentMpBar.size = CGSize(width: 5 ,height: opponentMpValue)
-        
-        /*
-        switch buttonIndex{
-        
-        case 0:
-        NSLog("Dismiss");
-        break;
-        default:
-        self.userInteractionEnabled = true
-        NSLog("Default");
-        break;
-        
-        }
-        */
-        
         
     }
     

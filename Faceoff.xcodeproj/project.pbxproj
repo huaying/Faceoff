@@ -470,7 +470,7 @@
 				TargetAttributes = {
 					71E8A09E1BD4605C002832EE = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 8G7BV8AWXA;
+						DevelopmentTeam = 5XLQ67P82L;
 					};
 					71E8A0B61BD4605C002832EE = {
 						CreatedOnToolsVersion = 7.0;
@@ -760,7 +760,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Faceoff/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = huayingtx.Faceoff;
+				PRODUCT_BUNDLE_IDENTIFIER = huayingt.Faceoff;
 				PRODUCT_NAME = Faceoff;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -776,7 +776,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Faceoff/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = huayingtx.Faceoff;
+				PRODUCT_BUNDLE_IDENTIFIER = huayingt.Faceoff;
 				PRODUCT_NAME = Faceoff;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;

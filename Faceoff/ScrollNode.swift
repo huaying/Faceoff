@@ -31,9 +31,12 @@ class ScrollNode: SKNode{
     }
     var yOffset: CGFloat = 0
     var recognizer:UIPanGestureRecognizer?
+    var view: SKView?
+    
     
     override init(){
         super.init()
+        self.zPosition = 1
     }
     
     override func addChild(node: SKNode) {
@@ -53,8 +56,9 @@ class ScrollNode: SKNode{
     
     func setScrollingView(view: SKView){
         
-        //recognizer = UIPanGestureRecognizer(target: self, action:Selector("handlePan:"))
-        //view.addGestureRecognizer(recognizer!)
+        recognizer = UIPanGestureRecognizer(target: self, action:Selector("handlePan:"))
+        self.view = view
+        view.addGestureRecognizer(recognizer!)
         
     }
     
@@ -81,6 +85,9 @@ class ScrollNode: SKNode{
         self.position = CGPoint(x:position.x,y: position.y-translation.y)
     }
     
+    deinit{
+        self.view!.removeGestureRecognizer(recognizer!)
+    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

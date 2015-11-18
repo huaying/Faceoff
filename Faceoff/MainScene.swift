@@ -21,7 +21,7 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
     var candidateCharacterNodes:[CharacterListNode?] = []
     var slots:[SKSpriteNode] = []
     var pickedCharacterNode: SKSpriteNode?
-
+    var gestureRecognizer: UILongPressGestureRecognizer?
     
     override func didMoveToView(view: SKView) {
          print(self.view!.frame.size)
@@ -36,9 +36,9 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
         loadCharacter()
         loadPickedChracter()
         
-        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongTap:")
+        gestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongTap:")
         
-        self.view!.addGestureRecognizer(gestureRecognizer)
+        self.view!.addGestureRecognizer(gestureRecognizer!)
     
     
     NSNotificationCenter.defaultCenter().addObserverForName("PhotoPickerFinishedNotification", object:nil, queue:nil, usingBlock: { note in
@@ -190,6 +190,7 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
                 
                 let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)
                 removeAllChildren()
+                self.view!.removeGestureRecognizer(gestureRecognizer!)
                 let nextScene = PlayModeScene(size: scene!.size)
                 nextScene.scaleMode = .AspectFill
                 scene?.view?.presentScene(nextScene, transition: transition)
