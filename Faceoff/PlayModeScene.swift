@@ -83,7 +83,6 @@ class PlayModeScene: SKScene {
                 print("multiplayer")
                 let nextScene = BuildConnectionScene(size: scene!.size)
                 nextScene.scaleMode = SKSceneScaleMode.ResizeFill
-                nextScene.Img = Img
                 transitionForNextScene(nextScene)
                 
             }else if 返回按鈕.containsPoint(location){
@@ -94,9 +93,7 @@ class PlayModeScene: SKScene {
             }
         }
     }
-    
 
-    
     func transitionForNextScene(nextScene: SKScene){
         let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)
         removeAllChildren()

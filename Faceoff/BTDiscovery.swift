@@ -12,6 +12,9 @@ import UIKit
 
 let btDiscoverySharedInstance = BTDiscovery();
 
+var peers = [CBPeripheral]()
+var peerName = [String]()
+
 class BTDiscovery: NSObject, CBCentralManagerDelegate {
   
   private var centralManager: CBCentralManager?
@@ -35,7 +38,6 @@ class BTDiscovery: NSObject, CBCentralManagerDelegate {
 
   var bleService: BTService? {
     didSet {
-        //print("!!!!?!?!?!?!?")
       if let service = self.bleService {
         service.startDiscoveringServices()
       }
@@ -62,38 +64,57 @@ class BTDiscovery: NSObject, CBCentralManagerDelegate {
   // MARK: - CBCentralManagerDelegate
   
   func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber) {
-    // Be sure to retain the peripheral or it will fail during connection.
+        // Be sure to retain the peripheral or it will fail during connection.
+        
+        
+        let centralConnectionDetails = ["central": central]
+        
+        
+        peers.append(peripheral)
+        let peripheralConnectionDetails = ["peripheral": peers]
+        
+        if advertisementData[CBAdvertisementDataLocalNameKey] != nil{
+            peerName.append(advertisementData[CBAdvertisementDataLocalNameKey] as! String)
+            let peripheralConnectionName = ["peripheralName": peerName]
+            
+            NSNotificationCenter.defaultCenter().postNotificationName("getPeripheralName", object: self, userInfo: peripheralConnectionName)
+        }
     
-    print("Find device!")
-    //print(peripheral.description)
-    //print(advertisementData)
-    print(peripheral.name)
-    //print(peripheral.identifier.UUIDString)
-
     
-    self.peripheralBLE = peripheral
-    //Connect to peripheral
-    centralManager!.connectPeripheral(peripheral, options: nil)
+    NSNotificationCenter.defaultCenter().postNotificationName("getCentral", object: self, userInfo: centralConnectionDetails)
     
-    // Validate peripheral information
-    if ((self.peripheralBLE == nil) || (self.peripheralBLE!.name == nil) || (self.peripheralBLE!.name == "")) {
-      return
+    NSNotificationCenter.defaultCenter().postNotificationName("getPeripheral", object: self, userInfo: peripheralConnectionDetails)
+    
+        print("幹", advertisementData[CBAdvertisementDataLocalNameKey])
+    }
+    
+    func connectToPeripheral(central: CBCentralManager, peripheral: CBPeripheral){
+        
+        self.peripheralBLE = peripheral
+        // Connect to peripheral
+        centralManager!.connectPeripheral(peripheral, options: nil)
+        
+        // Validate peripheral information
+        if ((self.peripheralBLE == nil) || (self.peripheralBLE!.name == nil) || (self.peripheralBLE!.name == "")) {
+            return
+        }
+        
+        
+        // If not already connected to a peripheral, then connect to this one
+        if ((self.peripheralBLE == nil) || (self.peripheralBLE?.state == CBPeripheralState.Disconnected)) {
+            // Retain the peripheral before trying to connect
+            self.peripheralBLE = peripheral
+            
+            // Reset service
+            self.bleService = nil
+            
+            // Connect to peripheral
+            central.connectPeripheral(peripheral, options: nil)
+        }
+        
     }
 
     
-    // If not already connected to a peripheral, then connect to this one
-    if ((self.peripheralBLE == nil) || (self.peripheralBLE?.state == CBPeripheralState.Disconnected)) {
-      // Retain the peripheral before trying to connect
-      self.peripheralBLE = peripheral
-      
-      // Reset service
-      self.bleService = nil
-      
-      // Connect to peripheral
-      central.connectPeripheral(peripheral, options: nil)
-    }
-  }
-  
   func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
     
     print("Device Connected!")

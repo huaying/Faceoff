@@ -231,12 +231,14 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
     }
     func pickCharacter(index: Int){
         
-        for candidateCharacterNode in candidateCharacterNodes {
-            candidateCharacterNode?.removePickedBorder()
+        if index < Constants.CharacterManager.maxOfCandidateNumber {
+            for candidateCharacterNode in candidateCharacterNodes {
+                candidateCharacterNode?.removePickedBorder()
+            }
+            candidateCharacterNodes[index]?.loadPickedBorder()
+            CharacterManager.setPickedCharacterNumber(index)
+            loadPickedChracter()
         }
-        candidateCharacterNodes[index]?.loadPickedBorder()
-        CharacterManager.setPickedCharacterNumber(index)
-        loadPickedChracter()
     }
     
     func deleteChracter(index: Int){

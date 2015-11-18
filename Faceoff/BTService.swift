@@ -10,9 +10,9 @@ import Foundation
 import CoreBluetooth
 
 /* Services & Characteristics UUIDs */
-let BLEServiceUUID = CBUUID(string: "025A7775-49AA-42BD-BBDB-E2AE77782966")
+let BLEServiceUUID = CBUUID(string: "035A7775-49AA-42BD-BBDB-E2AE77782966")
 //let BLEServiceUUID = CBUUID(string: "025A7775-49AA-42BD-BBDB-E2AE77782969")
-let PositionCharUUID = CBUUID(string: "F38A2C23-BC54-40FC-BED0-60EDDA139F47")
+let PositionCharUUID = CBUUID(string: "F48A2C23-BC54-40FC-BED0-60EDDA139F47")
 //let PositionCharUUID = CBUUID(string: "F38A2C23-BC54-40FC-BED0-60EDDA139F49")
 
 let BLEServiceChangedStatusNotification = "kBLEServiceChangedStatusNotification"
@@ -214,6 +214,12 @@ class BTService: NSObject, CBPeripheralDelegate {
     self.peripheral?.writeValue(data, forCharacteristic: self.positionCharacteristic!, type: CBCharacteristicWriteType.WithResponse)
   }
   
+    func writeDeviceName(name: String){
+        let deviceName = name.dataUsingEncoding(NSUTF8StringEncoding)
+        
+        self.peripheral?.writeValue(deviceName!, forCharacteristic: self.positionCharacteristic!, type: CBCharacteristicWriteType.WithResponse)
+    }
+    
   func sendBTServiceNotificationWithIsBluetoothConnected(isBluetoothConnected: Bool) {
     let connectionDetails = ["isConnected": isBluetoothConnected]
     NSNotificationCenter.defaultCenter().postNotificationName(BLEServiceChangedStatusNotification, object: self, userInfo: connectionDetails)

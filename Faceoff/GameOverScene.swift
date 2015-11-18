@@ -9,6 +9,9 @@
 import UIKit
 import SpriteKit
 
+
+
+/* 沒有用到*/
 class GameOverScene: SKScene {
    
     // Private GameScene Properties

@@ -24,7 +24,6 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
     override init() {
         super.init()
 	
-        
         let peripheralQueue = dispatch_queue_create("com.raywenderlich", DISPATCH_QUEUE_SERIAL)
         self.peripheralManager = CBPeripheralManager(delegate: self, queue: peripheralQueue)
     }
@@ -84,8 +83,7 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
         
         print("Service追加成功！")
         //self.peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey:[BLEServiceUUID],CBAdvertisementDataLocalNameKey:UIDevice.currentDevice().name])
-        self.peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey:[BLEServiceUUID]])
-
+        self.peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey:[BLEServiceUUID],CBAdvertisementDataLocalNameKey:UIDevice.currentDevice().name])
         
     }
     
@@ -222,7 +220,16 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
             
             if let request:CBATTRequest = obj{
                 
-                print("Requested value:\(request.value) service uuid:\(request.characteristic.service.UUID) characteristic uuid:\(request.characteristic.UUID)\n")
+                let deviceName: String = NSString(data:request.value!, encoding:NSUTF8StringEncoding)! as String
+                // print(deviceName)
+                
+                
+                let peripheralConnectionDetails = ["peripheralName": deviceName]
+                
+                NSNotificationCenter.defaultCenter().postNotificationName("allSet", object: self, userInfo: peripheralConnectionDetails)
+                
+                
+                print("~~Requested value:\(request.value) service uuid:\(request.characteristic.service.UUID) characteristic uuid:\(request.characteristic.UUID)\n")
                 
                 if request.characteristic.UUID.isEqual(self.characteristic.UUID) {
                     
@@ -235,6 +242,7 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
         self.peripheralManager.respondToRequest(requests[0] , withResult: CBATTError.Success)
     }
     
+
     
     func sendBTServiceNotificationWithIsBluetoothConnected(isBluetoothConnected: Bool) {
         let connectionDetails = ["isConnected": isBluetoothConnected]

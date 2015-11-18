@@ -219,7 +219,7 @@
 		A3CCCCAB1BEE8F0300A94859 /* ShipBullet2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ShipBullet2.wav; sourceTree = "<group>"; };
 		A3CCCCAC1BEE8F0300A94859 /* ShipHit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ShipHit.wav; sourceTree = "<group>"; };
 		A3CCCCAD1BEE8F0300A94859 /* Warning.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Warning.wav; sourceTree = "<group>"; };
-		A3CCCCBB1BEE901000A94859 /* Defined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Defined.swift; sourceTree = "<group>"; };
+		A3CCCCBB1BEE901000A94859 /* Defined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Defined.swift; path = ../Defined.swift; sourceTree = "<group>"; };
 		A3ED08F01BE0032600B60AFF /* BuildConnectionScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildConnectionScene.swift; sourceTree = "<group>"; };
 		A3ED08F21BE0064000B60AFF /* ScrollNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -263,7 +263,6 @@
 		71E8A0961BD4605C002832EE = {
 			isa = PBXGroup;
 			children = (
-				A3CCCCBB1BEE901000A94859 /* Defined.swift */,
 				71E8A0A11BD4605C002832EE /* Faceoff */,
 				71E8A0A01BD4605C002832EE /* Products */,
 			);
@@ -290,6 +289,7 @@
 				711C3E331BD6DF18000B724D /* animation.atlas */,
 				71E8A0A21BD4605C002832EE /* AppDelegate.swift */,
 				0AA31AF81BF825B8000DFE4D /* Constants.swift */,
+				A3CCCCBB1BEE901000A94859 /* Defined.swift */,
 				71E8A0A41BD4605C002832EE /* GameScene.sks */,
 				A3ED08F01BE0032600B60AFF /* BuildConnectionScene.swift */,
 				A32CBE181BF7DE0E007186D9 /* CDAnimationBuilder.swift */,
@@ -312,9 +312,8 @@
 				A352D3141BED517D00951A8E /* GameAnimation.swift */,
 				0AE37FE21BFA0898001DF241 /* MyPlayground.playground */,
 			);
-			name = Faceoff;
-			path = "/Users/huayingt/Google Drive/USC/CS/CSCI526/Faceoff/Faceoff/Faceoff";
-			sourceTree = "<absolute>";
+			path = Faceoff;
+			sourceTree = SOURCE_ROOT;
 		};
 		A30410391BE942F00004D7B1 /* Sprite Images */ = {
 			isa = PBXGroup;
@@ -471,7 +470,7 @@
 				TargetAttributes = {
 					71E8A09E1BD4605C002832EE = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 5XLQ67P82L;
+						DevelopmentTeam = 8G7BV8AWXA;
 					};
 					71E8A0B61BD4605C002832EE = {
 						CreatedOnToolsVersion = 7.0;
@@ -759,9 +758,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "$(SRCROOT)/Faceoff/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = huayingt.Faceoff;
+				PRODUCT_BUNDLE_IDENTIFIER = huayingtx.Faceoff;
 				PRODUCT_NAME = Faceoff;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -775,9 +774,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "$(SRCROOT)/Faceoff/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = huayingt.Faceoff;
+				PRODUCT_BUNDLE_IDENTIFIER = huayingtx.Faceoff;
 				PRODUCT_NAME = Faceoff;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;

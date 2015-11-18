@@ -14,6 +14,7 @@ class CharacterManager {
     enum localStorageKeys {
         static let keyOfPickedCharacterNumber = "keyOfPickedCharacterNumber"
     }
+    
     static let maxOfCandidateNumber = Constants.CharacterManager.maxOfCandidateNumber
     
     static func getCandidateCharactersFromLocalStorage() -> [UIImage?] {
@@ -83,6 +84,7 @@ class CharacterManager {
         fileManager.createFileAtPath(filePathToWrite, contents: imageData, attributes: nil)
     }
     
+    
     static func setPickedCharacterNumber(number: Int){
         setLocalValue(localStorageKeys.keyOfPickedCharacterNumber, value: number)
     }
@@ -102,6 +104,7 @@ class CharacterManager {
         }
         return nil
     }
+    
     
     static func setLocalValue(key :String,value :AnyObject){
         let defaults = NSUserDefaults.standardUserDefaults()

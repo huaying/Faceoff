@@ -170,6 +170,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var oppoPosHint : SKSpriteNode! = nil
     var ultimateHint : SKSpriteNode! = nil
 
+    var fireMutexReady = 1
     
     //////bonus bullet//////
     let starBonusName = "starbonusnode"
@@ -462,6 +463,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let texture = SKTexture(image: CharacterManager.getCharacterFromLocalStorage()!)
         let ship = SKSpriteNode(texture: texture)
+        ship.xScale = 0.5
+        ship.yScale = 0.5
         ship.color = UIColor.greenColor()
         ship.name = kShipName
 
@@ -1654,6 +1657,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
     }
+    
+    func fireMutex() {
+        
+        fireMutexReady = 1
+        
+    }
+
 
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -1681,7 +1691,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         startMoving = false;
         self.userInteractionEnabled = false
-        self.fireShipBullets()
+        
+        ////////////////////fireShipBullets()////////////////////
+        if(fireMutexReady == 1) {
+            
+            self.fireShipBullets()
+            
+            fireMutexReady = 0
+            
+            NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: "fireMutex", userInfo: nil, repeats: false)
+            
+        }
               
         if(ultimateTimer != nil){
             ultimateTimer.invalidate()
