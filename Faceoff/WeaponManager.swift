@@ -100,6 +100,11 @@ class WeaponManager: NSObject{
     
     func firePreparingEnd(touch: UITouch) -> Bool{
         firePreparingEndTime = touch.timestamp
+        return firePreparingEnd_(firePreparingEndTime!)
+    }
+    
+    func firePreparingEnd_(firePreparingEndTime: NSTimeInterval) -> Bool{
+        self.firePreparingEndTime = firePreparingEndTime
         if firePreparingTime > 0.3 {
             poweredWeapon?.fire(firePreparingTime)
             cleanFirePreparingTime()
@@ -115,6 +120,7 @@ class WeaponManager: NSObject{
         firePreparingBeginTime = nil
         firePreparingEndTime = nil
     }
+    
     func effect(character: Character) {
         enemyWeapon?.effect(character)
     }

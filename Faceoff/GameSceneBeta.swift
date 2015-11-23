@@ -14,127 +14,25 @@ import AudioToolbox
 
 class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
     
-    
-    // Game End
-    var gameEnding: Bool = false
-    
-    // Contact
     var contactQueue = Array<SKPhysicsContact>()
-    
-    // Bullet type
-    enum BulletType: String {
-        case ShipFired = "ShipFired"
-        case InvaderFired = "InvaderFired"
-        case BonusBullet = "BonusBullet"
-        var description: String {
-            return self.rawValue
-        }
-        case Bonus
-    }
-    
-    // 3
-    let kInvaderName = "invader"
-    
-    // 4
-    let kShipSize = CGSize(width: 30, height: 16)
-    let kShipName = "ship"
-    
-    // 5
-    let kScoreHudName = "scoreHud"
-    let kHealthHudName = "healthHud"
-    
-    let kMinInvaderBottomHeight: Float = 32.0
-    
-    
-    // Score and Health
-    var score: Int = 0
-    var shipHealth: Float = 1.0
-    
-    // Bullets utils
-    let kShipFiredBulletName = "shipFiredBullet"
-    let kInvaderFiredBulletName = "invaderFiredBullet"
-    let kShipFiredUltimateName = "shipFiredUltimate"
-    
-    let kBulletSize = CGSize(width:4, height: 8)
-    
-    // Private GameScene Properties
-    
     var contentCreated: Bool = false
-    
-    var timeOfLastMove: CFTimeInterval = 0.0
-    var timePerMove: CFTimeInterval = 1.0
-    
-    // Accelerometer
-    let motionManager: CMMotionManager = CMMotionManager()
-    
-    // Queue
-    var tapQueue: Array<Int> = []
-    
-    // Object Lifecycle Management
-    
     var character: Character!
-    var shipVelocity = 500.0
-    
-    // 集氣用---------------------
-    var node: SKSpriteNode? = nil
-    var sdfsd: Double = 1.0
-    let laser_height = 1000.0
-    var laser_width = 400.0
-    let action = SKAction.shake(0.5, amplitudeX: 10, amplitudeY: 10)
-    //var laser = SKShapeNode(rectOfSize: CGSize(width: 200, height: 400))
-    //var laser : SKSpriteNode! = nil
-    var mutex = false
-    var bulletDidFire = false
-    var startMoving = true;
-    var lastTimeStamp = 0.0
-    var energyBlastAnim = [SKTexture]()
-    var animation = SKAction()
-    var diff = 0.0
-    var laser_final_width = 0.0
-    var BGM : AVAudioPlayer! = nil
-    var kameCharge : AVAudioPlayer! = nil
-    var kameEmmit : AVAudioPlayer! = nil
-    var WarningSiren : AVAudioPlayer! = nil
-    
-    //--------------------------
-    
-    
-    var ultimateTimer : NSTimer! = nil
-    var timer2 : NSTimer! = nil
-    var mpTimer : NSTimer! = nil
-    var oppoMpTimer : NSTimer! = nil
-    
-    var emitter :SKEmitterNode! = nil
-    
-    var attackedCount = 0;
-
-    let kBar = "ship"
-    var oppoPosHint : SKSpriteNode! = nil
-    var ultimateHint : SKSpriteNode! = nil
-    
     var fireMutexReady = true
-    
-    //////bonus bullet//////
-    let starBonusName = "starbonusnode"
-    let bulletName = "bulletnode"
-    let playerName = "playernode"
-    let starName = "starnode"
-    var weaponType = BulletType.ShipFired
+    var startMoving = true;
     
     var arr: [String] = []
     
     var weapons: Array<SKSpriteNode>?
     var weaponsStringArray: [String] = ["cure", "energyBlast", "fire", "shotGun", "snow", "spy"]
     
-    
     var hp: HPManager?
     var enemyHp: HPManager?
     var mp: MPManager?
     var enemyMp: MPManager?
-    
     var weaponManager = WeaponManager()
     var slowUpdateCount = 0
     
+    let motionManager: CMMotionManager = CMMotionManager()
     
     let CharacterName = Constants.GameScene.Character
     let FireName = Constants.GameScene.Fire
@@ -322,7 +220,9 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
                 }
             }
         }
-        
+        if mp?.powerValue <= 0  {
+            weaponManager.firePreparingEnd_(currentTime)
+        }
         //Mana recovered regularly
         self.increaseMana(0.2)
     }
@@ -331,7 +231,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
         
         if let data = self.motionManager.accelerometerData {
             
-            let multiplier = shipVelocity
+            let multiplier = 500.0
             let x = data.acceleration.x
             let y = data.acceleration.y
             character.physicsBody!.velocity = CGVector(dx: y * multiplier, dy: -x * multiplier )
@@ -369,10 +269,8 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
         
         weaponManager.firePreparingBegin(touches.first!)
         
-        
         startMoving = false;
         self.userInteractionEnabled = false
-        
         
     }
     
