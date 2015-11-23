@@ -38,4 +38,30 @@ struct Constants {
         static let maxOfCandidateNumber = 3
     }
     
+    struct GameScene {
+        static let Character = "character"
+        static let Fire = "fire"
+        static let PoweredFire = "poweredfire"
+        static let EnemyFire = "enemyfire"
+        static let Enemy = "enemy"
+        static let EnemyPoweredFire = "enemypoweredfire"
+        
+        struct Bitmask {
+            static let SceneEdge: UInt32 = 0x1 << 0
+            static let Character: UInt32 = 0x1 << 1
+            static let Enemy: UInt32 = 0x1 << 2
+            static let Fire: UInt32 = 0x1 << 3
+            static let EnemyFire: UInt32 = 0x1 << 4
+        }
+    }
+    
+    struct Weapon {
+        static let Bullet = "Missel"
+        static let IceBullet = "Missel"
+        static let FireBullet = "Missel"
+        static let MultiBullet = "Missel"
+        static let BonusBullet = "DoubleBonus"
+        
+    }
+    
 }

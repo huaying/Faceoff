@@ -95,96 +95,65 @@ class BTService: NSObject, CBPeripheralDelegate {
             }
             
         }
-        
-        /*
-        for characteristic in service.characteristics {
-        if characteristic.UUID == PositionCharUUID {
-        self.positionCharacteristic = (characteristic as! CBCharacteristic)
-        peripheral.setNotifyValue(true, forCharacteristic: characteristic as! CBCharacteristic)
-        
-        peripheral.readValueForCharacteristic(characteristic as! CBCharacteristic);
-        
-        // Send notification that Bluetooth is connected and all required characteristics are discovered
-        self.sendBTServiceNotificationWithIsBluetoothConnected(true)
-        }
-        }
-        */
     }
     
     func peripheral(peripheral: CBPeripheral,
         didUpdateValueForCharacteristic characteristic: CBCharacteristic,
         error: NSError?)
     {
-        //println(characteristic)
+     
+        let out = NSString(data:characteristic.value!, encoding:NSUTF8StringEncoding)! as String
         
         if (error != nil) {
             print("Failed... error: \(error)")
             return
         }
+    
+    
+        var outArray = out.characters.split { $0 == " " }.map { String($0) }
         
-        // var out: String = NSString(data:characteristic.value, encoding:NSUTF8StringEncoding)! as String
-        // var string : NSString = NSString(data: characteristic.value, encoding: NSUTF8StringEncoding)!
+        NSNotificationCenter.defaultCenter().postNotificationName("getInfoOfEnemy", object: self, userInfo: [outArray.removeFirst():outArray])
         
-        let out: String = NSString(data:characteristic.value!, encoding:NSUTF8StringEncoding)! as String
-        
-        //print(out)
-        //print("!@@@@#@#@#")
-        
-        var fullNameArr = out.characters.split {$0 == " "}.map { String($0) }
-        
-        let connectionDetails = ["point": out]
-
-        if(fullNameArr[0] == "ultimate"){
-            
-            NSNotificationCenter.defaultCenter().postNotificationName("getUltimateLocation", object: self, userInfo: connectionDetails)
-            
-            
-        }
-        else if(fullNameArr[0] == "normal"){
-            
-            NSNotificationCenter.defaultCenter().postNotificationName("getLocation", object: self, userInfo: connectionDetails)
-            
-        }
-        else if(fullNameArr[0] == "ultimateHint"){
-            
-            NSNotificationCenter.defaultCenter().postNotificationName("getUltimateHint", object: self, userInfo: connectionDetails)
-            
-        }
-        else if(fullNameArr[0] == "hitOpponent"){
-            
-            NSNotificationCenter.defaultCenter().postNotificationName("hitOpponent", object: self, userInfo: connectionDetails)
-            
-        }
-        else if(fullNameArr[0] == "bonusHitOpponent"){
-            
-            NSNotificationCenter.defaultCenter().postNotificationName("bonusHitOpponent", object: self, userInfo: connectionDetails)
-            
-        }
-        else if(fullNameArr[0] == "realTimePos"){
-            
-            NSNotificationCenter.defaultCenter().postNotificationName("realTimePos", object: self, userInfo: connectionDetails)
-            
-        }
-        
-  
-        /*
-        let properties = (CBCharacteristicProperties.Notify |
-        CBCharacteristicProperties.Read |
-        CBCharacteristicProperties.Write)
-        let permissions = (CBAttributePermissions.Readable | CBAttributePermissions.Writeable)
-        let characteristic2 = CBMutableCharacteristic(type: PositionCharUUID, properties: properties,
-        value: nil, permissions: permissions)
-        */
-        
-        
-        /*
-        var receivedPair = UnsafePointer<DoublePoint>(characteristic.value.bytes).memory
-        println(CGFloat(receivedPair.x))
-        println(CGFloat(receivedPair.y))
-        */
-        
-        // println("Succeeded! service uuid: \(characteristic.service.UUID), characteristic uuid: \(characteristic.UUID), value: \(characteristic.value)")
-    }
+//        let out: String = NSString(data:characteristic.value!, encoding:NSUTF8StringEncoding)! as String
+//        
+//        print(out)
+//        var fullNameArr = out.characters.split {$0 == " "}.map { String($0) }
+//        
+//        let connectionDetails = ["point": out]
+//
+//        if(fullNameArr[0] == "ultimate"){
+//            
+//            NSNotificationCenter.defaultCenter().postNotificationName("getUltimateLocation", object: self, userInfo: connectionDetails)
+//            
+//            
+//        }
+//        else if(fullNameArr[0] == "normal"){
+//            
+//            NSNotificationCenter.defaultCenter().postNotificationName("getLocation", object: self, userInfo: connectionDetails)
+//            
+//        }
+//        else if(fullNameArr[0] == "ultimateHint"){
+//            
+//            NSNotificationCenter.defaultCenter().postNotificationName("getUltimateHint", object: self, userInfo: connectionDetails)
+//            
+//        }
+//        else if(fullNameArr[0] == "hitOpponent"){
+//            
+//            NSNotificationCenter.defaultCenter().postNotificationName("hitOpponent", object: self, userInfo: connectionDetails)
+//            
+//        }
+//        else if(fullNameArr[0] == "bonusHitOpponent"){
+//            
+//            NSNotificationCenter.defaultCenter().postNotificationName("bonusHitOpponent", object: self, userInfo: connectionDetails)
+//            
+//        }
+//        else if(fullNameArr[0] == "realTimePos"){
+//            
+//            NSNotificationCenter.defaultCenter().postNotificationName("realTimePos", object: self, userInfo: connectionDetails)
+//            
+//        }
+//        
+     }
     
     func peripheral(peripheral: CBPeripheral,
         didWriteValueForCharacteristic characteristic: CBCharacteristic,

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A12C0CC1C01A001003E9894 /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A12C0CB1C01A001003E9894 /* Tools.swift */; };
+		0A12C0CE1C02BB4D003E9894 /* PhysicsSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A12C0CD1C02BB4D003E9894 /* PhysicsSetting.swift */; };
 		0AA31AE71BF6B2EC000DFE4D /* CharacterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F83FD61BF276C30012C07D /* CharacterManager.swift */; };
 		0AA31AEB1BF821CA000DFE4D /* mainscene_backgound.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31AEA1BF821CA000DFE4D /* mainscene_backgound.jpg */; };
 		0AA31AED1BF824B4000DFE4D /* mainscene_slot.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31AEC1BF824B4000DFE4D /* mainscene_slot.png */; };
@@ -25,6 +27,11 @@
 		0AA31B301BF89CFE000DFE4D /* playermodescene_background.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31B2F1BF89CFE000DFE4D /* playermodescene_background.atlas */; };
 		0ACFD4921BF55AEE00563AFB /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACFD4911BF55AEE00563AFB /* CameraViewController.swift */; };
 		0AE37FE11BF9C41B001DF241 /* SKActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE37FE01BF9C41B001DF241 /* SKActionExtension.swift */; };
+		0AE37FE41BFC57B4001DF241 /* PowerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE37FE31BFC57B3001DF241 /* PowerManager.swift */; };
+		0AE37FE61BFC7F88001DF241 /* GameSceneBeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE37FE51BFC7F88001DF241 /* GameSceneBeta.swift */; };
+		0AE37FE81BFF01BE001DF241 /* WeaponManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE37FE71BFF01BE001DF241 /* WeaponManager.swift */; };
+		0AE37FEA1BFF10E9001DF241 /* Weapon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE37FE91BFF10E9001DF241 /* Weapon.swift */; };
+		0AE37FEC1BFF21BD001DF241 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE37FEB1BFF21BD001DF241 /* Character.swift */; };
 		711C3E341BD6DF18000B724D /* animation.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 711C3E331BD6DF18000B724D /* animation.atlas */; };
 		711C3E441BD79074000B724D /* MyParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = 711C3E421BD79074000B724D /* MyParticle.sks */; };
 		711C3E451BD79074000B724D /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 711C3E431BD79074000B724D /* spark.png */; };
@@ -122,6 +129,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A12C0CB1C01A001003E9894 /* Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
+		0A12C0CD1C02BB4D003E9894 /* PhysicsSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsSetting.swift; sourceTree = "<group>"; };
 		0AA31AEA1BF821CA000DFE4D /* mainscene_backgound.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mainscene_backgound.jpg; sourceTree = "<group>"; };
 		0AA31AEC1BF824B4000DFE4D /* mainscene_slot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_slot.png; sourceTree = "<group>"; };
 		0AA31AEE1BF824CC000DFE4D /* mainscene_start_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_start_button.png; sourceTree = "<group>"; };
@@ -140,6 +149,11 @@
 		0ACFD4911BF55AEE00563AFB /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		0AE37FE01BF9C41B001DF241 /* SKActionExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKActionExtension.swift; sourceTree = "<group>"; };
 		0AE37FE21BFA0898001DF241 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
+		0AE37FE31BFC57B3001DF241 /* PowerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PowerManager.swift; sourceTree = "<group>"; };
+		0AE37FE51BFC7F88001DF241 /* GameSceneBeta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSceneBeta.swift; sourceTree = "<group>"; };
+		0AE37FE71BFF01BE001DF241 /* WeaponManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeaponManager.swift; sourceTree = "<group>"; };
+		0AE37FE91BFF10E9001DF241 /* Weapon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weapon.swift; sourceTree = "<group>"; };
+		0AE37FEB1BFF21BD001DF241 /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		711C3E331BD6DF18000B724D /* animation.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = animation.atlas; sourceTree = "<group>"; };
 		711C3E421BD79074000B724D /* MyParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle.sks; sourceTree = "<group>"; };
 		711C3E431BD79074000B724D /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
@@ -289,6 +303,7 @@
 				711C3E331BD6DF18000B724D /* animation.atlas */,
 				71E8A0A21BD4605C002832EE /* AppDelegate.swift */,
 				0AA31AF81BF825B8000DFE4D /* Constants.swift */,
+				0A12C0CB1C01A001003E9894 /* Tools.swift */,
 				A3CCCCBB1BEE901000A94859 /* Defined.swift */,
 				71E8A0A41BD4605C002832EE /* GameScene.sks */,
 				A3ED08F01BE0032600B60AFF /* BuildConnectionScene.swift */,
@@ -298,6 +313,12 @@
 				A364D3A31BF1AE7F00D352B1 /* BTDiscovery.swift */,
 				A364D3A41BF1AE7F00D352B1 /* BTService.swift */,
 				A364D3A51BF1AE7F00D352B1 /* GameScene.swift */,
+				0AE37FE51BFC7F88001DF241 /* GameSceneBeta.swift */,
+				0AE37FEB1BFF21BD001DF241 /* Character.swift */,
+				0AE37FE91BFF10E9001DF241 /* Weapon.swift */,
+				0A12C0CD1C02BB4D003E9894 /* PhysicsSetting.swift */,
+				0AE37FE71BFF01BE001DF241 /* WeaponManager.swift */,
+				0AE37FE31BFC57B3001DF241 /* PowerManager.swift */,
 				0AE37FE01BF9C41B001DF241 /* SKActionExtension.swift */,
 				A372FC6A1BE93B29005E0DA6 /* SelectWeaponScene.swift */,
 				A305A3F21BDB3E45004B6186 /* MainScene.swift */,
@@ -607,22 +628,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A12C0CE1C02BB4D003E9894 /* PhysicsSetting.swift in Sources */,
 				71B30A2C1BD6222400ABAAFC /* GameOverScene.swift in Sources */,
+				0AE37FE61BFC7F88001DF241 /* GameSceneBeta.swift in Sources */,
 				A3CCCCBC1BEE901000A94859 /* Defined.swift in Sources */,
 				0ACFD4921BF55AEE00563AFB /* CameraViewController.swift in Sources */,
 				A372FC6B1BE93B29005E0DA6 /* SelectWeaponScene.swift in Sources */,
 				A305A4101BDB4076004B6186 /* PlayModeScene.swift in Sources */,
 				A3ED08F31BE0064000B60AFF /* ScrollNode.swift in Sources */,
 				A3ED08F11BE0032600B60AFF /* BuildConnectionScene.swift in Sources */,
+				0AE37FEA1BFF10E9001DF241 /* Weapon.swift in Sources */,
 				A352D3151BED517D00951A8E /* GameAnimation.swift in Sources */,
 				A305A3F31BDB3E45004B6186 /* MainScene.swift in Sources */,
 				0AA31AE71BF6B2EC000DFE4D /* CharacterManager.swift in Sources */,
 				A32CBE191BF7DE0E007186D9 /* CDAnimationBuilder.swift in Sources */,
 				71E8A0A91BD4605C002832EE /* GameViewController.swift in Sources */,
 				A364D3A61BF1AE7F00D352B1 /* BTAdvertise.swift in Sources */,
+				0AE37FEC1BFF21BD001DF241 /* Character.swift in Sources */,
+				0AE37FE41BFC57B4001DF241 /* PowerManager.swift in Sources */,
 				A364D3A71BF1AE7F00D352B1 /* BTDiscovery.swift in Sources */,
 				A364D3A81BF1AE7F00D352B1 /* BTService.swift in Sources */,
+				0A12C0CC1C01A001003E9894 /* Tools.swift in Sources */,
 				A364D3A91BF1AE7F00D352B1 /* GameScene.swift in Sources */,
+				0AE37FE81BFF01BE001DF241 /* WeaponManager.swift in Sources */,
 				71E8A0A31BD4605C002832EE /* AppDelegate.swift in Sources */,
 				0AA31AF91BF825B8000DFE4D /* Constants.swift in Sources */,
 				0AE37FE11BF9C41B001DF241 /* SKActionExtension.swift in Sources */,
@@ -758,7 +786,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "$(SRCROOT)/Faceoff/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = huayingt.Faceoff;
 				PRODUCT_NAME = Faceoff;
@@ -774,7 +802,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "$(SRCROOT)/Faceoff/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = huayingt.Faceoff;
 				PRODUCT_NAME = Faceoff;

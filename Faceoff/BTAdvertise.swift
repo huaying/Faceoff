@@ -38,14 +38,6 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
             break
         case .PoweredOn:
             print("Peripheral - CoreBluetooth BLE hardware is powered on and ready")
-
-            /*
-            var characteristic = CBMutableCharacteristic(type: PositionCharUUID, properties: CBCharacteristicProperties.Read, value: nil, permissions: CBAttributePermissions.Readable)
-            var theService = CBMutableService(type: BLEServiceUUID, primary: true)
-            theService.characteristics = [characteristic]
-            self.peripheralManager.addService(theService)
-            */
-            
             
             let properties = CBCharacteristicProperties.Notify.union(CBCharacteristicProperties.Read).union(CBCharacteristicProperties.Write)
             
@@ -82,7 +74,7 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
         }
         
         print("Service追加成功！")
-        //self.peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey:[BLEServiceUUID],CBAdvertisementDataLocalNameKey:UIDevice.currentDevice().name])
+       
         self.peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey:[BLEServiceUUID],CBAdvertisementDataLocalNameKey:UIDevice.currentDevice().name])
         
     }
@@ -111,6 +103,34 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
             }
             
     }
+    
+    
+    func update(key: String, data: [String: String] = [String:String]()){
+        
+        var stringOfData = ""
+        
+        if key == "location" {
+            stringOfData = key + " " + data["x"]! + " " + data["y"]!
+        }
+        
+        else if key == "hp" {
+            stringOfData = key + " " + data["hp"]!
+        }
+        
+        else if key == "fire-bullet" {
+            stringOfData = key + " " + data["x"]!
+        }
+        
+        else if key == "fire-laser" {
+            stringOfData = key + " " + data["x"]! + " " + data["laserWidth"]!
+        }
+        
+        if stringOfData != "" {
+            let _data = stringOfData.dataUsingEncoding(NSUTF8StringEncoding)
+            self.peripheralManager.updateValue(_data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)
+        }
+    }
+    
     func update(x: CGFloat, y:CGFloat) {
         
         //var pointToSend = CGPointMake(x, y)

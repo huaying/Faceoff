@@ -86,30 +86,16 @@ class CharacterManager {
     
     
     static func setPickedCharacterNumber(number: Int){
-        setLocalValue(localStorageKeys.keyOfPickedCharacterNumber, value: number)
+        Tools.setLocalValue(localStorageKeys.keyOfPickedCharacterNumber, value: number)
     }
     
     static func getPickedCharacterNumber() -> Int {
-        if let number = getLocalValue(localStorageKeys.keyOfPickedCharacterNumber) as? Int {
+        if let number = Tools.getLocalValue(localStorageKeys.keyOfPickedCharacterNumber) as? Int {
             return number
         }else{
             return maxOfCandidateNumber - 1
         }
     }
     
-    static func getLocalValue(key :String) -> AnyObject?{
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let value: AnyObject = defaults.objectForKey(key){
-            return value
-        }
-        return nil
-    }
-    
-    
-    static func setLocalValue(key :String,value :AnyObject){
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject(value, forKey: key)
-        defaults.synchronize()
-    }
-
+   
 }

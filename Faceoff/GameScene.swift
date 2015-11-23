@@ -325,13 +325,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
  
     func setupHealthBar() {
-        
-        /*
-        healthBarBack = self.makeHealthBarBack()
-        healthBarBack.position = CGPoint(x: ship.position.x, y: ship.position.y + 50)
-        healthBar = self.makeHealthBar()
-        healthBar.position = CGPoint(x: ship.position.x, y: ship.position.y + 50)
-        */
 
         healthBarBack = self.makeHealthBarBack()
         healthBarBack.position = CGPoint(x: (self.view?.bounds.size.width)!-2.5, y: (self.view?.bounds.size.height)!/2)
@@ -435,7 +428,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func makeShip() -> SKSpriteNode {
         
         var texture: SKTexture!
-        if let img = CharacterManager.getCharacterFromLocalStorage() {
+        if let img = CharacterManager.getPickedCharacterFromLocalStorage() {
             texture = SKTexture(image: img)
         }else{
             texture = SKTexture(imageNamed: "prof")
@@ -687,7 +680,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func fireShipBullets(){
         
         // triple bullets or not
-        let tripleBullet = 1
+        let tripleBullet = 0
         
         // not triple bullets
         if(tripleBullet == 0) {

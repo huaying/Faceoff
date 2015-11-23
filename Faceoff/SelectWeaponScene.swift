@@ -291,14 +291,14 @@ class SelectWeaponScene: SKScene {
                 
                 
                 //confirm_btn.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
-                let nextScene = GameScene(size: scene!.size)
+                let nextScene = GameScene2(size: scene!.size)
                 nextScene.scaleMode = SKSceneScaleMode.ResizeFill
                 let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)
                 removeAllChildren()
                 nextScene.userData = NSMutableDictionary()
                 let stringRepresentation = weaponArray.joinWithSeparator("-")
                 nextScene.userData?.setObject(stringRepresentation, forKey: "Ray")
-                nextScene.Img = Img
+                
                 scene?.view?.presentScene(nextScene, transition: transition)
             }
             
