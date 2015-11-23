@@ -130,7 +130,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
     var hp: HPManager?
     var enemyHp: HPManager?
     var mp: MPManager?
-    var enemyMap: MPManager?
+    var enemyMp: MPManager?
     
     var weaponManager = WeaponManager()
     var slowUpdateCount = 0
@@ -194,6 +194,11 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
                 }
             }
         }
+        else if let info: [String] = userInfo["mp"] as? [String] {
+            if let mp = Double(info[0]){
+                enemyMp?.powerValue = CGFloat(mp)
+            }
+        }
     }
     
     func createContent() {
@@ -213,6 +218,8 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
         setupMpBar()
         setupenemyMapBar()
         loadBackground()
+        
+        
     }
     
     func loadBackground() {
@@ -246,8 +253,8 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
     }
     
     func setupenemyMapBar() {
-        enemyMap = MPManager(view: view!)
-        enemyMap!.load(self,positionX: mp!.barWidth)
+        enemyMp = MPManager(view: view!)
+        enemyMp!.load(self,positionX: mp!.barWidth)
     }
     
     func setupShip() {
@@ -281,26 +288,45 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
     
     // Scene Update
     override func update(currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
         
+        //Contact Detection
         self.processContactsForUpdate(currentTime)
+        
+        //Character Motion Control
         if(startMoving){
             self.processUserMotionForUpdate(currentTime)
         }
         
-        self.MpIncrease(currentTime)
         
-        //don't update so often
-        if ++slowUpdateCount % 3 == 0 {
+        //Slower Updateder (1/5)
+        if ++slowUpdateCount % 5 == 0 {
             slowUpdateCount = 0
             
-            let x = character.position.x.description
-            let y = character.position.y.description
+//            let x = character.position.x.description
+//            let y = character.position.y.description
             //btAdvertiseSharedInstance.update("location",data: ["x":x, "y":y])
+            self.processManaForUpdate(currentTime)
+            
         }
         
     }
 
+    func processManaForUpdate(currentTime: CFTimeInterval){
+        
+        if let firePreparingBeginTime = weaponManager.firePreparingBeginTime {
+            
+            //Check You are using PoweredWeapon
+            if currentTime - firePreparingBeginTime > 0.3 {
+                if let mana = weaponManager.enemyPoweredWeapon?.getManaUse() {
+                    self.decreaseMana(CGFloat(mana))
+                }
+            }
+        }
+        
+        //Mana recovered regularly
+        self.increaseMana(0.2)
+    }
+    
     func processUserMotionForUpdate(currentTime: CFTimeInterval) {
         
         if let data = self.motionManager.accelerometerData {
@@ -342,28 +368,32 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
         }
         
         weaponManager.firePreparingBegin(touches.first!)
-       
+        
         
         startMoving = false;
         self.userInteractionEnabled = false
         
-        if(fireMutexReady == true) {
-            fireMutexReady = false
-            weaponManager.fireBullet()
-            self.runAction(SKAction.waitForDuration(0.2), completion: {
-                self.fireMutexReady = true
-            })
-        }
+        
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?)  {
         
-        weaponManager.firePreparingEnd(touches.first!)
+        if !weaponManager.firePreparingEnd(touches.first!){
+            
+            if(fireMutexReady == true) {
+                fireMutexReady = false
+                weaponManager.fireBullet()
+                self.runAction(SKAction.waitForDuration(0.2), completion: {
+                    self.fireMutexReady = true
+                })
+            }
+        }
         
         self.userInteractionEnabled = true
         startMoving = true
     }
     
+
 
     // Physics Contact Helpers
     func didBeginContact(contact: SKPhysicsContact) {
@@ -404,23 +434,18 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
             }
         }
     }
-    func MpIncrease(currentTime: CFTimeInterval){
-        mp!.increase(1.0)
-        enemyMap!.increase(1.0)
+    func increaseMana(value : CGFloat){
+        mp!.increase(value)
+        btAdvertiseSharedInstance.update("mp",data: ["mp":mp!.powerValue.description])
     }
     
-    func MpDecrease(timer:NSTimer) {
-        let userOrOpponent = timer.userInfo as! Int
-        if(userOrOpponent == 0){
-            mp!.decrease(3.0)
-        }
-        else if(userOrOpponent == 1){
-            enemyMap!.decrease(3.0)
-        }
+    func decreaseMana(value : CGFloat) {
+        mp!.decrease(value)
+        btAdvertiseSharedInstance.update("mp",data: ["mp":mp!.powerValue.description])
     }
     
-    func decreaseHealth( minus : CGFloat){
-        hp!.decrease(minus)
+    func decreaseHealth( value : CGFloat){
+        hp!.decrease(value)
         btAdvertiseSharedInstance.update("hp",data: ["hp":hp!.powerValue.description])
         
         if(hp!.powerValue <= 50 && hp!.powerValue > 0){

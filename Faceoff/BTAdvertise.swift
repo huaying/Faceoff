@@ -104,7 +104,7 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
             
     }
     
-    
+    //Custom data sending handler
     func update(key: String, data: [String: String] = [String:String]()){
         
         var stringOfData = ""
@@ -115,6 +115,10 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
         
         else if key == "hp" {
             stringOfData = key + " " + data["hp"]!
+        }
+        
+        else if key == "mp" {
+            stringOfData = key + " " + data["mp"]!
         }
         
         else if key == "fire-bullet" {

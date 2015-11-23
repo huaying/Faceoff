@@ -32,7 +32,6 @@ class WeaponManager: NSObject{
     //Set this variable from SelectWeaponScene
     var candidateWeaponTypes: [WeaponType]?
     
-    
     var firePreparingBeginTime:NSTimeInterval?
     var firePreparingEndTime:NSTimeInterval?
     var firePreparingTime:NSTimeInterval? {
@@ -99,15 +98,23 @@ class WeaponManager: NSObject{
         poweredWeapon?.firePreparingAction()
     }
     
-    func firePreparingEnd(touch: UITouch){
+    func firePreparingEnd(touch: UITouch) -> Bool{
         firePreparingEndTime = touch.timestamp
         if firePreparingTime > 0.3 {
             poweredWeapon?.fire(firePreparingTime)
+            cleanFirePreparingTime()
+            return true
         }else{
             poweredWeapon?.stopFirePreparingAction()
+            cleanFirePreparingTime()
+            return false
         }
     }
     
+    func cleanFirePreparingTime(){
+        firePreparingBeginTime = nil
+        firePreparingEndTime = nil
+    }
     func effect(character: Character) {
         enemyWeapon?.effect(character)
     }

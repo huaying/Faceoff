@@ -39,7 +39,7 @@ class Weapon: NSObject{
     func firePreparingAction(){}
     func stopFirePreparingAction() {}
     func getDamage() -> Double { return 0 }
-    
+    func getManaUse() -> Double { return 0 }
     
     func getCharacter() -> SKSpriteNode {
         let characterName = Constants.GameScene.Character
@@ -65,13 +65,14 @@ class Bullet: Weapon {
         let bulletVector = CGVectorMake(0, (sceneNode!.size.height))
         fire(bulletPosition,vector: bulletVector)
         
-        btAdvertiseSharedInstance.update("fire-bullet",data: ["x":bulletPosition.x.description])
+        let normalizedX = 1 - (bulletPosition.x/sceneNode.size.width)
+        btAdvertiseSharedInstance.update("fire-bullet",data: ["x":normalizedX.description])
     }
     
     override func fireFromEnemy(fireInfo: [String]) {
         
-        if let x = Double(fireInfo[0]) {
-        
+        if let normalizedX = Double(fireInfo[0]) {
+            let x = CGFloat(normalizedX) * sceneNode.size.width
             let bulletPosition = CGPoint(x: CGFloat(x), y: sceneNode!.size.height)
             let bulletVector = CGVectorMake(0, -sceneNode!.size.height)
             fire(bulletPosition,vector: bulletVector,fromEnemy: true)
@@ -104,11 +105,13 @@ class Bullet: Weapon {
     override func getDamage() -> Double {
         return damage
     }
+    
 }
 
 class Laser: Weapon {
     
     var damage: Double = 0
+    var mana: Double = 1.5
     
     override init(sceneNode :SKScene){
         super.init(sceneNode: sceneNode)
@@ -139,15 +142,17 @@ class Laser: Weapon {
             
             fire(bulletPosition,laserWidth: CGFloat(laserFinalWidth))
             
-            btAdvertiseSharedInstance.update("fire-laser",data: ["x":bulletPosition.x.description,"laserWidth":laserFinalWidth.description])
+            let normalizedX = 1 - (bulletPosition.x/sceneNode.size.width)
+            btAdvertiseSharedInstance.update("fire-laser",data: ["x":normalizedX.description,"laserWidth":laserFinalWidth.description])
         }
     }
     override func fireFromEnemy(fireInfo: [String]) {
         
-        if let x = Double(fireInfo[0]) {
+        if let normalizedX = Double(fireInfo[0]) {
+            let x = CGFloat(normalizedX) * sceneNode.size.width
             if let laserWidth = Double(fireInfo[1]) {
                 
-                let bulletPosition = CGPointMake(CGFloat(x), sceneNode!.frame.height/2)
+                let bulletPosition = CGPointMake(x, sceneNode!.frame.height/2)
                 fire(bulletPosition,laserWidth: CGFloat(laserWidth),fromEnemy: true)
                 
                 damage = laserWidth/40
@@ -222,6 +227,7 @@ class Laser: Weapon {
     override func getDamage() -> Double {
         return damage
     }
+    override func getManaUse() -> Double { return mana }
 }
 
 class BounsBullet: Weapon{

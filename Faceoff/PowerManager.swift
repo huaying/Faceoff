@@ -33,6 +33,7 @@ class PowerManger {
     var powerValue:CGFloat = 0 {
         didSet {
             powerValueReactedToBar()
+            
         }
     }
 
@@ -95,6 +96,7 @@ class HPManager: PowerManger{
         super.makeBar(positionX)
         bar?.color = UIColor.redColor()
     }
+    
 }
 class MPManager: PowerManger{
     override func makeBar(positionX: CGFloat?) {
