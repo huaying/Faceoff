@@ -88,7 +88,7 @@ class CameraViewController: UIViewController {
                     let dataProvider = CGDataProviderCreateWithCFData(imageData)
                     let cgImageRef = CGImageCreateWithJPEGDataProvider(dataProvider, nil, true, CGColorRenderingIntent.RenderingIntentDefault)
                     
-                    let image = UIImage(CGImage: cgImageRef!, scale: 5, orientation: UIImageOrientation.Up)
+                    let image = UIImage(CGImage: cgImageRef!, scale: 10, orientation: UIImageOrientation.Up)
                   
                     
                     CharacterManager.saveCandidateCharacterToLocalStorage(self.cropImageToCircle(image), index: self.currentPicking)

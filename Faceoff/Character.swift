@@ -9,7 +9,7 @@
 import Foundation
 import SpriteKit
 
-class Character: SKSpriteNode {
+class CharacterNode: SKSpriteNode {
     
     var sceneNode: SKScene!
     
@@ -24,6 +24,8 @@ class Character: SKSpriteNode {
         name = Constants.GameScene.Character
         PhysicsSetting.setupCharacter(self)
         sceneNode.addChild(self)
+        
+        
     }
     
     func getEffect(weaponManger :WeaponManager){

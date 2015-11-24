@@ -92,7 +92,7 @@
 		A364D3A61BF1AE7F00D352B1 /* BTAdvertise.swift in Sources */ = {isa = PBXBuildFile; fileRef = A364D3A21BF1AE7F00D352B1 /* BTAdvertise.swift */; };
 		A364D3A71BF1AE7F00D352B1 /* BTDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = A364D3A31BF1AE7F00D352B1 /* BTDiscovery.swift */; };
 		A364D3A81BF1AE7F00D352B1 /* BTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A364D3A41BF1AE7F00D352B1 /* BTService.swift */; };
-		A364D3A91BF1AE7F00D352B1 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A364D3A51BF1AE7F00D352B1 /* GameScene.swift */; };
+		A364D3A91BF1AE7F00D352B1 /* GameSceneRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = A364D3A51BF1AE7F00D352B1 /* GameSceneRef.swift */; };
 		A372FC6B1BE93B29005E0DA6 /* SelectWeaponScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372FC6A1BE93B29005E0DA6 /* SelectWeaponScene.swift */; };
 		A3A117A61BF7D926009678F4 /* freeze@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A3A117A51BF7D926009678F4 /* freeze@2x.png */; };
 		A3CCCCAE1BEE8F0300A94859 /* BGM.wav in Resources */ = {isa = PBXBuildFile; fileRef = A3CCCCA31BEE8F0300A94859 /* BGM.wav */; };
@@ -219,7 +219,7 @@
 		A364D3A21BF1AE7F00D352B1 /* BTAdvertise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTAdvertise.swift; sourceTree = "<group>"; };
 		A364D3A31BF1AE7F00D352B1 /* BTDiscovery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTDiscovery.swift; sourceTree = "<group>"; };
 		A364D3A41BF1AE7F00D352B1 /* BTService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTService.swift; sourceTree = "<group>"; };
-		A364D3A51BF1AE7F00D352B1 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		A364D3A51BF1AE7F00D352B1 /* GameSceneRef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSceneRef.swift; sourceTree = "<group>"; };
 		A372FC6A1BE93B29005E0DA6 /* SelectWeaponScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectWeaponScene.swift; sourceTree = "<group>"; };
 		A3A117A51BF7D926009678F4 /* freeze@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "freeze@2x.png"; sourceTree = "<group>"; };
 		A3CCCCA31BEE8F0300A94859 /* BGM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = BGM.wav; sourceTree = "<group>"; };
@@ -312,15 +312,15 @@
 				A364D3A21BF1AE7F00D352B1 /* BTAdvertise.swift */,
 				A364D3A31BF1AE7F00D352B1 /* BTDiscovery.swift */,
 				A364D3A41BF1AE7F00D352B1 /* BTService.swift */,
-				A364D3A51BF1AE7F00D352B1 /* GameScene.swift */,
+				A364D3A51BF1AE7F00D352B1 /* GameSceneRef.swift */,
 				0AE37FE51BFC7F88001DF241 /* GameSceneBeta.swift */,
 				0AE37FEB1BFF21BD001DF241 /* Character.swift */,
 				0AE37FE91BFF10E9001DF241 /* Weapon.swift */,
 				0AE37FE71BFF01BE001DF241 /* WeaponManager.swift */,
+				A372FC6A1BE93B29005E0DA6 /* SelectWeaponScene.swift */,
 				0A12C0CD1C02BB4D003E9894 /* PhysicsSetting.swift */,
 				0AE37FE31BFC57B3001DF241 /* PowerManager.swift */,
 				0AE37FE01BF9C41B001DF241 /* SKActionExtension.swift */,
-				A372FC6A1BE93B29005E0DA6 /* SelectWeaponScene.swift */,
 				A305A3F21BDB3E45004B6186 /* MainScene.swift */,
 				A305A40F1BDB4076004B6186 /* PlayModeScene.swift */,
 				74F83FD61BF276C30012C07D /* CharacterManager.swift */,
@@ -649,7 +649,7 @@
 				A364D3A71BF1AE7F00D352B1 /* BTDiscovery.swift in Sources */,
 				A364D3A81BF1AE7F00D352B1 /* BTService.swift in Sources */,
 				0A12C0CC1C01A001003E9894 /* Tools.swift in Sources */,
-				A364D3A91BF1AE7F00D352B1 /* GameScene.swift in Sources */,
+				A364D3A91BF1AE7F00D352B1 /* GameSceneRef.swift in Sources */,
 				0AE37FE81BFF01BE001DF241 /* WeaponManager.swift in Sources */,
 				71E8A0A31BD4605C002832EE /* AppDelegate.swift in Sources */,
 				0AA31AF91BF825B8000DFE4D /* Constants.swift in Sources */,

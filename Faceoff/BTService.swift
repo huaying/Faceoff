@@ -63,6 +63,7 @@ class BTService: NSObject, CBPeripheralDelegate {
             return
         }
         
+        
         for service in peripheral.services! {
             if service.UUID == BLEServiceUUID {
                 peripheral.discoverCharacteristics(uuidsForBTService, forService: service )
@@ -108,7 +109,6 @@ class BTService: NSObject, CBPeripheralDelegate {
             print("Failed... error: \(error)")
             return
         }
-    
     
         var outArray = out.characters.split { $0 == " " }.map { String($0) }
         

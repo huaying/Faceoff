@@ -11,15 +11,6 @@ import SpriteKit
 
 class WeaponManager: NSObject{
     
-    enum WeaponType {
-        case Bullet
-        case BounsBullet
-        case IceBullet
-        case FireBullet
-        case MultiBullet
-        case Laser
-    }
-    
     var sceneNode: SKScene!
     var weapon: Weapon?
     var basicWeapon: Weapon?
@@ -30,7 +21,7 @@ class WeaponManager: NSObject{
     var candidateWeapons: [Weapon] = []
     
     //Set this variable from SelectWeaponScene
-    var candidateWeaponTypes: [WeaponType]?
+    var candidateWeaponTypes: [String?]?
     
     var firePreparingBeginTime:NSTimeInterval?
     var firePreparingEndTime:NSTimeInterval?
@@ -46,39 +37,40 @@ class WeaponManager: NSObject{
     func loadWeapons(sceneNode :SKScene){
         self.sceneNode = sceneNode
         
+        print(candidateWeaponTypes)
         if let candidateWeaponTypes = candidateWeaponTypes {
             for candidateWeaponType in candidateWeaponTypes {
-                candidateWeapons.append(makeWeapon(candidateWeaponType))
+                //candidateWeapons.append(makeWeapon(candidateWeaponType!))
             }
         }
         
         //weapon = candidateWeapons.first
-        weapon = makeWeapon(.Bullet)
-        poweredWeapon = makeWeapon(.Laser)
-        enemyWeapon = makeWeapon(.Bullet)
-        enemyPoweredWeapon = makeWeapon(.Laser)
+        weapon = makeWeapon(Constants.Weapon.WeaponType.MultiBullet)
+        poweredWeapon = makeWeapon(Constants.Weapon.WeaponType.Laser)
+        enemyWeapon = makeWeapon(Constants.Weapon.WeaponType.MultiBullet)
+        enemyPoweredWeapon = makeWeapon(Constants.Weapon.WeaponType.Laser)
     }
     
-    func makeWeapon(weaponType: WeaponType) -> Weapon {
+    func makeWeapon(weaponType: String) -> Weapon {
         
         var weapon: Weapon!
         
-        if weaponType == .Bullet{
+        if weaponType == Constants.Weapon.WeaponType.Bullet{
             weapon = Bullet(sceneNode: sceneNode)
         }
-        else if weaponType == .BounsBullet{
+        else if weaponType == Constants.Weapon.WeaponType.BonusBullet{
             weapon = BounsBullet(sceneNode: sceneNode)
         }
-        else if weaponType == .IceBullet{
+        else if weaponType == Constants.Weapon.WeaponType.IceBullet{
             weapon = IceBullet(sceneNode: sceneNode)
         }
-        else if weaponType == .FireBullet{
+        else if weaponType == Constants.Weapon.WeaponType.FireBullet{
             weapon = FireBullet(sceneNode: sceneNode)
         }
-        else if weaponType == .MultiBullet{
+        else if weaponType == Constants.Weapon.WeaponType.MultiBullet{
             weapon = MultiBullet(sceneNode: sceneNode)
         }
-        else if weaponType == .Laser{
+        else if weaponType == Constants.Weapon.WeaponType.Laser{
             weapon = Laser(sceneNode: sceneNode)
         }
         
@@ -121,7 +113,7 @@ class WeaponManager: NSObject{
         firePreparingEndTime = nil
     }
     
-    func effect(character: Character) {
+    func effect(character: CharacterNode) {
         enemyWeapon?.effect(character)
     }
     

@@ -124,14 +124,39 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
         else if key == "fire-bullet" {
             stringOfData = key + " " + data["x"]!
         }
-        
+        else if key == "fire-multibullet" {
+            stringOfData = key + " " + data["x"]!
+        }
         else if key == "fire-laser" {
             stringOfData = key + " " + data["x"]! + " " + data["laserWidth"]!
+        }
+        else if key == "character-image" {
+            stringOfData = key + " " + data["chunkNum"]! + " " + data["chunkData"]!
+            
+            let _data = stringOfData.dataUsingEncoding(NSUTF8StringEncoding)
+//            print(data["chunkNum"]!,self.peripheralManager.updateValue(_data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil))
+            
+            //var i = 0
+            while(!self.peripheralManager.updateValue(_data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)){
+                //print(data["chunkNum"]!,"retry",++i)
+            }
+            return
+        }
+        else if key == "character-image-finish" {
+
+            stringOfData = key
+            let _data = stringOfData.dataUsingEncoding(NSUTF8StringEncoding)
+            while(!self.peripheralManager.updateValue(_data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)){
+                //print(data["chunkNum"]!,"retry",++i)
+            }
+            return
         }
         
         if stringOfData != "" {
             let _data = stringOfData.dataUsingEncoding(NSUTF8StringEncoding)
             self.peripheralManager.updateValue(_data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)
+            
+        
         }
     }
     

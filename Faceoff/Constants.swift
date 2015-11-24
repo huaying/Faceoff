@@ -39,6 +39,7 @@ struct Constants {
     }
     
     struct GameScene {
+        
         static let Character = "character"
         static let Fire = "fire"
         static let PoweredFire = "poweredfire"
@@ -56,12 +57,50 @@ struct Constants {
     }
     
     struct Weapon {
-        static let Bullet = "Missel"
-        static let IceBullet = "Missel"
-        static let FireBullet = "Missel"
-        static let MultiBullet = "Missel"
-        static let BonusBullet = "DoubleBonus"
         
+        
+        //For Select
+        struct WeaponType {
+            static let Bullet = "Missel"
+            static let IceBullet = "Frozen"
+            static let FireBullet = "Fire"
+            static let MultiBullet = "Shotgun"
+            static let BonusBullet = "DoubleBonus"
+            static let Laser = "Ultimate"
+            static let Invisibility = "Invisibility_Cloak"
+            static let Heal = "Heal"
+            static let Detect = "Detect"
+        }
+        
+        //For Shooting
+        struct WeaponImage {
+            static let Bullet = "Missel"
+            static let IceBullet = "Frozen"
+            static let FireBullet = "Fire"
+            static let MultiBullet = "Missel"
+            static let BonusBullet = "DoubleBonus"
+            static let Laser = "Ultimate"
+            static let Invisibility = "Invisibility_Cloak"
+            static let Heal = "Heal"
+            static let Detect = "Detect"
+        }
+        
+        static let Sets = [
+            WeaponType.FireBullet,
+            WeaponType.IceBullet,
+            WeaponType.MultiBullet,
+            WeaponType.Invisibility,
+            WeaponType.Heal,
+            WeaponType.Detect
+        ]
+        static let SetsDescription = [
+            "Keeps opponent blame and deducts him 30 point",
+            "Slow down opponent for 50%",
+            "Shot 3 bullets every shot",
+            "Let yourself invisible",
+            "Add 20 points to yourself",
+            "Find opponent even he has heal"
+        ]
     }
     
 }

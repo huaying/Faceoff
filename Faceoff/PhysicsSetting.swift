@@ -21,7 +21,6 @@ class PhysicsSetting {
         node.physicsBody = SKPhysicsBody(rectangleOfSize: node.frame.size)
         node.physicsBody?.dynamic = true
         node.physicsBody?.affectedByGravity = false
-        node.physicsBody?.mass = 0.02
         node.physicsBody?.friction = 0.0
         
         //bitmask setup
