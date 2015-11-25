@@ -12,6 +12,8 @@ import CoreBluetooth
 import SpriteKit
 import MultipeerConnectivity
 
+let enemyCharacterLoader = EnemyCharacterLoader()
+
 class BuildConnectionScene: SKScene {
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -109,17 +111,17 @@ class BuildConnectionScene: SKScene {
         for (index,peer) in peers.enumerate() {
             
             
-            print("shit~~~~~")
             print(deviceName, peer.name)
             
             if(index < peerName.count && peerName[index] == deviceName ){
-                
-                print("幹")
+               
                 print(centralManager.description)
                 
                 btDiscoverySharedInstance.connectToPeripheral(centralManager, peripheral: peers[index])
                 
                 let nextScene = SelectWeaponScene(size: scene!.size)
+                enemyCharacterLoader.preload()
+                
                 transitionForNextScene(nextScene)
                 
                 centralManager.stopScan()
@@ -338,6 +340,10 @@ class BuildConnectionScene: SKScene {
                         
                         
                         let nextScene = SelectWeaponScene(size: self.scene!.size)
+                           // nextScene.readyToReceiveImage()
+                        
+                        enemyCharacterLoader.preload()
+                        
                         self.transitionForNextScene(nextScene)
                     }
                     

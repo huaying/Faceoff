@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Faceoff/GameSceneBeta.swift"
-            timestampString = "470053380.485179"
+            timestampString = "470145403.571941"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "374"
-            endingLineNumber = "374"
+            startingLineNumber = "358"
+            endingLineNumber = "358"
             landmarkName = "decreaseMana(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -201,22 +201,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Faceoff/GameSceneBeta.swift"
-            timestampString = "470050880.363101"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
-            landmarkName = "didMoveToView(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Faceoff/PhysicsSetting.swift"
             timestampString = "469941540.965158"
             startingColumnNumber = "9223372036854775807"
@@ -265,13 +249,29 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Faceoff/GameSceneBeta.swift"
-            timestampString = "470050880.363101"
+            filePath = "Faceoff/BTAdvertise.swift"
+            timestampString = "470140076.403226"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
-            landmarkName = "didMoveToView(_:)"
+            startingLineNumber = "274"
+            endingLineNumber = "274"
+            landmarkName = "peripheralManager(_:didReceiveWriteRequests:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Faceoff/EnemyCharacterLoader.swift"
+            timestampString = "470143833.48084"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
+            landmarkName = "updateByInfoOfEnemy(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

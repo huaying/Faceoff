@@ -17,7 +17,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
     var contactQueue = Array<SKPhysicsContact>()
     var contentCreated: Bool = false
     var character: CharacterNode!
-    var enemyCharacter: CharacterNode!
+    var enemy: SKSpriteNode!
     var enemyImageBase64String = ""
     var fireMutexReady = true
     var startMoving = true;
@@ -64,31 +64,6 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
         
          NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("updateByInfoOfEnemy:"), name: "getInfoOfEnemy", object: nil)
         
-        var image: UIImage = CharacterManager.getPickedCharacterFromLocalStorage()!
-        
-        var imageData = UIImagePNGRepresentation(image)
-        
-        let base64String = imageData!.base64EncodedStringWithOptions(.EncodingEndLineWithLineFeed)
-        
-        
-        var chunks = [[Character]]()
-        let chunkSize = 100
-        
-        for (i, character) in base64String.characters.enumerate() {
-            if i % chunkSize == 0 {
-                chunks.append([Character]())
-            }
-            chunks[i/chunkSize].append(character)
-            
-        }
-
-        for (i,chunk) in chunks.enumerate() {
-            btAdvertiseSharedInstance.update("character-image",data: ["chunkNum":String(i),"chunkData":String(chunk)])
-            print(i,String(chunk))
-        }
-        btAdvertiseSharedInstance.update("character-image-finish")
-        
-        
     }
     
     func updateByInfoOfEnemy(notification: NSNotification) {
@@ -96,7 +71,13 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
         let userInfo = notification.userInfo as! Dictionary<String, AnyObject>
         //print(userInfo)
         
-        if let info: [String] = userInfo["fire-bullet"] as? [String] {
+        if let info: [String] = userInfo["location"] as? [String] {
+            if let normalizedX = Double(info[0]) {
+                let x = CGFloat(normalizedX) * self.size.width
+                enemy.position.x = x
+            }
+        }
+        else if let info: [String] = userInfo["fire-bullet"] as? [String] {
             weaponManager.fireFromEnemy(info)
         }
         else if let info: [String] = userInfo["fire-multibullet"] as? [String] {
@@ -128,24 +109,13 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
                 enemyMp?.powerValue = CGFloat(mp)
             }
         }
-        else if let info: [String] = userInfo["character-image"] as? [String] {
-            if let chunkNum = Int(info[0]) {
-                let chunk = info[1]
-                print(chunkNum,chunk)
-                enemyImageBase64String += chunk
-            }
-        }
-        else if let info: [String] = userInfo["character-image-finish"] as? [String] {
-            let decodedData = NSData(base64EncodedString: enemyImageBase64String, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
-            let decodedImage = UIImage(data: decodedData!)
-            self.addChild(SKSpriteNode(texture: SKTexture(image: decodedImage!)))
-        }
     }
     
     func createContent() {
        
         PhysicsSetting.setupScene(self)
-        setupShip()
+        setupCharacter()
+        setupEnemyCharacter()
         setupHealthBar()
         setupOpponentHealthBar()
         setupMpBar()
@@ -187,10 +157,17 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
         enemyMp!.load(self,positionX: mp!.barWidth)
     }
     
-    func setupShip() {
+    func setupCharacter() {
         character = CharacterNode(texture: SKTexture(image: CharacterManager.getPickedCharacterFromLocalStorage()!))
         character.setup(self)
         character.getEffect(weaponManager)
+    }
+    
+    func setupEnemyCharacter(){
+        enemy = SKSpriteNode(texture: SKTexture(image: CharacterManager.getEnemyCharacterFromLocalStorage()!))
+        enemy.position = CGPointMake(self.frame.midX,self.frame.height - enemy.frame.height/2 )
+        addChild(enemy)
+        
     }
     
     func loadWeapons(){
@@ -227,20 +204,27 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
             self.processUserMotionForUpdate(currentTime)
         }
         
-        //Slower Updateder (1/5)
-        if ++slowUpdateCount % 5 == 0 {
+        //Slower Updateder (1/3)
+        if ++slowUpdateCount % 3 == 0 {
             slowUpdateCount = 0
-
-            //send character's location to enemy
-//            let x = character.position.x.description
-//            let y = character.position.y.description
-            //btAdvertiseSharedInstance.update("location",data: ["x":x, "y":y])
+            
+            self.processLocationSendingForUpdate(currentTime)
             self.processManaForUpdate(currentTime)
             
         }
         
     }
 
+    func processLocationSendingForUpdate(currentTime: CFTimeInterval){
+        
+        //send character's location to enemy
+        let x = character.position.x
+        let y = character.position.y
+        let normalizedX = 1 - (x/size.width)
+        let normalizedY = 1 - (y/size.height)
+        btAdvertiseSharedInstance.update("location",data: ["x":normalizedX.description, "y":normalizedY.description])
+    
+    }
     func processManaForUpdate(currentTime: CFTimeInterval){
         
         if let firePreparingBeginTime = weaponManager.firePreparingBeginTime {

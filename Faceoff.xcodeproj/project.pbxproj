@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0A12C0CC1C01A001003E9894 /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A12C0CB1C01A001003E9894 /* Tools.swift */; };
 		0A12C0CE1C02BB4D003E9894 /* PhysicsSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A12C0CD1C02BB4D003E9894 /* PhysicsSetting.swift */; };
+		0A12C0D01C0594B8003E9894 /* EnemyCharacterLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A12C0CF1C0594B8003E9894 /* EnemyCharacterLoader.swift */; };
 		0AA31AE71BF6B2EC000DFE4D /* CharacterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F83FD61BF276C30012C07D /* CharacterManager.swift */; };
 		0AA31AEB1BF821CA000DFE4D /* mainscene_backgound.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31AEA1BF821CA000DFE4D /* mainscene_backgound.jpg */; };
 		0AA31AED1BF824B4000DFE4D /* mainscene_slot.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31AEC1BF824B4000DFE4D /* mainscene_slot.png */; };
@@ -31,7 +32,7 @@
 		0AE37FE61BFC7F88001DF241 /* GameSceneBeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE37FE51BFC7F88001DF241 /* GameSceneBeta.swift */; };
 		0AE37FE81BFF01BE001DF241 /* WeaponManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE37FE71BFF01BE001DF241 /* WeaponManager.swift */; };
 		0AE37FEA1BFF10E9001DF241 /* Weapon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE37FE91BFF10E9001DF241 /* Weapon.swift */; };
-		0AE37FEC1BFF21BD001DF241 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE37FEB1BFF21BD001DF241 /* Character.swift */; };
+		0AE37FEC1BFF21BD001DF241 /* CharacterNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE37FEB1BFF21BD001DF241 /* CharacterNode.swift */; };
 		711C3E341BD6DF18000B724D /* animation.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 711C3E331BD6DF18000B724D /* animation.atlas */; };
 		711C3E441BD79074000B724D /* MyParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = 711C3E421BD79074000B724D /* MyParticle.sks */; };
 		711C3E451BD79074000B724D /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 711C3E431BD79074000B724D /* spark.png */; };
@@ -131,6 +132,7 @@
 /* Begin PBXFileReference section */
 		0A12C0CB1C01A001003E9894 /* Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		0A12C0CD1C02BB4D003E9894 /* PhysicsSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsSetting.swift; sourceTree = "<group>"; };
+		0A12C0CF1C0594B8003E9894 /* EnemyCharacterLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnemyCharacterLoader.swift; sourceTree = "<group>"; };
 		0AA31AEA1BF821CA000DFE4D /* mainscene_backgound.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mainscene_backgound.jpg; sourceTree = "<group>"; };
 		0AA31AEC1BF824B4000DFE4D /* mainscene_slot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_slot.png; sourceTree = "<group>"; };
 		0AA31AEE1BF824CC000DFE4D /* mainscene_start_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_start_button.png; sourceTree = "<group>"; };
@@ -153,7 +155,7 @@
 		0AE37FE51BFC7F88001DF241 /* GameSceneBeta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSceneBeta.swift; sourceTree = "<group>"; };
 		0AE37FE71BFF01BE001DF241 /* WeaponManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeaponManager.swift; sourceTree = "<group>"; };
 		0AE37FE91BFF10E9001DF241 /* Weapon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weapon.swift; sourceTree = "<group>"; };
-		0AE37FEB1BFF21BD001DF241 /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
+		0AE37FEB1BFF21BD001DF241 /* CharacterNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterNode.swift; sourceTree = "<group>"; };
 		711C3E331BD6DF18000B724D /* animation.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = animation.atlas; sourceTree = "<group>"; };
 		711C3E421BD79074000B724D /* MyParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle.sks; sourceTree = "<group>"; };
 		711C3E431BD79074000B724D /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
@@ -307,6 +309,7 @@
 				A3CCCCBB1BEE901000A94859 /* Defined.swift */,
 				71E8A0A41BD4605C002832EE /* GameScene.sks */,
 				A3ED08F01BE0032600B60AFF /* BuildConnectionScene.swift */,
+				A372FC6A1BE93B29005E0DA6 /* SelectWeaponScene.swift */,
 				A32CBE181BF7DE0E007186D9 /* CDAnimationBuilder.swift */,
 				71B30A2B1BD6222400ABAAFC /* GameOverScene.swift */,
 				A364D3A21BF1AE7F00D352B1 /* BTAdvertise.swift */,
@@ -314,10 +317,10 @@
 				A364D3A41BF1AE7F00D352B1 /* BTService.swift */,
 				A364D3A51BF1AE7F00D352B1 /* GameSceneRef.swift */,
 				0AE37FE51BFC7F88001DF241 /* GameSceneBeta.swift */,
-				0AE37FEB1BFF21BD001DF241 /* Character.swift */,
+				0AE37FEB1BFF21BD001DF241 /* CharacterNode.swift */,
 				0AE37FE91BFF10E9001DF241 /* Weapon.swift */,
 				0AE37FE71BFF01BE001DF241 /* WeaponManager.swift */,
-				A372FC6A1BE93B29005E0DA6 /* SelectWeaponScene.swift */,
+				0A12C0CF1C0594B8003E9894 /* EnemyCharacterLoader.swift */,
 				0A12C0CD1C02BB4D003E9894 /* PhysicsSetting.swift */,
 				0AE37FE31BFC57B3001DF241 /* PowerManager.swift */,
 				0AE37FE01BF9C41B001DF241 /* SKActionExtension.swift */,
@@ -644,11 +647,12 @@
 				A32CBE191BF7DE0E007186D9 /* CDAnimationBuilder.swift in Sources */,
 				71E8A0A91BD4605C002832EE /* GameViewController.swift in Sources */,
 				A364D3A61BF1AE7F00D352B1 /* BTAdvertise.swift in Sources */,
-				0AE37FEC1BFF21BD001DF241 /* Character.swift in Sources */,
+				0AE37FEC1BFF21BD001DF241 /* CharacterNode.swift in Sources */,
 				0AE37FE41BFC57B4001DF241 /* PowerManager.swift in Sources */,
 				A364D3A71BF1AE7F00D352B1 /* BTDiscovery.swift in Sources */,
 				A364D3A81BF1AE7F00D352B1 /* BTService.swift in Sources */,
 				0A12C0CC1C01A001003E9894 /* Tools.swift in Sources */,
+				0A12C0D01C0594B8003E9894 /* EnemyCharacterLoader.swift in Sources */,
 				A364D3A91BF1AE7F00D352B1 /* GameSceneRef.swift in Sources */,
 				0AE37FE81BFF01BE001DF241 /* WeaponManager.swift in Sources */,
 				71E8A0A31BD4605C002832EE /* AppDelegate.swift in Sources */,

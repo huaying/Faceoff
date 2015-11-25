@@ -44,6 +44,7 @@ class SelectWeaponScene: SKScene {
     var descrioptionLable: SKLabelNode! = nil
     
     var Img: UIImage! = nil
+    var enemyImageBase64String = ""
     
     override func didMoveToView(view: SKView) {
         
@@ -151,7 +152,67 @@ class SelectWeaponScene: SKScene {
             WEAPONS.append(weapon)
             self.addChild(weapon)
         }
+
+
+        //btAdvertiseSharedInstance.update("character-image-ready")
+        
+
     }
+    
+    func readyToReceiveImage(){
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("updateByInfoOfEnemy:"), name: "getInfoOfEnemy", object: nil)
+        sleep(1)
+    }
+    
+    func updateByInfoOfEnemy(notification: NSNotification) {
+        
+        let userInfo = notification.userInfo as! Dictionary<String, AnyObject>
+        //print(userInfo)
+        
+        if let info: [String] = userInfo["character-image"] as? [String] {
+            if let chunkNum = Int(info[0]) {
+                let chunk = info[1]
+                print("receive",chunkNum,chunk)
+                enemyImageBase64String += chunk
+            }
+        }
+        else if let info: [String] = userInfo["character-image-finish"] as? [String] {
+            let decodedData = NSData(base64EncodedString: enemyImageBase64String, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
+            let decodedImage = UIImage(data: decodedData!)
+            self.addChild(SKSpriteNode(texture: SKTexture(image: decodedImage!)))
+        }
+        else if let info: [String] = userInfo["character-image-ready"] as? [String] {
+            
+
+            
+            let a = NSDate().timeIntervalSinceReferenceDate
+            let image: UIImage = CharacterManager.getPickedCharacterSmallFromLocalStorage()!
+            
+            let imageData = UIImagePNGRepresentation(image)
+            
+            let base64String = imageData!.base64EncodedStringWithOptions(.EncodingEndLineWithLineFeed)
+            
+            
+            var chunks = [[Character]]()
+            let chunkSize = 100
+            
+            for (i, character) in base64String.characters.enumerate() {
+                if i % chunkSize == 0 {
+                    chunks.append([Character]())
+                }
+                chunks[i/chunkSize].append(character)
+            }
+            
+            for (i,chunk) in chunks.enumerate() {
+                btAdvertiseSharedInstance.update("character-image",data: ["chunkNum":String(i),"chunkData":String(chunk)])
+                print(i,String(chunk))
+            }
+            btAdvertiseSharedInstance.update("character-image-finish")
+            print(NSDate().timeIntervalSinceReferenceDate - a)
+        }
+        
+    }
+
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         /* Called when a touch begins */

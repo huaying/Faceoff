@@ -151,12 +151,15 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
             }
             return
         }
+            
+        else if key == "character-image-ready"  {
+            stringOfData = key
+
+        }
         
         if stringOfData != "" {
             let _data = stringOfData.dataUsingEncoding(NSUTF8StringEncoding)
             self.peripheralManager.updateValue(_data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)
-            
-        
         }
     }
     
@@ -171,7 +174,6 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
                 
         self.characteristic.value = data;
         self.peripheralManager.updateValue(data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)
-        
     }
     
     func updateUltimate(x: CGFloat, y:CGFloat, w:CGFloat) {

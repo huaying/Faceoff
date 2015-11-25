@@ -88,12 +88,13 @@ class CameraViewController: UIViewController {
                     let dataProvider = CGDataProviderCreateWithCFData(imageData)
                     let cgImageRef = CGImageCreateWithJPEGDataProvider(dataProvider, nil, true, CGColorRenderingIntent.RenderingIntentDefault)
                     
-                    let image = UIImage(CGImage: cgImageRef!, scale: 10, orientation: UIImageOrientation.Up)
+                    let image = UIImage(CGImage: cgImageRef!, scale: 5, orientation: UIImageOrientation.Up)
                   
+                    let imageSmall = UIImage(CGImage: cgImageRef!, scale: 17, orientation: UIImageOrientation.Up)
                     
-                    CharacterManager.saveCandidateCharacterToLocalStorage(self.cropImageToCircle(image), index: self.currentPicking)
-                    //CharacterManager.saveCandidateCharacterToLocalStorage(self.cropImageToCircle(image))
- 
+                    CharacterManager.saveCandidateCharacterToLocalStorage(image, index: self.currentPicking)
+                    
+                    CharacterManager.saveCandidateCharacterToLocalStorage(imageSmall, index: self.currentPicking, small: true)
                     
                     self.dismissViewControllerAnimated(true, completion: {
                         NSNotificationCenter.defaultCenter().postNotificationName("PhotoPickerFinishedNotification", object: self, userInfo: nil)
@@ -105,26 +106,7 @@ class CameraViewController: UIViewController {
 
     }
     
-    func cropImageToCircle(image: UIImage) -> UIImage{
-        let photoView = UIImageView(frame: CGRectMake(0,0,image.size.height,image.size.height))
-        photoView.image = image
-        photoView.contentMode = .Center
-        photoView.layer.borderWidth = 5
-        photoView.layer.borderColor = UIColor.blackColor().colorWithAlphaComponent(0.3).CGColor
-        photoView.layer.cornerRadius = image.size.height/2;
-        photoView.layer.masksToBounds = true
         
-        var layer1: CALayer = CALayer()
-        
-        layer1 = photoView.layer
-        UIGraphicsBeginImageContext(CGSize(width:image.size.height,height:image.size.height))
-        layer1.renderInContext(UIGraphicsGetCurrentContext()!)
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage
-    }
-    
     func createCameraOverlay() -> UIView
     {
         let overlayView = UIView(frame: self.view.frame)
