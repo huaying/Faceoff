@@ -18,30 +18,21 @@ class BuildConnectionScene: SKScene {
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
-    var scrollnode = ScrollNode()
     var peers = [CBPeripheral]()
     var peerName = [String]()
     
     var peerToConnect: CBPeripheral?
     var centralManager: CBCentralManager!
     
-    var statusnode = SKLabelNode(fontNamed: "Chalkduster")
+    var statusnode: SKLabelNode! = nil
+    let background: SKNode! = nil
+    var playerListNode: SKSpriteNode! = nil
+    var scrollNode = ScrollNode()
     
-    let background: SKNode! = SKSpriteNode(imageNamed: "spaceship4.jpg")
-
     var 返回按鈕: SKNode! = nil
     var 遊戲按鈕: SKNode! = nil
     
     override func didMoveToView(view: SKView) {
-        
-        
-        background.position = CGPoint(x: frame.midX, y: frame.midY)
-        background.scene?.size = frame.size
-        background.setScale(0.5)
-        background.zPosition = -100
-        
-        addChild(background)
-        
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("connectionChanged:"), name: BLEServiceChangedStatusNotification, object: nil)
         
@@ -50,8 +41,6 @@ class BuildConnectionScene: SKScene {
         
         // Start the Bluetooth discovery process
         btDiscoverySharedInstance
-        
-        
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("allSet:"), name: "allSet", object: nil)
         
@@ -63,101 +52,111 @@ class BuildConnectionScene: SKScene {
         
         
         
-        返回按鈕 = SKSpriteNode(color: UIColor.redColor().colorWithAlphaComponent(0.3), size: CGSize(width: 50, height: 30))
-        返回按鈕.position = CGPoint(x:CGRectGetMinX(self.frame)+40,y:CGRectGetMinY(self.frame)+CGFloat(30.0))
-        addChild(返回按鈕)
-        
-        let 返回文字 = SKLabelNode(fontNamed:"Chalkduster")
-        返回文字.text = "Back";
-        返回文字.fontSize = 14;
-        返回文字.position = CGPoint(x:CGFloat(0),y:CGFloat(-5))
-        返回按鈕.addChild(返回文字)
+        loadTestButton()
+        loadBackground()
+        loadBackButton()
+        loadPlayerList()
         
         
+        loadYourDeviceName()
+    
+
+
+    }
+    func loadTestButton(){
         遊戲按鈕 = SKSpriteNode(color: UIColor.redColor().colorWithAlphaComponent(0.3), size: CGSize(width: 50, height: 30))
         遊戲按鈕.position = CGPoint(x:CGRectGetMaxX(self.frame)-40,y:CGRectGetMinY(self.frame)+CGFloat(30.0))
         addChild(遊戲按鈕)
         
-        let 遊戲文字 = SKLabelNode(fontNamed:"Chalkduster")
+        let 遊戲文字 = SKLabelNode(fontNamed:"BradleyHandITCTT-Bold")
         遊戲文字.text = "Go!";
         遊戲文字.fontSize = 14;
         遊戲文字.position = CGPoint(x:CGFloat(0),y:CGFloat(-5))
         遊戲按鈕.addChild(遊戲文字)
+    }
+    func loadBackground(){
+        let texture = SKTexture(image: UIImage(named: Constants.BuildConnectionScene.Background)!)
+        let background = SKSpriteNode(texture: texture, size: frame.size)
         
-        
-        
-        
-        
-        addChild(scrollnode)
-        
-        
-        statusnode.fontSize = 30
-        statusnode.position = CGPointMake(frame.midX, frame.midY-100)
-        statusnode.text = UIDevice.currentDevice().name
-        addChild(statusnode)
-        scrollnode.setScrollingView(view)
-        
-        //updateScene()
+        background.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
+        background.zPosition = -10
+        addChild(background)
         
     }
+    func loadBackButton(){
+        
+        let texture = SKTexture(image: UIImage(named: Constants.BuildConnectionScene.BackButton)!)
+        返回按鈕 = SKSpriteNode(texture: texture, size: CGSizeMake(CGFloat(Constants.Scene.BackButtonSizeWidth) ,CGFloat(Constants.Scene.BackButtonSizeHeight)))
+        返回按鈕.position = CGPoint(x:返回按鈕.frame.width/2,y: 返回按鈕.frame.height/2)
+        addChild(返回按鈕)
+    }
     
+    func loadPlayerList(){
+        let image = UIImage(named: Constants.BuildConnectionScene.PlayerList)!
+        let texture = SKTexture(image: image)
+        let cropNode = SKCropNode()
+        playerListNode = SKSpriteNode(texture: texture, size: CGSizeMake(image.size.width * 0.33,image.size.height * 0.33))
+        
+        scrollNode.setScrollingView(self.view!)
+        playerListNode.addChild(scrollNode)
+
+        let crop = SKSpriteNode(color: UIColor.blackColor(), size: CGSizeMake(playerListNode.size.width,playerListNode.size.height))
+        
+        cropNode.position = CGPoint(x:frame.midX,y: frame.midY)
+        cropNode.maskNode = crop
+        cropNode.addChild(playerListNode)
+        addChild(cropNode)
+        
+        
+        //test scroll
+//        let As = ["Huaying","Ray","GiGi","Sunny","Ethan"]
+//        //let As = ["Huaying","Ray"]
+//        for(index, a) in As.enumerate(){
+//            
+//            let peerNode = SKLabelNode(fontNamed: "BradleyHandITCTT-Bold")
+//            peerNode.text = a;
+//            peerNode.fontSize = 25;
+//            peerNode.position = CGPoint(x:0,y:CGFloat(index * 40))
+//            scrollNode.addChild(peerNode)
+//        }
+        
+        
+        
+    }
+    func loadYourDeviceName(){
+        statusnode = SKLabelNode(fontNamed: "BradleyHandITCTT-Bold")
+        statusnode.fontSize = 20
+        statusnode.position = CGPointMake(frame.midX, frame.midY-120)
+        statusnode.text = "You: "+UIDevice.currentDevice().name
+        addChild(statusnode)
+    }
     
     func allSet(notification: NSNotification) {
         
         let userInfo = notification.userInfo as! Dictionary<String, AnyObject>
         let deviceName: String = userInfo["peripheralName"] as! String
         
-        
         for (index,peer) in peers.enumerate() {
-            
-            
             print(deviceName, peer.name)
             
             if(index < peerName.count && peerName[index] == deviceName ){
                
                 print(centralManager.description)
-                
                 btDiscoverySharedInstance.connectToPeripheral(centralManager, peripheral: peers[index])
                 
                 let nextScene = SelectWeaponScene(size: scene!.size)
                 enemyCharacterLoader.preload()
                 
                 transitionForNextScene(nextScene)
-                
                 centralManager.stopScan()
-                
             }
-            
         }
-    }
-    
-    /*
-    func updateScene(){
-    // peers = connector.getPeers()
-    if peers != nil {
-    for (i,peer) in peers!.enumerate() {
-    let peerNode = SKLabelNode()
-    peerNode.text = peer.displayName;
-    peerNode.fontSize = 20;
-    peerNode.position = CGPoint(x:CGRectGetMidX(self.frame),y:CGFloat(i*40)+50)
-    scrollnode.addChild(peerNode)
-    }
-    }
-    }
-    */
-    
-    func statusLabel(statusName: String) -> SKLabelNode{
-        
-        statusnode.text = statusName
-        
-        return statusnode
     }
     
     func getCentral(notification: NSNotification){
         
         let userInfo = notification.userInfo as! Dictionary<String, AnyObject>
         centralManager = userInfo["central"] as! CBCentralManager
-        
         print("GetCentral!!!")
         
     }
@@ -169,16 +168,10 @@ class BuildConnectionScene: SKScene {
         
         for(index, peripheral) in peers.enumerate(){
             
-            print(peripheral.description, "~~~\n")
-            let peerNode = SKLabelNode()
+            let peerNode = SKLabelNode(fontNamed: "BradleyHandITCTT-Bold")
             peerNode.text = peripheral.name;
             peerNode.fontSize = 20;
-            peerNode.position = CGPoint(x:CGRectGetMidX(self.frame),y:CGFloat(index * 40))
-            //scrollnode.addChild(peerNode)
-            
-            
-            // print("Item \(index + 1): \(value)")
-            
+            peerNode.position = CGPoint(x:0,y:CGFloat(index * 40))
         }
         
     }
@@ -190,80 +183,18 @@ class BuildConnectionScene: SKScene {
         
         for(index, name) in peerName.enumerate(){
             
-            print(name, "~~~\n")
-            let peerNode = SKLabelNode()
+            let peerNode = SKLabelNode(fontNamed: "BradleyHandITCTT-Bold")
             peerNode.text = name;
-            peerNode.fontSize = 20;
-            peerNode.position = CGPoint(x:CGRectGetMidX(self.frame),y:CGFloat(index * 40))
-            scrollnode.addChild(peerNode)
-            
-            
-            // print("Item \(index + 1): \(value)")
-            
+            peerNode.fontSize = 25;
+            peerNode.position = CGPoint(x:0,y:CGFloat(index * 40))
+            scrollNode.addChild(peerNode)
         }
         
     }
     
-    /*
-    func getPeripheral(notification: NSNotification){
-    
-    let userInfo = notification.userInfo as! Dictionary<String, AnyObject>
-    let string_point: String = userInfo["name"] as! String
-    
-    let fullNameArr = string_point.characters.split {$0 == " "}.map { String($0) }
-    
-    for (index, value) in fullNameArr.enumerate() {
-    
-    let peerNode = SKLabelNode()
-    peerNode.text = value;
-    peerNode.fontSize = 20;
-    peerNode.position = CGPoint(x:CGRectGetMidX(self.frame),y:CGFloat(index * 40)+50)
-    scrollnode.addChild(peerNode)
-    
-    print("Item \(index + 1): \(value)")
-    }
-    
-    statusnode.removeFromParent()
-    print("foundPeer",string_point)
-    }
-    */
-    
-    
-    func foundPeer(notification: NSNotification){
-        //updateScene()
-        
-        //statusLabel("Found Peer")
-        
-        print("foundPeer",peers)
-    }
-    func losePeer(notification: NSNotification){
-        //updateScene()
-        
-        statusLabel("Lost Peer")
-        
-        print("losePeer",peers)
-        
-    }
-    
-    func invited(notification: NSNotification){
-        //updateScene()
-        statusLabel("Invited!")
-        
-    }
-    
-    
-    func connected(notification: NSNotification){
-        print("connected")
-        
-        statusLabel("Connected")
-        
-        transitionForNextScene(SelectWeaponScene(size: scene!.size))
-    }
-    
-    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        if let location = touches.first?.locationInNode(scrollnode){
-            let peerNodes = scrollnode.children
+        if let location = touches.first?.locationInNode(scrollNode){
+            let peerNodes = scrollNode.children
             for peerNode in peerNodes{
                 if peerNode.containsPoint(location){
                     for peer in peers {
@@ -273,7 +204,6 @@ class BuildConnectionScene: SKScene {
                         peerToConnect = peer
                         
                         print(peerToConnect?.name)
-                        //statusLabel("Invite!")
                         
                     }
                 }
@@ -283,7 +213,7 @@ class BuildConnectionScene: SKScene {
         if let location = touches.first?.locationInNode(self){
             if 返回按鈕.containsPoint(location){
                 返回按鈕.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
-                let nextScene = MainScene(size: scene!.size)
+                let nextScene = PlayModeScene(size: scene!.size)
                 transitionForNextScene(nextScene)
             }
             
@@ -340,8 +270,6 @@ class BuildConnectionScene: SKScene {
                         
                         
                         let nextScene = SelectWeaponScene(size: self.scene!.size)
-                           // nextScene.readyToReceiveImage()
-                        
                         enemyCharacterLoader.preload()
                         
                         self.transitionForNextScene(nextScene)
@@ -367,7 +295,6 @@ class BuildConnectionScene: SKScene {
             }
         });
     }
-    
     
     override func update(currentTime: NSTimeInterval) {
         

@@ -14,6 +14,11 @@ struct Constants {
         static let MaxOfCandidateNumber = 3
     }
     
+    struct Scene {
+        static let BackButtonSizeWidth = 184.0
+        static let BackButtonSizeHeight = 57.0
+    }
+    
     struct MainScene {
         static let Background = "mainscene_backgound.jpg"
         static let Slot = "mainscene_slot.png"
@@ -27,11 +32,22 @@ struct Constants {
         static let SlotSize = 80.0
     }
     
+    struct CameraScene {
+        static let Interface = "camerascene_interface_test.png"
+        static let Button = "camerascene_button.png"
+        static let BackButton = "camerascene_back_button.png"
+    }
+    
     struct PlayModeScene {
         static let Background = "playermodescene_background" //Atlas
         static let BackButton = "playermodescene_back_button.png"
         static let StoryButton = "playermodescene_story_button.png"
         static let VersusButton = "playermodescene_versus_button.png"
+    }
+    struct BuildConnectionScene {
+        static let Background = "buildconnectionscene_background.jpg"
+        static let PlayerList = "buildconnectionscene_player_list.png"
+        static let BackButton = "buildconnectionscene_back_button.png"
     }
     
     struct CharacterManager {

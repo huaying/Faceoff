@@ -159,7 +159,7 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
         
         if stringOfData != "" {
             let _data = stringOfData.dataUsingEncoding(NSUTF8StringEncoding)
-            self.peripheralManager.updateValue(_data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)
+            while(!self.peripheralManager.updateValue(_data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)){}
         }
     }
     

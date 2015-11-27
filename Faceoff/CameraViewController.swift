@@ -16,14 +16,11 @@ class CameraViewController: UIViewController {
     var stillImageOutput: AVCaptureStillImageOutput?
     var previewLayer: AVCaptureVideoPreviewLayer?
     var photoPickButton = UIView()
+    var backButton = UIView()
     var currentPicking = Constants.CharacterManager.maxOfCandidateNumber - 1
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        // Do any additional setup after loading the view, typically from a nib.
-//    NSNotificationCenter.defaultCenter().addObserverForName("AVCaptureDeviceDidStartRunningNotification", object:nil, queue:nil, usingBlock: { note in
-//        
-//        })
         
         captureSession = AVCaptureSession()
         captureSession!.sessionPreset = AVCaptureSessionPresetPhoto
@@ -66,17 +63,28 @@ class CameraViewController: UIViewController {
                 self.view.layer.addSublayer(previewLayer!)
                 self.view.addSubview(self.createCameraOverlay())
                 self.view.addSubview(self.createPhotoPickButton())
+                self.view.addSubview(self.createBackButton())
+
                 captureSession!.startRunning()
    
             }
         }
         
-        let gesture = UITapGestureRecognizer(target: self, action: "handlePhotoPickButtonTap:")
-        self.photoPickButton.addGestureRecognizer(gesture)
+        let photoPickGesture = UITapGestureRecognizer(target: self, action: "handlePhotoPickButtonTap:")
+        self.photoPickButton.addGestureRecognizer(photoPickGesture)
+        
+        let backGesture = UITapGestureRecognizer(target: self, action: "handleBackButtonTap:")
+        self.backButton.addGestureRecognizer(backGesture)
+        
     }
     
     func handlePhotoPickButtonTap(sender:UITapGestureRecognizer){
         photoPick()
+    }
+    
+    func handleBackButtonTap(sender:UITapGestureRecognizer){
+        self.dismissViewControllerAnimated(true, completion: nil)
+
     }
     
     func photoPick(){
@@ -109,29 +117,13 @@ class CameraViewController: UIViewController {
         
     func createCameraOverlay() -> UIView
     {
-        let overlayView = UIView(frame: self.view.frame)
-        overlayView.alpha = 0.7
-        overlayView.backgroundColor = UIColor.blackColor()
+        
+        let overlayView = UIImageView(image: UIImage(named: Constants.CameraScene.Interface))
+        //overlayView.alpha = 1
         overlayView.frame = self.view.frame
+        overlayView.contentMode = .ScaleAspectFill
         
-        let maskLayer = CAShapeLayer()
-        
-        // Create a path with the rectangle in it.
-        let path = CGPathCreateMutable()
-        let circleRadius : CGFloat = overlayView.frame.height/2 - 10.0
-        let yCircleCenter: CGFloat = overlayView.frame.height/2
-        let xCircleCenter: CGFloat = overlayView.frame.width/2
-        let rectWidth: CGFloat = overlayView.frame.width
-        let rectHeight: CGFloat = overlayView.frame.height
-        
-        CGPathAddArc(path, nil, xCircleCenter, yCircleCenter, circleRadius, 0.0, 2 * 3.14, false)
-        CGPathAddRect(path, nil, CGRectMake(0, 0, rectWidth, rectHeight))
-        maskLayer.backgroundColor = UIColor.blackColor().CGColor
-        
-        maskLayer.path = path;
-        maskLayer.fillRule = kCAFillRuleEvenOdd
-        
-        overlayView.layer.mask = maskLayer
+        //overlayView.layer.mask = maskLayer
         overlayView.clipsToBounds = true
         
         return overlayView
@@ -139,29 +131,52 @@ class CameraViewController: UIViewController {
     
     func createPhotoPickButton() -> UIView{
         
-        let rectWidth: CGFloat = self.view.frame.width
-        let rectHeight: CGFloat = self.view.frame.height
+        let buttonImage = UIImage(named: Constants.CameraScene.Button)
 
-        var path = CGPathCreateMutable()
-        //CGPathAddArc(path, nil, rectWidth-120, rectHeight-60, 38, 0.0, CGFloat(2.0 * M_PI), false)
-        CGPathAddArc(path, nil, 40, 40, 38, 0.0, CGFloat(2.0 * M_PI), false)
-        var buttonLayer = CAShapeLayer()
-        buttonLayer.path = path
-        buttonLayer.fillColor =  UIColor.whiteColor().CGColor
-        photoPickButton.layer.addSublayer(buttonLayer)
+        let button = UIImageView(image: resize(buttonImage!,ratio: 0.7))
+
+        photoPickButton.frame = button.frame
+        photoPickButton.center = CGPointMake(self.view.frame.width * 0.9,self.view.frame.midY)
         
-        path = CGPathCreateMutable()
-        //CGPathAddArc(path, nil, rectWidth-120, rectHeight-60, 30, 0.0, CGFloat(2.0 * M_PI), false)
-        CGPathAddArc(path, nil, 40, 40, 30, 0.0, CGFloat(2.0 * M_PI), false)
-        buttonLayer = CAShapeLayer()
-        buttonLayer.path = path
-        buttonLayer.lineWidth = 3.0
-        buttonLayer.strokeColor = UIColor.blackColor().CGColor
-        buttonLayer.fillColor =  UIColor.whiteColor().CGColor
-        photoPickButton.layer.addSublayer(buttonLayer)
-        self.view.addSubview(photoPickButton)
-        photoPickButton.frame = CGRectMake(rectWidth-160, rectHeight-100,80,80)
+        photoPickButton.addSubview(button)
+        
         return photoPickButton
     }
+    
+    func createBackButton() -> UIView {
+        let buttonImage = UIImage(named: Constants.CameraScene.BackButton)
+        
+        let size = CGSizeMake(CGFloat(Constants.Scene.BackButtonSizeWidth) ,CGFloat(Constants.Scene.BackButtonSizeHeight))
+        let button = UIImageView(image: resize(buttonImage!,size: size))
+        
+        backButton.frame = button.frame
+        backButton.center = CGPointMake(button.frame.width/2,self.view.frame.height-button.frame.height/2)
+        
+        
+        backButton.addSubview(button)
+        
+        return backButton
+
+    }
+    
+    func resize(image: UIImage, ratio: CGFloat) -> UIImage?{
+        
+        let size = CGSizeApplyAffineTransform(image.size, CGAffineTransformMakeScale(ratio, ratio))
+        return resize(image,size: size)
+    }
+    
+    func resize(image: UIImage, size :CGSize) -> UIImage?{
+        
+        let hasAlpha = true
+        let scale: CGFloat = 0.0 // Automatically use scale factor of main screen
+        
+        UIGraphicsBeginImageContextWithOptions(size, !hasAlpha, scale)
+        image.drawInRect(CGRect(origin: CGPointZero, size: size))
+        
+        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return scaledImage
+    }
+
 }
 

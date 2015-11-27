@@ -10,21 +10,23 @@ import SpriteKit
 
 class ScrollNode: SKNode{
     
-    let coefficientOfSliding = 0.1
+    let coefficientOfSliding = 0.05
     let coefficientOfTransition = 0.3
     
-    let yPadding: CGFloat = 100
+    let yPadding: CGFloat = 40
     
     var maxYPosition: CGFloat {
         get {
-            return 0 + yPadding
+            if let sizeHeight = self.parent?.frame.size.height {
+                return yPadding - sizeHeight/2
+            }
+            return 0
         }
     }
     var minYPosition: CGFloat {
         get {
-            //print((self.parent?.frame.size.height)! ,self.calculateAccumulatedFrame().size.height ,yOffset)
             if let sizeHeight = self.parent?.frame.size.height {
-                return sizeHeight - self.calculateAccumulatedFrame().size.height - yOffset - yPadding
+                return sizeHeight/2 - self.calculateAccumulatedFrame().size.height - yOffset - yPadding
             }
             return 0
         }
@@ -36,7 +38,7 @@ class ScrollNode: SKNode{
     
     override init(){
         super.init()
-        self.zPosition = 1
+        self.zPosition = 5
     }
     
     override func addChild(node: SKNode) {

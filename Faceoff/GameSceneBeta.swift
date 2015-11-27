@@ -204,8 +204,8 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
             self.processUserMotionForUpdate(currentTime)
         }
         
-        //Slower Updateder (1/3)
-        if ++slowUpdateCount % 3 == 0 {
+        //Slower Updateder (1/5)
+        if ++slowUpdateCount % 10 == 0 {
             slowUpdateCount = 0
             
             self.processLocationSendingForUpdate(currentTime)
@@ -223,7 +223,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
         let normalizedX = 1 - (x/size.width)
         let normalizedY = 1 - (y/size.height)
         btAdvertiseSharedInstance.update("location",data: ["x":normalizedX.description, "y":normalizedY.description])
-    
+        usleep(10000)
     }
     func processManaForUpdate(currentTime: CFTimeInterval){
         

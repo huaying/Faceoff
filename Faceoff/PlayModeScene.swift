@@ -44,7 +44,7 @@ class PlayModeScene: SKScene {
     func loadBackButton(){
         
         let texture = SKTexture(image: UIImage(named: Constants.PlayModeScene.BackButton)!)
-        返回按鈕 = SKSpriteNode(texture: texture, size: CGSizeMake(184.0,57.0))
+        返回按鈕 = SKSpriteNode(texture: texture, size: CGSizeMake(CGFloat(Constants.Scene.BackButtonSizeWidth) ,CGFloat(Constants.Scene.BackButtonSizeHeight)))
         返回按鈕.position = CGPoint(x:返回按鈕.frame.width/2,y: 返回按鈕.frame.height/2)
         addChild(返回按鈕)
     }
