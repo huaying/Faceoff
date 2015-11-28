@@ -266,11 +266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Faceoff/EnemyCharacterLoader.swift"
-            timestampString = "470143833.48084"
+            timestampString = "470370632.751257"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
             landmarkName = "updateByInfoOfEnemy(_:)"
             landmarkType = "5">
          </BreakpointContent>

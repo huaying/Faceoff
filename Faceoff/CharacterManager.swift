@@ -48,15 +48,24 @@ class CharacterManager {
     }
     
     static func deleteCharacterFromLocalStorage(index: Int) {
+        let name = "Candidate\(index)"
+        deleteCharacterFromLocalStorage(name)
+    }
+    
+    static func deleteEnemyFromLocalStrorage(){
+        deleteCharacterFromLocalStorage("Enemy")
+    }
+    
+    static func deleteCharacterFromLocalStorage(name: String){
         let fileManager = NSFileManager.defaultManager()
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
-        let getImagePath = (paths as NSString).stringByAppendingPathComponent("Candidate\(index).png")
+        let getImagePath = (paths as NSString).stringByAppendingPathComponent("\(name).png")
         //let getImagePath = (paths as NSString).stringByAppendingPathComponent("Candidate\(index).jpg")
         
         do {
             try fileManager.removeItemAtPath(getImagePath)
             print("File \(getImagePath) is deleted")
-
+            
         }catch{
             print("File \(getImagePath) cannot be deleted")
         }

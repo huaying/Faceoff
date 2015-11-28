@@ -285,11 +285,17 @@ class SelectWeaponScene: SKScene {
             }
             
             if confirm_btn.containsPoint(location) {
+                
                 for weapon in weaponArray {
                     if weapon == nil {
                         return
                     }
                 }
+                
+                while !EnemyCharacterLoader.isLoaded() {
+                    sleep(1)
+                }
+                
                 let nextScene = GameScene2(size: scene!.size)
                 nextScene.scaleMode = SKSceneScaleMode.ResizeFill
                 nextScene.weaponManager.candidateWeaponTypes = weaponArray
@@ -297,11 +303,9 @@ class SelectWeaponScene: SKScene {
                 let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)
                 
                 removeAllChildren()
-                
-//                nextScene.userData = NSMutableDictionary()
-//                let stringRepresentation = weaponArray.joinWithSeparator("-")
-//                nextScene.userData?.setObject(stringRepresentation, forKey: "Ray")
                 scene?.view?.presentScene(nextScene, transition: transition)
+                    
+                
             }
             
             if(self.nodeAtPoint(location).name != nil && WEAPONS.contains(self.nodeAtPoint(location))){

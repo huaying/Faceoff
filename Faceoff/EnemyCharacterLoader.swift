@@ -15,6 +15,7 @@ class EnemyCharacterLoader: NSObject {
     var isEnemyGetReady: Bool = false
     
     func preload(){
+        CharacterManager.deleteEnemyFromLocalStrorage()
         setupBlueToothDataHandler()
         sendNotificationOfReadyToReceive()
     }
@@ -94,4 +95,11 @@ class EnemyCharacterLoader: NSObject {
         btAdvertiseSharedInstance.update("character-image-finish")
     }
 
+    static func isLoaded() -> Bool {
+        if let _ = CharacterManager.getEnemyCharacterFromLocalStorage() {
+            return true
+        }
+        return false
+        
+    }
 }
