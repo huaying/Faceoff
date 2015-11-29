@@ -10,6 +10,9 @@ import Foundation
 
 struct Constants {
     
+    static let Font = "Copperplate"
+    
+    
     struct Character {
         static let MaxOfCandidateNumber = 3
     }

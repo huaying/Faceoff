@@ -68,7 +68,7 @@ class BuildConnectionScene: SKScene {
         遊戲按鈕.position = CGPoint(x:CGRectGetMaxX(self.frame)-40,y:CGRectGetMinY(self.frame)+CGFloat(30.0))
         addChild(遊戲按鈕)
         
-        let 遊戲文字 = SKLabelNode(fontNamed:"BradleyHandITCTT-Bold")
+        let 遊戲文字 = SKLabelNode(fontNamed:Constants.Font)
         遊戲文字.text = "Go!";
         遊戲文字.fontSize = 14;
         遊戲文字.position = CGPoint(x:CGFloat(0),y:CGFloat(-5))
@@ -124,7 +124,7 @@ class BuildConnectionScene: SKScene {
         
     }
     func loadYourDeviceName(){
-        statusnode = SKLabelNode(fontNamed: "Copperplate")
+        statusnode = SKLabelNode(fontNamed: Constants.Font)
         statusnode.fontSize = 20
         statusnode.position = CGPointMake(frame.midX, frame.midY-120)
         statusnode.text = "You: "+UIDevice.currentDevice().name
@@ -168,7 +168,7 @@ class BuildConnectionScene: SKScene {
         
         for(index, peripheral) in peers.enumerate(){
             
-            let peerNode = SKLabelNode(fontNamed: "Copperplate")
+            let peerNode = SKLabelNode(fontNamed: Constants.Font)
             peerNode.text = peripheral.name;
             peerNode.fontSize = 20;
             peerNode.position = CGPoint(x:0,y:CGFloat(index * 40))
@@ -183,7 +183,7 @@ class BuildConnectionScene: SKScene {
         
         for(index, name) in peerName.enumerate(){
             
-            let peerNode = SKLabelNode(fontNamed: "Copperplate")
+            let peerNode = SKLabelNode(fontNamed: Constants.Font)
             peerNode.text = name;
             peerNode.fontSize = 25;
             peerNode.position = CGPoint(x:0,y:CGFloat(index * 40))

@@ -53,7 +53,7 @@ class SelectWeaponScene: SKScene {
         background.setScale(0.8)
         addChild(background)
         
-        descrioptionLable = SKLabelNode (fontNamed: "Chalkduster")
+        descrioptionLable = SKLabelNode (fontNamed: Constants.Font)
         descrioptionLable.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMaxY(self.frame)*0.25)
         descrioptionLable.fontSize = 20
         addChild(descrioptionLable)
