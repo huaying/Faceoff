@@ -12,7 +12,7 @@ import CoreMotion
 import AVFoundation
 import AudioToolbox
 
-class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
+class GameScene2: SKScene, SKPhysicsContactDelegate{
     
     var contactQueue = Array<SKPhysicsContact>()
     var contentCreated: Bool = false
@@ -22,11 +22,11 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
     var fireMutexReady = true
     var startMoving = true;
     
-    var arr: [String] = []
+   // var arr: [String] = []
     
     var weapons: Array<SKSpriteNode>?
     //var weaponsStringArray: [String] = ["cure", "energyBlast", "fire", "shotGun", "snow", "spy"]
-    
+    var weaponMutex: [DarwinBoolean] = [true, true, true]
     var hp: HPManager?
     var enemyHp: HPManager?
     var mp: MPManager?
@@ -35,6 +35,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
     var slowUpdateCount = 0
     
     let motionManager: CMMotionManager = CMMotionManager()
+    var velocityMultiplier = Constants.GameScene.Velocity
     
     let CharacterName = Constants.GameScene.Character
     let FireName = Constants.GameScene.Fire
@@ -65,7 +66,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
          NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("updateByInfoOfEnemy:"), name: "getInfoOfEnemy", object: nil)
         
     }
-    
+
     func updateByInfoOfEnemy(notification: NSNotification) {
         
         let userInfo = notification.userInfo as! Dictionary<String, AnyObject>
@@ -76,6 +77,12 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
                 let x = CGFloat(normalizedX) * self.size.width
                 enemy.position.x = x
             }
+        }
+            
+        else if let info: [String] = userInfo["weapon"] as?
+            [String] {
+            let weaponType = info[0]
+            weaponManager.enemyWeapon = weaponManager.makeWeapon(weaponType)
         }
         else if let info: [String] = userInfo["fire-bullet"] as? [String] {
             weaponManager.fireFromEnemy(info)
@@ -121,8 +128,15 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
         setupMpBar()
         setupenemyMapBar()
         loadBackground()
+        loadWeapons()
+        resetMutex()
+        
     }
-    
+    func resetMutex() {
+        weaponMutex[0] = true
+        weaponMutex[1] = true
+        weaponMutex[2] = true
+    }
     func loadBackground() {
         guard let _ = childNodeWithName("background") as! SKSpriteNode? else {
             let texture = SKTexture(image: UIImage(named: "background4.jpg")!)
@@ -197,7 +211,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
     override func update(currentTime: CFTimeInterval) {
         
         //Contact Detection
-        self.processContactsForUpdate(currentTime)
+        //self.processContactsForUpdate(currentTime)
         
         //Character Motion Control
         if(startMoving){
@@ -246,54 +260,48 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
     func processUserMotionForUpdate(currentTime: CFTimeInterval) {
         
         if let data = self.motionManager.accelerometerData {
-            
-            let multiplier = 500.0
             let x = data.acceleration.x
             let y = data.acceleration.y
-            character.physicsBody!.velocity = CGVector(dx: y * multiplier, dy: -x * multiplier )
+            character.physicsBody!.velocity = CGVector(dx: y * velocityMultiplier, dy: -x * velocityMultiplier )
         }
     }
-    
     func processContactsForUpdate(currentTime: CFTimeInterval) {
         for contact in self.contactQueue {
             self.handleContact(contact)
             
-            if let index = (self.contactQueue as NSArray).indexOfObject(contact) as Int? {
-                self.contactQueue.removeAtIndex(index)
-            }
+//            if let index = (self.contactQueue as NSArray).indexOfObject(contact) as Int? {
+//                self.contactQueue.removeAtIndex(index)
+//            }
+
         }
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         /* Called when a touch begins */
         
-        if let location = touches.first?.locationInNode(self){
-            for node in weapons! {
-                if node.containsPoint(location) {
-                    if node.name == "cure" {
-                        let cd = CDAnimationBuilder()
-                        node.runAction(cd.initCdAnimation("cure"))
-                    }
-                    if node.name == "spy" {
-                        let cd = CDAnimationBuilder()
-                        node.runAction(cd.initCdAnimation("spy"))
-                    }
-                    return
-                }
-            }
+        if touches.count == 1 {
+            weaponManager.firePreparingBegin(touches.first!)
+            
+            startMoving = false;
+            self.userInteractionEnabled = false
         }
-        
-        weaponManager.firePreparingBegin(touches.first!)
-        
-        startMoving = false;
-        self.userInteractionEnabled = false
+        print("touchBegan",touches.count)
         
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?)  {
         
         if !weaponManager.firePreparingEnd(touches.first!){
-            
+            if let location = touches.first?.locationInNode(self) {
+                for (i,node) in weapons!.enumerate() {
+                    if node.containsPoint(location) {
+                        lockWeapon(i, node: node)
+                        self.userInteractionEnabled = true
+                        startMoving = true
+                        return
+                    }
+                }
+            }
             if(fireMutexReady == true) {
                 fireMutexReady = false
                 weaponManager.fireBullet()
@@ -305,15 +313,49 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
         
         self.userInteractionEnabled = true
         startMoving = true
+        print("touchEnded")
     }
     
 
+    func lockWeapon(index: Int, node: SKSpriteNode) {
+        
+        if(weaponMutex[index]) {
+            
+            print("lockWeapon is " + String(index))
+            weaponMutex[index] = false;
+            
+            node.runAction(SKAction.scaleTo(1.5, duration: 0.5))
+            
+            weaponManager.weapon = weaponManager.makeWeapon(node.name!)
+            btAdvertiseSharedInstance.update("weapon",data: ["weapon":node.name!])
+            
+            node.runAction(SKAction.waitForDuration(3.0), completion: {
+                
+            self.weaponManager.weapon = self.weaponManager.makeWeapon(Constants.Weapon.WeaponType.Bullet)
+            btAdvertiseSharedInstance.update("weapon",data: ["weapon":Constants.Weapon.WeaponType.Bullet])
+                
+                node.runAction(SKAction.scaleTo(1, duration: 0.5))
+                
+                let cd = CDAnimationBuilder()
+                let child = SKSpriteNode(texture: nil, size: node.size)
+                
+                child.zPosition = 5
+                node.addChild(child)
+                child.runAction(cd.initCdAnimation("cd", time: 3.0), completion: {
+                    
+                    self.weaponMutex[index] = true;
+                    child.removeFromParent()
+                })
+            })
+        }
+    }
 
     // Physics Contact Helpers
     func didBeginContact(contact: SKPhysicsContact) {
         
         if contact as SKPhysicsContact? != nil {
-            self.contactQueue.append(contact)
+            //self.contactQueue.append(contact)
+            self.handleContact(contact)
         }
     }
     
@@ -335,6 +377,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
             }
             
             character?.shake()
+            character.getEffect(weaponManager)
             if let damage = weaponManager.fireDamage() {
                 decreaseHealth(CGFloat(damage))
             }
@@ -343,6 +386,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
         else if nodeNames.containsObject(CharacterName) && nodeNames.containsObject(EnemyPoweredFire) {
             
             character?.shake()
+            character.getEffect(weaponManager)
             if let damage = weaponManager.poweredFireDamage() {
                 decreaseHealth(CGFloat(damage))
             }
@@ -363,6 +407,11 @@ class GameScene2: SKScene, SKPhysicsContactDelegate, WeaponDelegate {
     }
     
     func decreaseHealth( value : CGFloat){
+        
+        if(character.childNodeWithName("armor") != nil) {
+            return
+        }
+        
         hp!.decrease(value)
         btAdvertiseSharedInstance.update("hp",data: ["hp":hp!.powerValue.description])
         

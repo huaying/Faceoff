@@ -108,12 +108,12 @@ class BuildConnectionScene: SKScene {
         addChild(cropNode)
         
         
-        //test scroll
+//        //test scroll
 //        let As = ["Huaying","Ray","GiGi","Sunny","Ethan"]
 //        //let As = ["Huaying","Ray"]
 //        for(index, a) in As.enumerate(){
 //            
-//            let peerNode = SKLabelNode(fontNamed: "BradleyHandITCTT-Bold")
+//            let peerNode = SKLabelNode(fontNamed: "Copperplate")
 //            peerNode.text = a;
 //            peerNode.fontSize = 25;
 //            peerNode.position = CGPoint(x:0,y:CGFloat(index * 40))
@@ -124,7 +124,7 @@ class BuildConnectionScene: SKScene {
         
     }
     func loadYourDeviceName(){
-        statusnode = SKLabelNode(fontNamed: "BradleyHandITCTT-Bold")
+        statusnode = SKLabelNode(fontNamed: "Copperplate")
         statusnode.fontSize = 20
         statusnode.position = CGPointMake(frame.midX, frame.midY-120)
         statusnode.text = "You: "+UIDevice.currentDevice().name
@@ -168,7 +168,7 @@ class BuildConnectionScene: SKScene {
         
         for(index, peripheral) in peers.enumerate(){
             
-            let peerNode = SKLabelNode(fontNamed: "BradleyHandITCTT-Bold")
+            let peerNode = SKLabelNode(fontNamed: "Copperplate")
             peerNode.text = peripheral.name;
             peerNode.fontSize = 20;
             peerNode.position = CGPoint(x:0,y:CGFloat(index * 40))
@@ -183,7 +183,7 @@ class BuildConnectionScene: SKScene {
         
         for(index, name) in peerName.enumerate(){
             
-            let peerNode = SKLabelNode(fontNamed: "BradleyHandITCTT-Bold")
+            let peerNode = SKLabelNode(fontNamed: "Copperplate")
             peerNode.text = name;
             peerNode.fontSize = 25;
             peerNode.position = CGPoint(x:0,y:CGFloat(index * 40))
@@ -197,14 +197,19 @@ class BuildConnectionScene: SKScene {
             let peerNodes = scrollNode.children
             for peerNode in peerNodes{
                 if peerNode.containsPoint(location){
-                    for peer in peers {
+                    
+                    let tmp = peerNode as! SKLabelNode
+                    
+                    for var i = 0; i < peerName.count; i++ {
                         
-                        btDiscoverySharedInstance.connectToPeripheral(centralManager, peripheral: peer)
-                        
-                        peerToConnect = peer
-                        
-                        print(peerToConnect?.name)
-                        
+                        if tmp.text! == peerName[i]{
+                            
+                            btDiscoverySharedInstance.connectToPeripheral(centralManager, peripheral: peers[i])
+                            
+                            peerToConnect = peers[i]
+                            
+                            print(peerToConnect?.name)
+                        }
                     }
                 }
             }

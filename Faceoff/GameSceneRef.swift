@@ -1373,11 +1373,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 if node.containsPoint(location) {
                     if node.name == "cure" {
                         let cd = CDAnimationBuilder()
-                        node.runAction(cd.initCdAnimation("cure"))
+                        //node.runAction(cd.initCdAnimation("cure"))
                     }
                     if node.name == "spy" {
                         let cd = CDAnimationBuilder()
-                        node.runAction(cd.initCdAnimation("spy"))
+                        //node.runAction(cd.initCdAnimation("spy"))
                     }
                     return
                 }

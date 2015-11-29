@@ -9,9 +9,6 @@
 import Foundation
 import SpriteKit
 
-protocol WeaponDelegate {
-    func decreaseHealth(value: CGFloat)
-}
 
 class Weapon: NSObject{
     
@@ -22,13 +19,16 @@ class Weapon: NSObject{
     var firePreparingEmitter: SKEmitterNode!
     
     var sceneNode: SKScene!
-    var delegate: WeaponDelegate?
+    var gameScene: GameScene2?
     
     var isFirePreparing: Bool = false
 
     
     init(sceneNode :SKScene){
         self.sceneNode = sceneNode
+        if let gameScene = sceneNode as? GameScene2 {
+            self.gameScene = gameScene
+        }
     }
     
     func fire(){}
@@ -42,364 +42,39 @@ class Weapon: NSObject{
     func getDamage() -> Double { return 0 }
     func getManaUse() -> Double { return 0 }
     
-    func getCharacter() -> SKSpriteNode {
-        let characterName = Constants.GameScene.Character
-        let character = sceneNode.childNodeWithName(characterName) as! SKSpriteNode
-        return character
+    func getCharacter() -> SKSpriteNode? {
+        return gameScene!.character
     }
 }
 
-class Bullet: Weapon {
+
+class Armor: Bullet {
     
-    var damage: Double = 20.0
-    
+    var armor: SKSpriteNode?
     override init(sceneNode :SKScene){
         super.init(sceneNode: sceneNode)
-        bulletImageName = Constants.Weapon.WeaponImage.Bullet
+        enableArmor()
     }
     
-    override func fire(){
-        super.fire()
+    func enableArmor(){
         
-        let character = getCharacter()
-        let bulletPosition = CGPointMake(character.position.x, character.position.y + character.frame.height + 25)
-        let bulletVector = CGVectorMake(0, (sceneNode!.size.height))
-        fire(bulletPosition,vector: bulletVector)
+        armor = SKSpriteNode(imageNamed: Constants.Weapon.WeaponImage.Armor)
+        let character = getCharacter()!
+        character.name = Constants.Weapon.WeaponImage.Armor
+        armor!.size.height = character.size.height * 2.5
+        armor!.size.width = character.size.width * 2.5
+        armor?.zPosition = character.zPosition+1
+        character.addChild(armor!)
         
-        let normalizedX = 1 - (bulletPosition.x/sceneNode.size.width)
-        btAdvertiseSharedInstance.update("fire-bullet",data: ["x":normalizedX.description])
+    }
+    func disableArmor(){
+        armor?.removeFromParent()
     }
     
-    override func fireFromEnemy(fireInfo: [String]) {
-        
-        if let normalizedX = Double(fireInfo[0]) {
-            let x = CGFloat(normalizedX) * sceneNode.size.width
-            let bulletPosition = CGPoint(x: CGFloat(x), y: sceneNode!.size.height)
-            let bulletVector = CGVectorMake(0, -sceneNode!.size.height)
-            fire(bulletPosition,vector: bulletVector,fromEnemy: true)
-        }
-        
-    }
-    
-    func fire(fromPosition: CGPoint, vector: CGVector, fromEnemy: Bool = false){
-        if let bulletImageName = bulletImageName {
-            bullet = SKSpriteNode(imageNamed: bulletImageName)
-            bullet!.xScale = 0.5
-            bullet!.yScale = 0.5
-            bullet!.position = fromPosition
-            bullet!.name = Constants.GameScene.Fire
-            PhysicsSetting.setupFire(bullet!)
-            
-            if fromEnemy {
-                bullet!.yScale = -bullet!.yScale
-                bullet!.name = Constants.GameScene.EnemyFire
-                PhysicsSetting.setupEnemyFire(bullet!)
-            }
-            
-            let bulletAction = SKAction.sequence([SKAction.moveBy(vector, duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
-
-            bullet!.runAction(bulletAction)
-            sceneNode.addChild(bullet!)
-        }
-
-    }
-    override func getDamage() -> Double {
-        return damage
-    }
-    
-}
-
-class Laser: Weapon {
-    
-    var damage: Double = 0
-    var mana: Double = 1.5
-    
-    override init(sceneNode :SKScene){
-        super.init(sceneNode: sceneNode)
-    }
-    override func fire(){
-        super.fire()
-        bullet!.xScale = 0.2
-        bullet!.yScale = 0.2
-    }
-    
-    //Powered Fire
-    override func fire(preparingTime: NSTimeInterval?){
-        stopFirePreparingAction()
-        
-        if let preparingTime = preparingTime{
-            
-            let laserWidth = 400.0
-            var laserFinalWidth: Double!
-            if preparingTime > 3.0 {
-                laserFinalWidth = laserWidth
-            }else{
-                laserFinalWidth = laserWidth * preparingTime/3.0
-            }
-            
-            let character = getCharacter()
-            
-            let bulletPosition = CGPoint(x: character.position.x, y: character.position.y + character.size.height/2 + sceneNode!.size.height/2 * 1.5)
-            
-            fire(bulletPosition,laserWidth: CGFloat(laserFinalWidth))
-            
-            let normalizedX = 1 - (bulletPosition.x/sceneNode.size.width)
-            btAdvertiseSharedInstance.update("fire-laser",data: ["x":normalizedX.description,"laserWidth":laserFinalWidth.description])
-        }
-    }
-    override func fireFromEnemy(fireInfo: [String]) {
-        
-        if let normalizedX = Double(fireInfo[0]) {
-            let x = CGFloat(normalizedX) * sceneNode.size.width
-            if let laserWidth = Double(fireInfo[1]) {
-                
-                let bulletPosition = CGPointMake(x, sceneNode!.frame.height/2)
-                fire(bulletPosition,laserWidth: CGFloat(laserWidth),fromEnemy: true)
-                
-                damage = laserWidth/40
-            }
-        }
-        
-    }
-
-    
-    func fire(fromPosition: CGPoint, laserWidth: CGFloat, fromEnemy: Bool = false){
-        
-        bullet = SKSpriteNode(imageNamed: "a01")
-        
-        bullet!.size.width = CGFloat(laserWidth)
-        bullet!.size.height = CGFloat(sceneNode!.size.height * 1.5)
-        bullet!.name = Constants.GameScene.PoweredFire
-        PhysicsSetting.setupFire(bullet!)
-        
-        if fromEnemy {
-            bullet!.yScale = -bullet!.yScale
-            bullet!.name = Constants.GameScene.EnemyPoweredFire
-            PhysicsSetting.setupEnemyFire(bullet!)
-        }
-        
-        bullet!.position = fromPosition
-        
-        let ebAtlas = SKTextureAtlas(named: "animation")
-        var energyBlastAnim:[SKTexture] = []
-        
-        for index in 1...ebAtlas.textureNames.count {
-            let imgName = String(format: "a%02d", index)
-            energyBlastAnim += [ebAtlas.textureNamed(imgName)]
-        }
-        let animation = SKAction.animateWithTextures(energyBlastAnim, timePerFrame: 0.1)
-        bullet!.runAction(animation, completion: {
-            self.bullet!.removeFromParent()
-        })
-        
-        sceneNode.addChild(bullet!)
-        
-    }
-    
-    
-    override func firePreparingAction(){
-        
-        isFirePreparing = true
-        
-        let character = getCharacter()
-        
-        character.runAction(SKAction.waitForDuration(0.3), completion: {
-            if self.isFirePreparing {
-                
-                self.stopFirePreparingAction()
-                
-                let sksPath = NSBundle.mainBundle().pathForResource("MyParticle", ofType: "sks")
-                
-                self.firePreparingEmitter = NSKeyedUnarchiver.unarchiveObjectWithFile(sksPath!) as! SKEmitterNode
-                self.firePreparingEmitter!.zPosition = 0;
-                self.firePreparingEmitter!.alpha = 0.6
-                self.firePreparingEmitter!.particleBirthRate = 500
-                
-                character.addChild(self.firePreparingEmitter!)
-            }
-        })
-    }
-
-    override func stopFirePreparingAction() {
-        isFirePreparing = false
-        firePreparingEmitter?.removeFromParent()
-    }
-    
-    override func getDamage() -> Double {
-        return damage
-    }
-    override func getManaUse() -> Double { return mana }
-}
-
-class BounsBullet: Weapon{
-    
-    override init(sceneNode :SKScene){
-        super.init(sceneNode: sceneNode)
-        bulletImageName = Constants.Weapon.WeaponImage.BonusBullet
-    }
-    override func fire(){
-        super.fire()
-        bullet!.xScale = 0.2
-        bullet!.yScale = 0.2
+    deinit {
+        disableArmor()
     }
 }
 
-class IceBullet: Weapon {
-    
-    var frozenEffectImg: SKSpriteNode!
-    
-    override init(sceneNode :SKScene){
-        super.init(sceneNode: sceneNode)
-        bulletImageName = Constants.Weapon.WeaponImage.Bullet
-    }
-    
-    override func effect(character:CharacterNode){
-        super.effect(character)
-        frozenEffectImg = SKSpriteNode(imageNamed: "freeze")
-        frozenEffectImg.xScale = 1
-        frozenEffectImg.yScale = 1
-        frozenEffectImg.zPosition = -2
-        
-        character.runAction(SKAction.fadeAlphaBy((0.7 / (500 / 25.0)), duration: 1))
-        frozenEffectImg.runAction(SKAction.fadeAlphaBy(-(1.0 / (500 / 25.0)), duration: 1))
-        frozenEffectImg.runAction(SKAction.scaleBy(1.0 - (0.5 / (500 / 25.0)), duration: 1))
-        
-        character.addChild(frozenEffectImg)
-        
-        let frozenTimer = NSTimer(timeInterval: 0.5, target: self, selector: Selector("frozenEffect"), userInfo: 1, repeats: true)
-        NSRunLoop.mainRunLoop().addTimer(frozenTimer, forMode: NSDefaultRunLoopMode)
-    }
-    
-    func frozenEffect(){
-        let character = getCharacter()
-        character.runAction(SKAction.fadeAlphaBy((0.7 / (500 / 25.0)), duration: 1))
-        frozenEffectImg.runAction(SKAction.fadeAlphaBy(-(1.0 / (500 / 25.0)), duration: 1))
-        frozenEffectImg.runAction(SKAction.scaleBy(1.0 - (0.5 / (500 / 25.0)), duration: 1))
-    }
-}
 
-class FireBullet: Weapon{
-    
-    var burnEffectImg: SKSpriteNode!
-    
-    override init(sceneNode :SKScene){
-        super.init(sceneNode: sceneNode)
-        bulletImageName = Constants.Weapon.WeaponImage.Bullet
-    }
-    
-    override func effect(character:CharacterNode){
-        super.effect(character)
-        
-        burnEffectImg = SKSpriteNode(imageNamed: "burn")
-        burnEffectImg.zPosition = 1000
-        burnEffectImg.alpha = 0.0
-        character.addChild(burnEffectImg)
-        
-        let burnTimer = NSTimer(timeInterval: 2.0, target: self, selector: Selector("burnEffect"), userInfo: 1, repeats: true)
-        NSRunLoop.mainRunLoop().addTimer(burnTimer, forMode: NSDefaultRunLoopMode)
-    }
-    func burnEffect(){
-        
-        let character = getCharacter()
-        let minusLable = SKLabelNode()
-        minusLable.text = "-25"
-        minusLable.position.x = character.position.x
-        minusLable.position.y = character.position.y + 50
-        sceneNode.addChild(minusLable)
-        
-        minusLable.runAction(SKAction.moveToY(character.position.y+150, duration: 1.0))
-        minusLable.runAction(SKAction.fadeAlphaTo(0.0, duration: 1.0), completion:{
-            minusLable.removeFromParent()
-        })
-        
-        burnEffectImg.runAction(SKAction.fadeAlphaTo(1.0, duration: 0.5), completion:
-            {
-                self.burnEffectImg.runAction(SKAction.fadeAlphaTo(0.0, duration: 0.5))
-        })
-        
-        delegate?.decreaseHealth(2.5)
-    }
 
-}
-
-class MultiBullet: Bullet {
-    
-    override init(sceneNode :SKScene){
-        super.init(sceneNode: sceneNode)
-        bulletImageName = Constants.Weapon.WeaponImage.MultiBullet
-    }
-    override func fire(){
-        let character = getCharacter()
-        let bulletPosition = CGPointMake(character.position.x, character.position.y + character.frame.height + 10)
-        let bulletVector = CGVectorMake(0, (sceneNode!.size.height))
-        fire(bulletPosition,vector: bulletVector)
-        
-        let normalizedX = 1 - (bulletPosition.x/sceneNode.size.width)
-        btAdvertiseSharedInstance.update("fire-multibullet",data: ["x":normalizedX.description])
-    }
-    
-    override func fireFromEnemy(fireInfo: [String]) {
-        if let normalizedX = Double(fireInfo[0]) {
-            let x = CGFloat(normalizedX) * sceneNode.size.width
-            let bulletPosition = CGPoint(x: CGFloat(x), y: sceneNode!.size.height * 1.1)
-            let bulletVector = CGVectorMake(0, -sceneNode!.size.height)
-            fire(bulletPosition,vector: bulletVector,fromEnemy: true)
-        }
-    }
-    
-    override func fire(fromPosition: CGPoint, vector: CGVector, fromEnemy: Bool = false){
-        
-        if let bulletImageName = bulletImageName {
-            var bulletLeft: SKSpriteNode?
-            var bulletMiddle: SKSpriteNode?
-            var bulletRight: SKSpriteNode?
-            
-            bulletLeft = SKSpriteNode(imageNamed: bulletImageName)
-            bulletMiddle = SKSpriteNode(imageNamed: bulletImageName)
-            bulletRight = SKSpriteNode(imageNamed: bulletImageName)
-            bulletLeft?.xScale = 0.5
-            bulletMiddle?.xScale = 0.5
-            bulletRight?.xScale = 0.5
-            bulletLeft?.yScale = 0.5
-            bulletMiddle?.yScale = 0.5
-            bulletRight?.yScale = 0.5
-            
-            bulletLeft!.name = Constants.GameScene.Fire
-            bulletMiddle!.name = Constants.GameScene.Fire
-            bulletMiddle!.name = Constants.GameScene.Fire
-
-            PhysicsSetting.setupFire(bulletLeft!)
-            PhysicsSetting.setupFire(bulletMiddle!)
-            PhysicsSetting.setupFire(bulletRight!)
-            
-            if fromEnemy {
-                bulletLeft?.yScale *= -1
-                bulletMiddle?.yScale *= -1
-                bulletRight?.yScale *= -1
-                bulletLeft!.name = Constants.GameScene.EnemyFire
-                bulletMiddle!.name = Constants.GameScene.EnemyFire
-                bulletRight!.name = Constants.GameScene.EnemyFire
-                PhysicsSetting.setupEnemyFire(bulletLeft!)
-                PhysicsSetting.setupEnemyFire(bulletMiddle!)
-                PhysicsSetting.setupEnemyFire(bulletRight!)
-            }
-            
-            bulletLeft!.position = fromPosition
-            bulletMiddle!.position = fromPosition
-            bulletRight!.position = fromPosition
-            
-            let bulletLeftAction = SKAction.sequence([SKAction.moveBy(CGVectorMake(bulletLeft!.size.width * -7, vector.dy), duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
-            let bulletMiddleAction = SKAction.sequence([SKAction.moveBy(CGVectorMake(0, vector.dy), duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
-            let bulletRightAction = SKAction.sequence([SKAction.moveBy(CGVectorMake(bulletLeft!.size.width * 7, vector.dy), duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
-            
-            bulletLeft!.runAction(bulletLeftAction)
-            bulletMiddle!.runAction(bulletMiddleAction)
-            bulletRight!.runAction(bulletRightAction)
-            sceneNode.addChild(bulletLeft!)
-            sceneNode.addChild(bulletMiddle!)
-            sceneNode.addChild(bulletRight!)
-        }
-    }
-
-    
-}

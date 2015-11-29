@@ -37,8 +37,8 @@ class SelectWeaponScene: SKScene {
 
     
     var did_shrink: NSInteger = 0;
-    var arrayOfStrings: [String] = Constants.Weapon.Sets
-    var arrayOfDescription: [String] = Constants.Weapon.SetsDescription
+    var arrayOfStrings: [String] = Array(Constants.Weapon.Sets.keys)
+    var arrayOfDescription: [String] = Array(Constants.Weapon.Sets.values)
     
     
     var descrioptionLable: SKLabelNode! = nil
@@ -298,6 +298,7 @@ class SelectWeaponScene: SKScene {
                 
                 let nextScene = GameScene2(size: scene!.size)
                 nextScene.scaleMode = SKSceneScaleMode.ResizeFill
+                print(weaponArray)
                 nextScene.weaponManager.candidateWeaponTypes = weaponArray
                 
                 let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)

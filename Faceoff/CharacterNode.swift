@@ -16,7 +16,6 @@ class CharacterNode: SKSpriteNode {
     func setup(sceneNode :SKScene){
         
         self.sceneNode = sceneNode
-        
         xScale = 0.5
         yScale = 0.5
         zPosition = 1000
@@ -24,8 +23,6 @@ class CharacterNode: SKSpriteNode {
         name = Constants.GameScene.Character
         PhysicsSetting.setupCharacter(self)
         sceneNode.addChild(self)
-        
-        
     }
     
     func getEffect(weaponManger :WeaponManager){

@@ -1,58 +1,42 @@
-//: Playground - noun: a place where people can play
 
-import Cocoa
+import Foundation
+import XCPlayground
 
-var str = "Hello, playground"
-
-//for i in (0..<5).reverse() {
-//    print(i)
-//}
-
-//
-//let data = ["x":"2","y":"1"]
-//let b = "1" + data["x"]!
-//
-//
-//var a = ["1","2","3","4"]
-//print(a.removeFirst())
-//a
-//
-//let aa = ["x":1]
-//if let a = aa["x"] {
-//    print(1)
-//}
-
-
-
-//var str_ = "Hello, darling."
-//var index1 = str_.startIndex.advancedBy(5)
-//str_.substringToIndex(index1)
-//str
-//index1 = str_.startIndex.advancedBy(5)
-//str_ = str_.substringToIndex(index1)
-
-
-var chunks = [[Character]]()
-let chunkSize = 100
-
-let base64String = "alfkjadf;lkaflk"
-
-for (i, character) in base64String.characters.enumerate() {
-    if i % chunkSize == 0 {
-        chunks.append([Character]())
+class test :NSObject{
+    
+    var timer: NSTimer!
+    func a(){
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(3 * Double(NSEC_PER_SEC)))
+        
+        dispatch_after(delayTime, dispatch_get_main_queue()) {
+            print("test")
+        }
     }
-    chunks[i/chunkSize].append(character)
+    func b(){
+        timer = NSTimer.scheduledTimerWithTimeInterval(2,
+            target: self,
+            selector: Selector("ccc"),
+            userInfo: nil,
+            repeats: false)
+    }
+    func ccc(){
+        print("c")
+    }
 }
-var rltString = ""
-for chunk in chunks {
-    rltString += String(chunk)
-}
-print( chunks.count)
-if rltString == base64String {
-    print("ok")
-}
+var t = test()
+t.b()
+t = test()
 
-let a = "wd4X3h886YJngidesC8rLvIAQ6MONpUXHK0vyTtZlpt6Jjcl9kxqTMjJ+FC/oxj/wYTwgAMY/76cpKhnClJj76eifHNldtJldQXp"
-a.characters.count
-
-
+//func delay(delay:Double, closure:()->()) {
+//    dispatch_after(
+//        dispatch_time(
+//            DISPATCH_TIME_NOW,
+//            Int64(delay * Double(NSEC_PER_SEC))
+//        ),
+//        dispatch_get_main_queue(), closure)
+//}
+//
+//delay(2) {
+//    print(222)
+//}
+XCPSetExecutionShouldContinueIndefinitely()

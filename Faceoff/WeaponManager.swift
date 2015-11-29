@@ -45,13 +45,14 @@ class WeaponManager: NSObject{
         }
         
         //weapon = candidateWeapons.first
-        weapon = makeWeapon(Constants.Weapon.WeaponType.MultiBullet)
+        weapon = makeWeapon(Constants.Weapon.WeaponType.Bullet)
         poweredWeapon = makeWeapon(Constants.Weapon.WeaponType.Laser)
-        enemyWeapon = makeWeapon(Constants.Weapon.WeaponType.MultiBullet)
+        enemyWeapon = makeWeapon(Constants.Weapon.WeaponType.Bullet)
         enemyPoweredWeapon = makeWeapon(Constants.Weapon.WeaponType.Laser)
     }
     
     func makeWeapon(weaponType: String) -> Weapon {
+        print(weaponType)
         
         var weapon: Weapon!
         
@@ -73,7 +74,12 @@ class WeaponManager: NSObject{
         else if weaponType == Constants.Weapon.WeaponType.Laser{
             weapon = Laser(sceneNode: sceneNode)
         }
-        
+        else if weaponType == Constants.Weapon.WeaponType.Armor {
+            weapon = Armor(sceneNode: sceneNode)
+        }
+        else {
+            weapon = Bullet(sceneNode: sceneNode)
+        }
         return weapon
     }
 
@@ -114,6 +120,8 @@ class WeaponManager: NSObject{
     }
     
     func effect(character: CharacterNode) {
+//        let fireBullet = IceBullet(sceneNode: sceneNode)
+//        fireBullet.effect(character)
         enemyWeapon?.effect(character)
     }
     

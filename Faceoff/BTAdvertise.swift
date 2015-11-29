@@ -76,9 +76,7 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
         print("Service追加成功！")
        
         self.peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey:[BLEServiceUUID],CBAdvertisementDataLocalNameKey:UIDevice.currentDevice().name])
-        
     }
-    
 
     func peripheralManagerDidStartAdvertising(peripheral: CBPeripheralManager,
         error: NSError?){
@@ -101,12 +99,12 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
             } else {
                 print("Failed to advertise our beacon. Error = \(error)")
             }
-            
     }
     
     //Custom data sending handler
     func update(key: String, data: [String: String] = [String:String]()){
         
+        var needToBeSend = false
         var stringOfData = ""
         
         if key == "location" {
@@ -115,10 +113,19 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
         
         else if key == "hp" {
             stringOfData = key + " " + data["hp"]!
+            print("hp",data["hp"])
+            if data["hp"] == "0" {
+                needToBeSend = true
+            }
         }
         
         else if key == "mp" {
             stringOfData = key + " " + data["mp"]!
+        }
+            
+        else if key == "weapon" {
+            needToBeSend = true
+            stringOfData = key + " " + data["weapon"]!
         }
         
         else if key == "fire-bullet" {
@@ -131,35 +138,28 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
             stringOfData = key + " " + data["x"]! + " " + data["laserWidth"]!
         }
         else if key == "character-image" {
+            needToBeSend = true
             stringOfData = key + " " + data["chunkNum"]! + " " + data["chunkData"]!
-            
-            let _data = stringOfData.dataUsingEncoding(NSUTF8StringEncoding)
-//            print(data["chunkNum"]!,self.peripheralManager.updateValue(_data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil))
-            
-            //var i = 0
-            while(!self.peripheralManager.updateValue(_data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)){
-                //print(data["chunkNum"]!,"retry",++i)
-            }
-            return
         }
         else if key == "character-image-finish" {
-
+            needToBeSend = true
             stringOfData = key
-            let _data = stringOfData.dataUsingEncoding(NSUTF8StringEncoding)
-            while(!self.peripheralManager.updateValue(_data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)){
-                //print(data["chunkNum"]!,"retry",++i)
-            }
-            return
         }
             
         else if key == "character-image-ready"  {
+            needToBeSend = true
             stringOfData = key
-
         }
         
         if stringOfData != "" {
             let _data = stringOfData.dataUsingEncoding(NSUTF8StringEncoding)
-            while(!self.peripheralManager.updateValue(_data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)){}
+            if needToBeSend {
+                while(!self.peripheralManager.updateValue(_data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)){
+                    //print(data["chunkNum"]!,"retry",++i)
+                }
+            } else {
+                self.peripheralManager.updateValue(_data!, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)
+            }
         }
     }
     

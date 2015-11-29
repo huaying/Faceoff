@@ -56,6 +56,7 @@ struct Constants {
     
     struct GameScene {
         
+        static let Velocity = 500.0
         static let Character = "character"
         static let Fire = "fire"
         static let PoweredFire = "poweredfire"
@@ -86,37 +87,38 @@ struct Constants {
             static let Invisibility = "Invisibility_Cloak"
             static let Heal = "Heal"
             static let Detect = "Detect"
+            static let Armor = "armor"
         }
         
         //For Shooting
         struct WeaponImage {
             static let Bullet = "Missel"
-            static let IceBullet = "Frozen"
-            static let FireBullet = "Fire"
+            static let IceBullet = "ice_bullet.png"
+            static let FireBullet = "fire_bullet.png"
             static let MultiBullet = "Missel"
             static let BonusBullet = "DoubleBonus"
             static let Laser = "Ultimate"
             static let Invisibility = "Invisibility_Cloak"
             static let Heal = "Heal"
             static let Detect = "Detect"
+            static let Armor = "armor"
         }
         
         static let Sets = [
-            WeaponType.FireBullet,
-            WeaponType.IceBullet,
-            WeaponType.MultiBullet,
-            WeaponType.Invisibility,
-            WeaponType.Heal,
-            WeaponType.Detect
+            
+            WeaponType.FireBullet:"Keeps opponent blame and deducts him 30 point",
+            WeaponType.IceBullet:"Slow down opponent for 50%",
+            WeaponType.MultiBullet:"Shot 3 bullets every shot",
+            WeaponType.Invisibility:"Let yourself invisible",
+            WeaponType.Heal:"Add 20 points to yourself",
+            WeaponType.Detect:"Find opponent even he has heal",
+            WeaponType.Armor:"Give yourself an armor"
         ]
-        static let SetsDescription = [
-            "Keeps opponent blame and deducts him 30 point",
-            "Slow down opponent for 50%",
-            "Shot 3 bullets every shot",
-            "Let yourself invisible",
-            "Add 20 points to yourself",
-            "Find opponent even he has heal"
-        ]
+        
+        struct Effect {
+            static let Fire = "fire_effect.png"
+            static let Ice = "freeze"
+        }
     }
     
 }

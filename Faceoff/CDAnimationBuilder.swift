@@ -9,8 +9,7 @@
 import SpriteKit
 
 class CDAnimationBuilder {
-    
-    func initCdAnimation(atlasStr: String) -> SKAction {
+    func initCdAnimation(atlasStr: String, time: Double) -> SKAction {
         let cdAtlas = SKTextureAtlas(named: atlasStr)
         var cdAnim = [SKTexture]()
         var animation = SKAction()
@@ -21,7 +20,7 @@ class CDAnimationBuilder {
             cdAnim += [cdAtlas.textureNamed(imgName)]
         }
         
-        animation = SKAction.animateWithTextures(cdAnim, timePerFrame: 0.5)
+        animation = SKAction.animateWithTextures(cdAnim, timePerFrame: time / 8)
         return animation
     }
 }
