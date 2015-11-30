@@ -18,14 +18,11 @@ class Weapon: NSObject{
     var bulletImageName: String?
     var firePreparingEmitter: SKEmitterNode!
     
-    var sceneNode: SKScene!
     var gameScene: GameScene2?
     
     var isFirePreparing: Bool = false
-
     
     init(sceneNode :SKScene){
-        self.sceneNode = sceneNode
         if let gameScene = sceneNode as? GameScene2 {
             self.gameScene = gameScene
         }
@@ -36,10 +33,14 @@ class Weapon: NSObject{
     
     //Powered Fire
     func fire(preparingTime: NSTimeInterval?){}
-    func effect(character:CharacterNode){}
+    func effect(character:CharacterNode){} //set effect when hit
+    func removeEffect(){}
+    func positveEffect(){}  //initial effect for self
+    func negativeEffect(){} //initial effect for others
     func firePreparingAction(){}
     func stopFirePreparingAction() {}
     func getDamage() -> Double { return 0 }
+    func getReduce() -> Double { return 1 }
     func getManaUse() -> Double { return 0 }
     
     func getCharacter() -> SKSpriteNode? {
@@ -47,34 +48,6 @@ class Weapon: NSObject{
     }
 }
 
-
-class Armor: Bullet {
-    
-    var armor: SKSpriteNode?
-    override init(sceneNode :SKScene){
-        super.init(sceneNode: sceneNode)
-        enableArmor()
-    }
-    
-    func enableArmor(){
-        
-        armor = SKSpriteNode(imageNamed: Constants.Weapon.WeaponImage.Armor)
-        let character = getCharacter()!
-        character.name = Constants.Weapon.WeaponImage.Armor
-        armor!.size.height = character.size.height * 2.5
-        armor!.size.width = character.size.width * 2.5
-        armor?.zPosition = character.zPosition+1
-        character.addChild(armor!)
-        
-    }
-    func disableArmor(){
-        armor?.removeFromParent()
-    }
-    
-    deinit {
-        disableArmor()
-    }
-}
 
 
 

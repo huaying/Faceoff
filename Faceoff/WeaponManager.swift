@@ -34,25 +34,43 @@ class WeaponManager: NSObject{
         }
     }
     
+    func cleanWeapons(){
+        cleanFirePreparingTime()
+        weapon?.removeEffect()
+        poweredWeapon?.removeEffect()
+        enemyWeapon?.removeEffect()
+        enemyPoweredWeapon?.removeEffect()
+    }
+    
     func loadWeapons(sceneNode :SKScene){
         self.sceneNode = sceneNode
         
-        print(candidateWeaponTypes)
-        if let candidateWeaponTypes = candidateWeaponTypes {
-            for candidateWeaponType in candidateWeaponTypes {
-                //candidateWeapons.append(makeWeapon(candidateWeaponType!))
-            }
+        setCharacterWeapon(Constants.Weapon.WeaponType.Bullet)
+        setCharacterWeapon(Constants.Weapon.WeaponType.Laser,powered: true)
+        setEnemyWeapon(Constants.Weapon.WeaponType.Bullet)
+        setEnemyWeapon(Constants.Weapon.WeaponType.Laser,powered: true)
+    }
+    
+    func setCharacterWeapon(weaponType: String, powered: Bool = false){
+        if !powered {
+            weapon = makeWeapon(weaponType)
+            weapon!.positveEffect()
+        }else{
+            poweredWeapon = makeWeapon(weaponType)
+            poweredWeapon!.positveEffect()
         }
-        
-        //weapon = candidateWeapons.first
-        weapon = makeWeapon(Constants.Weapon.WeaponType.Bullet)
-        poweredWeapon = makeWeapon(Constants.Weapon.WeaponType.Laser)
-        enemyWeapon = makeWeapon(Constants.Weapon.WeaponType.Bullet)
-        enemyPoweredWeapon = makeWeapon(Constants.Weapon.WeaponType.Laser)
+    }
+    func setEnemyWeapon(weaponType: String,powered: Bool = false){
+        if !powered {
+            enemyWeapon = makeWeapon(weaponType)
+            enemyWeapon!.negativeEffect()
+        }else{
+            enemyPoweredWeapon = makeWeapon(weaponType)
+            enemyPoweredWeapon!.negativeEffect()
+        }
     }
     
     func makeWeapon(weaponType: String) -> Weapon {
-        print(weaponType)
         
         var weapon: Weapon!
         
@@ -80,6 +98,7 @@ class WeaponManager: NSObject{
         else {
             weapon = Bullet(sceneNode: sceneNode)
         }
+        
         return weapon
     }
 
@@ -119,6 +138,7 @@ class WeaponManager: NSObject{
         firePreparingEndTime = nil
     }
     
+    //set effect when hit
     func effect(character: CharacterNode) {
 //        let fireBullet = IceBullet(sceneNode: sceneNode)
 //        fireBullet.effect(character)
@@ -133,11 +153,21 @@ class WeaponManager: NSObject{
         enemyPoweredWeapon?.fireFromEnemy(fireInfo)
     }
     
-    func fireDamage() -> Double? {
-        return enemyWeapon?.getDamage()
+    func fireDamage() -> Double {
+        return enemyWeapon!.getDamage() * weapon!.getReduce()
     }
     
-    func poweredFireDamage() -> Double? {
-        return enemyPoweredWeapon?.getDamage()
+    func poweredFireDamage() -> Double {
+        return enemyPoweredWeapon!.getDamage() * weapon!.getReduce()
+    }
+    
+    //set initial positive effect to self
+    func setPositiveEffect(){
+        weapon?.positveEffect()
+    }
+    
+    //set initial negative effect to others
+    func setNegativeEffect(){
+        enemyWeapon?.negativeEffect()
     }
 }

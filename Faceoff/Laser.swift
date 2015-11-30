@@ -39,21 +39,21 @@ class Laser: Weapon {
             
             let character = getCharacter()
             
-            let bulletPosition = CGPoint(x: character!.position.x, y: character!.position.y + character!.size.height/2 + sceneNode!.size.height/2 * 1.5)
+            let bulletPosition = CGPoint(x: character!.position.x, y: character!.position.y + character!.size.height/2 + gameScene!.size.height/2 * 1.5)
             
             fire(bulletPosition,laserWidth: CGFloat(laserFinalWidth))
             
-            let normalizedX = 1 - (bulletPosition.x/sceneNode.size.width)
+            let normalizedX = 1 - (bulletPosition.x/gameScene!.size.width)
             btAdvertiseSharedInstance.update("fire-laser",data: ["x":normalizedX.description,"laserWidth":laserFinalWidth.description])
         }
     }
     override func fireFromEnemy(fireInfo: [String]) {
         
         if let normalizedX = Double(fireInfo[0]) {
-            let x = CGFloat(normalizedX) * sceneNode.size.width
+            let x = CGFloat(normalizedX) * gameScene!.size.width
             if let laserWidth = Double(fireInfo[1]) {
                 
-                let bulletPosition = CGPointMake(x, sceneNode!.frame.height/2)
+                let bulletPosition = CGPointMake(x, gameScene!.frame.height/2)
                 fire(bulletPosition,laserWidth: CGFloat(laserWidth),fromEnemy: true)
                 
                 damage = laserWidth/40
@@ -68,7 +68,7 @@ class Laser: Weapon {
         bullet = SKSpriteNode(imageNamed: "a01")
         
         bullet!.size.width = CGFloat(laserWidth)
-        bullet!.size.height = CGFloat(sceneNode!.size.height * 1.5)
+        bullet!.size.height = CGFloat(gameScene!.size.height * 1.5)
         bullet!.name = Constants.GameScene.PoweredFire
         PhysicsSetting.setupFire(bullet!)
         
@@ -92,7 +92,7 @@ class Laser: Weapon {
             self.bullet!.removeFromParent()
         })
         
-        sceneNode.addChild(bullet!)
+        gameScene!.addChild(bullet!)
         
     }
     

@@ -18,18 +18,18 @@ class MultiBullet: Bullet {
     override func fire(){
         let character = getCharacter()!
         let bulletPosition = CGPointMake(character.position.x, character.position.y + character.frame.height + 10)
-        let bulletVector = CGVectorMake(0, (sceneNode!.size.height))
+        let bulletVector = CGVectorMake(0, (gameScene!.size.height))
         fire(bulletPosition,vector: bulletVector)
         
-        let normalizedX = 1 - (bulletPosition.x/sceneNode.size.width)
+        let normalizedX = 1 - (bulletPosition.x/gameScene!.size.width)
         btAdvertiseSharedInstance.update("fire-multibullet",data: ["x":normalizedX.description])
     }
     
     override func fireFromEnemy(fireInfo: [String]) {
         if let normalizedX = Double(fireInfo[0]) {
-            let x = CGFloat(normalizedX) * sceneNode.size.width
-            let bulletPosition = CGPoint(x: CGFloat(x), y: sceneNode!.size.height * 1.1)
-            let bulletVector = CGVectorMake(0, -sceneNode!.size.height)
+            let x = CGFloat(normalizedX) * gameScene!.size.width
+            let bulletPosition = CGPoint(x: CGFloat(x), y: gameScene!.size.height * 1.1)
+            let bulletVector = CGVectorMake(0, -gameScene!.size.height)
             fire(bulletPosition,vector: bulletVector,fromEnemy: true)
         }
     }
@@ -82,9 +82,9 @@ class MultiBullet: Bullet {
             bulletLeft!.runAction(bulletLeftAction)
             bulletMiddle!.runAction(bulletMiddleAction)
             bulletRight!.runAction(bulletRightAction)
-            sceneNode.addChild(bulletLeft!)
-            sceneNode.addChild(bulletMiddle!)
-            sceneNode.addChild(bulletRight!)
+            gameScene!.addChild(bulletLeft!)
+            gameScene!.addChild(bulletMiddle!)
+            gameScene!.addChild(bulletRight!)
         }
     }
     

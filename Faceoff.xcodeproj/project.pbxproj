@@ -27,6 +27,7 @@
 		0A4D1DB31C0AC5370015E264 /* MultiBullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D1DB21C0AC5370015E264 /* MultiBullet.swift */; };
 		0A4D1DB51C0AC71F0015E264 /* armor.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A4D1DB41C0AC71F0015E264 /* armor.png */; };
 		0A4D1DB71C0B08540015E264 /* fire_effect.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A4D1DB61C0B08540015E264 /* fire_effect.png */; };
+		0A4D1DB91C0BB0FD0015E264 /* Armor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D1DB81C0BB0FD0015E264 /* Armor.swift */; };
 		0AA31AE71BF6B2EC000DFE4D /* CharacterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F83FD61BF276C30012C07D /* CharacterManager.swift */; };
 		0AA31AEB1BF821CA000DFE4D /* mainscene_backgound.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31AEA1BF821CA000DFE4D /* mainscene_backgound.jpg */; };
 		0AA31AED1BF824B4000DFE4D /* mainscene_slot.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AA31AEC1BF824B4000DFE4D /* mainscene_slot.png */; };
@@ -165,6 +166,7 @@
 		0A4D1DB21C0AC5370015E264 /* MultiBullet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiBullet.swift; sourceTree = "<group>"; };
 		0A4D1DB41C0AC71F0015E264 /* armor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = armor.png; sourceTree = "<group>"; };
 		0A4D1DB61C0B08540015E264 /* fire_effect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fire_effect.png; sourceTree = "<group>"; };
+		0A4D1DB81C0BB0FD0015E264 /* Armor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Armor.swift; sourceTree = "<group>"; };
 		0AA31AEA1BF821CA000DFE4D /* mainscene_backgound.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mainscene_backgound.jpg; sourceTree = "<group>"; };
 		0AA31AEC1BF824B4000DFE4D /* mainscene_slot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_slot.png; sourceTree = "<group>"; };
 		0AA31AEE1BF824CC000DFE4D /* mainscene_start_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainscene_start_button.png; sourceTree = "<group>"; };
@@ -348,6 +350,7 @@
 				0AE37FE51BFC7F88001DF241 /* GameSceneBeta.swift */,
 				0AE37FEB1BFF21BD001DF241 /* CharacterNode.swift */,
 				0AE37FE91BFF10E9001DF241 /* Weapon.swift */,
+				0A4D1DB81C0BB0FD0015E264 /* Armor.swift */,
 				0A4D1DB21C0AC5370015E264 /* MultiBullet.swift */,
 				0A4D1DAE1C0AC4F30015E264 /* IceBullet.swift */,
 				0A4D1DB01C0AC5170015E264 /* FireBullet.swift */,
@@ -689,6 +692,7 @@
 				0A12C0CE1C02BB4D003E9894 /* PhysicsSetting.swift in Sources */,
 				71B30A2C1BD6222400ABAAFC /* GameOverScene.swift in Sources */,
 				0AE37FE61BFC7F88001DF241 /* GameSceneBeta.swift in Sources */,
+				0A4D1DB91C0BB0FD0015E264 /* Armor.swift in Sources */,
 				0A4D1DAB1C0AC47A0015E264 /* Bullet.swift in Sources */,
 				A3CCCCBC1BEE901000A94859 /* Defined.swift in Sources */,
 				0A4D1DAF1C0AC4F30015E264 /* IceBullet.swift in Sources */,

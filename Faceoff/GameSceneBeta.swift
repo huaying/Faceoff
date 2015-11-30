@@ -21,6 +21,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     var enemyImageBase64String = ""
     var fireMutexReady = true
     var startMoving = true;
+    var isGameStart = false
     
    // var arr: [String] = []
     
@@ -44,23 +45,22 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     let EnemyFireName = Constants.GameScene.EnemyFire
     let EnemyPoweredFire = Constants.GameScene.EnemyPoweredFire
     
+    enum TouchStatus {
+        case Began
+        case Ended
+        case None
+    }
+    var touchStatus: TouchStatus = .None
+    
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
 
-        weaponManager.loadWeapons(self)
-        loadWeapons()
-        
         if (!self.contentCreated) {
-            self.createContent()
+            self.setupGame()
             self.contentCreated = true
             
             // Accelerometer starts
             self.motionManager.startAccelerometerUpdates()
-            
-            // SKScene responds to touches
-            self.userInteractionEnabled = true
-            
-            self.physicsWorld.contactDelegate = self
         }
         
          NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("updateByInfoOfEnemy:"), name: "getInfoOfEnemy", object: nil)
@@ -69,58 +69,61 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
 
     func updateByInfoOfEnemy(notification: NSNotification) {
         
-        let userInfo = notification.userInfo as! Dictionary<String, AnyObject>
-        //print(userInfo)
-        
-        if let info: [String] = userInfo["location"] as? [String] {
-            if let normalizedX = Double(info[0]) {
-                let x = CGFloat(normalizedX) * self.size.width
-                enemy.position.x = x
-            }
-        }
+        if isGameStart {
+            let userInfo = notification.userInfo as! Dictionary<String, AnyObject>
+            //print(userInfo)
             
-        else if let info: [String] = userInfo["weapon"] as?
-            [String] {
-            let weaponType = info[0]
-            weaponManager.enemyWeapon = weaponManager.makeWeapon(weaponType)
-        }
-        else if let info: [String] = userInfo["fire-bullet"] as? [String] {
-            weaponManager.fireFromEnemy(info)
-        }
-        else if let info: [String] = userInfo["fire-multibullet"] as? [String] {
-            weaponManager.fireFromEnemy(info)
-        }
-        else if let info: [String] = userInfo["fire-laser"] as? [String] {
-            weaponManager.poweredFireFromEnemy(info)
-        }
-        
-        else if let info: [String] = userInfo["hp"] as? [String] {
-            if let hp = Double(info[0]){
-                enemyHp?.powerValue = CGFloat(hp)
-                
-                if hp <= 0 {
-                    dispatch_async(dispatch_get_main_queue(),{
-                        self.userInteractionEnabled = false
-                        self.removeAllChildren()
-                        let alert = UIAlertView(title: "",
-                            message: "YOU WIN!",
-                            delegate: self,
-                            cancelButtonTitle: "OK")
-                        alert.show()
-                    })
+            if let info: [String] = userInfo["location"] as? [String] {
+                if let normalizedX = Double(info[0]) {
+                    let x = CGFloat(normalizedX) * self.size.width
+                    enemy.position.x = x
                 }
             }
-        }
-        else if let info: [String] = userInfo["mp"] as? [String] {
-            if let mp = Double(info[0]){
-                enemyMp?.powerValue = CGFloat(mp)
+                
+            else if let info: [String] = userInfo["weapon"] as?
+                [String] {
+                let weaponType = info[0]
+                //weaponManager.enemyWeapon = weaponManager.makeWeapon(weaponType)
+                weaponManager.setEnemyWeapon(weaponType)
+            }
+            else if let info: [String] = userInfo["fire-bullet"] as? [String] {
+                weaponManager.fireFromEnemy(info)
+            }
+            else if let info: [String] = userInfo["fire-multibullet"] as? [String] {
+                weaponManager.fireFromEnemy(info)
+            }
+            else if let info: [String] = userInfo["fire-laser"] as? [String] {
+                weaponManager.poweredFireFromEnemy(info)
+            }
+            
+            else if let info: [String] = userInfo["hp"] as? [String] {
+                if let hp = Double(info[0]){
+                    enemyHp?.powerValue = CGFloat(hp)
+                    
+                    if hp <= 0 {
+                        dispatch_async(dispatch_get_main_queue(),{
+                            self.stopGame()
+                            let alert = UIAlertView(title: "",
+                                message: "YOU WIN!",
+                                delegate: self,
+                                cancelButtonTitle: "OK")
+                            alert.show()
+                        })
+                    }
+                }
+            }
+            else if let info: [String] = userInfo["mp"] as? [String] {
+                if let mp = Double(info[0]){
+                    enemyMp?.powerValue = CGFloat(mp)
+                }
             }
         }
     }
     
-    func createContent() {
+    func setupGame() {
        
         PhysicsSetting.setupScene(self)
+        weaponManager.loadWeapons(self)
         setupCharacter()
         setupEnemyCharacter()
         setupHealthBar()
@@ -130,13 +133,20 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
         loadBackground()
         loadWeapons()
         resetMutex()
-        
+        userInteractionEnabled = true
+        isGameStart = true
     }
+    
+    func stopGame(){
+        isGameStart = false
+        weaponManager.cleanWeapons()
+        self.removeAllChildren()
+    }
+    
     func resetMutex() {
-        weaponMutex[0] = true
-        weaponMutex[1] = true
-        weaponMutex[2] = true
+        weaponMutex = [true,true,true]
     }
+    
     func loadBackground() {
         guard let _ = childNodeWithName("background") as! SKSpriteNode? else {
             let texture = SKTexture(image: UIImage(named: "background4.jpg")!)
@@ -210,21 +220,21 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     // Scene Update
     override func update(currentTime: CFTimeInterval) {
         
-        //Contact Detection
-        //self.processContactsForUpdate(currentTime)
+        if isGameStart {
         
-        //Character Motion Control
-        if(startMoving){
-            self.processUserMotionForUpdate(currentTime)
-        }
-        
-        //Slower Updateder (1/5)
-        if ++slowUpdateCount % 10 == 0 {
-            slowUpdateCount = 0
+            //Character Motion Control
+            if(startMoving){
+                self.processUserMotionForUpdate(currentTime)
+            }
             
-            self.processLocationSendingForUpdate(currentTime)
-            self.processManaForUpdate(currentTime)
-            
+            //Slower Updateder (1/5)
+            if ++slowUpdateCount % 10 == 0 {
+                slowUpdateCount = 0
+                
+                self.processLocationSendingForUpdate(currentTime)
+                self.processManaForUpdate(currentTime)
+                
+            }
         }
         
     }
@@ -278,42 +288,52 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         /* Called when a touch begins */
-        
-        if touches.count == 1 {
-            weaponManager.firePreparingBegin(touches.first!)
+        if isGameStart {
+            if touchStatus == .Began || touchStatus == .None {
+                weaponManager.firePreparingBegin(touches.first!)
+                
+                startMoving = false;
+                //self.userInteractionEnabled = false
+                
+                touchStatus = .Ended
+            }
             
-            startMoving = false;
-            self.userInteractionEnabled = false
+            //Here means touchEvent Bug happened
+            else {
+                touchesEnded(touches,withEvent: event)
+            }
         }
-        print("touchBegan",touches.count)
-        
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?)  {
         
-        if !weaponManager.firePreparingEnd(touches.first!){
-            if let location = touches.first?.locationInNode(self) {
-                for (i,node) in weapons!.enumerate() {
-                    if node.containsPoint(location) {
-                        lockWeapon(i, node: node)
-                        self.userInteractionEnabled = true
-                        startMoving = true
-                        return
+        if isGameStart {
+            if touchStatus == .Ended {
+                if !weaponManager.firePreparingEnd(touches.first!){
+                    if let location = touches.first?.locationInNode(self) {
+                        for (i,node) in weapons!.enumerate() {
+                            if node.containsPoint(location) {
+                                lockWeapon(i, node: node)
+                                //self.userInteractionEnabled = true
+                                startMoving = true
+                                return
+                            }
+                        }
+                    }
+                    if(fireMutexReady == true) {
+                        fireMutexReady = false
+                        weaponManager.fireBullet()
+                        self.runAction(SKAction.waitForDuration(0.2), completion: {
+                            self.fireMutexReady = true
+                        })
                     }
                 }
-            }
-            if(fireMutexReady == true) {
-                fireMutexReady = false
-                weaponManager.fireBullet()
-                self.runAction(SKAction.waitForDuration(0.2), completion: {
-                    self.fireMutexReady = true
-                })
+                
+                //self.userInteractionEnabled = true
+                startMoving = true
+                touchStatus = .Began
             }
         }
-        
-        self.userInteractionEnabled = true
-        startMoving = true
-        print("touchEnded")
     }
     
 
@@ -326,12 +346,14 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
             
             node.runAction(SKAction.scaleTo(1.5, duration: 0.5))
             
-            weaponManager.weapon = weaponManager.makeWeapon(node.name!)
+            weaponManager.setCharacterWeapon(node.name!)
+            //weaponManager.weapon = weaponManager.makeWeapon(node.name!)
             btAdvertiseSharedInstance.update("weapon",data: ["weapon":node.name!])
             
             node.runAction(SKAction.waitForDuration(3.0), completion: {
                 
-            self.weaponManager.weapon = self.weaponManager.makeWeapon(Constants.Weapon.WeaponType.Bullet)
+                self.weaponManager.setCharacterWeapon(Constants.Weapon.WeaponType.Bullet)
+            //self.weaponManager.weapon = self.weaponManager.makeWeapon(Constants.Weapon.WeaponType.Bullet)
             btAdvertiseSharedInstance.update("weapon",data: ["weapon":Constants.Weapon.WeaponType.Bullet])
                 
                 node.runAction(SKAction.scaleTo(1, duration: 0.5))
@@ -354,7 +376,6 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     func didBeginContact(contact: SKPhysicsContact) {
         
         if contact as SKPhysicsContact? != nil {
-            //self.contactQueue.append(contact)
             self.handleContact(contact)
         }
     }
@@ -378,62 +399,57 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
             
             character?.shake()
             character.getEffect(weaponManager)
-            if let damage = weaponManager.fireDamage() {
-                decreaseHealth(CGFloat(damage))
-            }
-            
+            decreaseHealth(CGFloat(weaponManager.fireDamage()))
         }
         else if nodeNames.containsObject(CharacterName) && nodeNames.containsObject(EnemyPoweredFire) {
             
             character?.shake()
             character.getEffect(weaponManager)
-            if let damage = weaponManager.poweredFireDamage() {
-                decreaseHealth(CGFloat(damage))
-            }
+            decreaseHealth(CGFloat(weaponManager.poweredFireDamage()))
         }
     }
+    
     func increaseMana(value : CGFloat){
-        mp!.increase(value)
-        if(mp!.powerValue < 100){
-            btAdvertiseSharedInstance.update("mp",data: ["mp":mp!.powerValue.description])
+        if isGameStart {
+            mp!.increase(value)
+            if(mp!.powerValue < 100){
+                btAdvertiseSharedInstance.update("mp",data: ["mp":mp!.powerValue.description])
+            }
         }
     }
     
     func decreaseMana(value : CGFloat) {
-        mp!.decrease(value)
-        if(mp!.powerValue < 100){
-            btAdvertiseSharedInstance.update("mp",data: ["mp":mp!.powerValue.description])
+        if isGameStart {
+            mp!.decrease(value)
+            if(mp!.powerValue < 100){
+                btAdvertiseSharedInstance.update("mp",data: ["mp":mp!.powerValue.description])
+            }
         }
     }
     
     func decreaseHealth( value : CGFloat){
         
-        if(character.childNodeWithName("armor") != nil) {
-            return
-        }
-        
-        hp!.decrease(value)
-        btAdvertiseSharedInstance.update("hp",data: ["hp":hp!.powerValue.description])
-        
-        if(hp!.powerValue <= 50 && hp!.powerValue > 0){
-            //do something but not profEmitterActionAtPosition
-        }
-        else if(hp!.powerValue <= 0){
+        if isGameStart {
+            hp!.decrease(value)
+            btAdvertiseSharedInstance.update("hp",data: ["hp":hp!.powerValue.description])
             
-            self.userInteractionEnabled = false
-            
-            self.removeAllChildren()
-            let alert = UIAlertView(title: "",
-                message: "YOU LOSE!",
-                delegate: self,
-                cancelButtonTitle: "OK")
-            alert.show()
+            if(hp!.powerValue <= 50 && hp!.powerValue > 0){
+                //do something but not profEmitterActionAtPosition
+            }
+            else if(hp!.powerValue <= 0){
+                
+                stopGame()
+                let alert = UIAlertView(title: "",
+                    message: "YOU LOSE!",
+                    delegate: self,
+                    cancelButtonTitle: "OK")
+                alert.show()
+            }
         }
     }
     
     func alertView(View: UIAlertView!, clickedButtonAtIndex buttonIndex: Int){
-        self.userInteractionEnabled = true
-        createContent()
+        setupGame()
     }
     
     

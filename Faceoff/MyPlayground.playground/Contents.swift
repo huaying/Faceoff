@@ -27,6 +27,7 @@ var t = test()
 t.b()
 t = test()
 
+
 //func delay(delay:Double, closure:()->()) {
 //    dispatch_after(
 //        dispatch_time(

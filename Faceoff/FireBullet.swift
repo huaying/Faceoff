@@ -27,19 +27,19 @@ class FireBullet: Weapon{
         
         let character = getCharacter()!
         let bulletPosition = CGPointMake(character.position.x, character.position.y + character.frame.height + 25)
-        let bulletVector = CGVectorMake(0, (sceneNode!.size.height))
+        let bulletVector = CGVectorMake(0, (gameScene!.size.height))
         fire(bulletPosition,vector: bulletVector)
         
-        let normalizedX = 1 - (bulletPosition.x/sceneNode.size.width)
+        let normalizedX = 1 - (bulletPosition.x/gameScene!.size.width)
         btAdvertiseSharedInstance.update("fire-bullet",data: ["x":normalizedX.description])
     }
     
     override func fireFromEnemy(fireInfo: [String]) {
         
         if let normalizedX = Double(fireInfo[0]) {
-            let x = CGFloat(normalizedX) * sceneNode.size.width
-            let bulletPosition = CGPoint(x: CGFloat(x), y: sceneNode!.size.height)
-            let bulletVector = CGVectorMake(0, -sceneNode!.size.height)
+            let x = CGFloat(normalizedX) * gameScene!.size.width
+            let bulletPosition = CGPoint(x: CGFloat(x), y: gameScene!.size.height)
+            let bulletVector = CGVectorMake(0, -gameScene!.size.height)
             fire(bulletPosition,vector: bulletVector,fromEnemy: true)
         }
         
@@ -62,7 +62,7 @@ class FireBullet: Weapon{
             let bulletAction = SKAction.sequence([SKAction.moveBy(vector, duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
             
             bullet!.runAction(bulletAction)
-            sceneNode.addChild(bullet!)
+            gameScene!.addChild(bullet!)
         }
         
     }
@@ -97,7 +97,7 @@ class FireBullet: Weapon{
             minusLable.position.x = character.position.x
             minusLable.position.y = character.position.y + 50
             
-            sceneNode.addChild(minusLable)
+            gameScene!.addChild(minusLable)
             
             minusLable.runAction(SKAction.moveToY(character.position.y+150, duration: 1.0))
             minusLable.runAction(SKAction.fadeAlphaTo(0.0, duration: 1.0), completion:{
@@ -116,7 +116,7 @@ class FireBullet: Weapon{
             removeEffect()
         }
     }
-    func removeEffect(){
+    override func removeEffect(){
         effectTimer?.invalidate()
         effectTimes = 0
         burnEffectImg?.removeFromParent()
