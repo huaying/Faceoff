@@ -24,8 +24,6 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
     var gestureRecognizer: UILongPressGestureRecognizer?
     
     override func didMoveToView(view: SKView) {
-         print(self.view!.frame.size)
-        
         
         loadBackground()
         loadStartButton()

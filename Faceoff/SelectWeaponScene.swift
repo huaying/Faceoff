@@ -13,12 +13,10 @@ import SpriteKit
 
 class SelectWeaponScene: SKScene {
     
-    let background: SKNode! = SKSpriteNode(imageNamed: "spaceship3.jpg")
     var WEAPONS:[SKNode] = [SKNode]()
     var forward_btn: SKNode! = nil
     var back_btn: SKNode! = nil
-    //var select_btn: SKNode! = nil
-    var confirm_btn: SKNode! = nil
+    var centerBlock: SKSpriteNode! = nil
     
     var box1: SKNode! = nil
     var box2: SKNode! = nil
@@ -29,108 +27,43 @@ class SelectWeaponScene: SKScene {
     var Weapon1: SKSpriteNode! = nil
     var Weapon2: SKSpriteNode! = nil
     var Weapon3: SKSpriteNode! = nil
+    var selectedWeapons: [SKSpriteNode?] = [nil,nil,nil]
     
     var weaponArray:[String?] = [nil,nil,nil]
     
     var count: Int = 0;
     var did_tap: Bool = false;
 
-    
     var did_shrink: NSInteger = 0;
     var arrayOfStrings: [String] = Array(Constants.Weapon.Sets.keys)
     var arrayOfDescription: [String] = Array(Constants.Weapon.Sets.values)
     
-    
     var descrioptionLable: SKLabelNode! = nil
     
-    var Img: UIImage! = nil
-    var enemyImageBase64String = ""
+    var 返回按鈕: SKNode! = nil
+    var 進入遊戲按鈕: SKNode! = nil
+    var touchRect: SKSpriteNode! = nil
+    
+    
+    let Distance = CGFloat(105.0)
     
     override func didMoveToView(view: SKView) {
         
-        background.position = CGPoint(x: frame.midX, y: frame.midY)
-        background.zPosition = -100
-        background.setScale(0.8)
-        addChild(background)
         
-        descrioptionLable = SKLabelNode (fontNamed: Constants.Font)
-        descrioptionLable.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMaxY(self.frame)*0.25)
-        descrioptionLable.fontSize = 20
-        addChild(descrioptionLable)
+        loadBackground()
+        loadCenterBlock()
+        loadLeftButton()
+        loadRightButton()
+        loadBackButton()
+        loadStartButton()
+        loadSlots()
+        loadWeaponSelect()
+        loadDescriptionLabel()
+        loadWeaponSlide()
         
-        forward_btn = SKSpriteNode(imageNamed:"Forward")
-        forward_btn.position = CGPoint(x:CGRectGetMaxX(self.frame)-CGFloat(50.0), y:CGRectGetMidY(self.frame))
-        forward_btn.name = "forward_btn"
-        forward_btn.zPosition = 1.0
-        
-        back_btn = SKSpriteNode(imageNamed:"Back")
-        back_btn.position = CGPoint(x:CGRectGetMinX(self.frame)+CGFloat(50.0), y:CGRectGetMidY(self.frame))
-        back_btn.name = "back_btn"
-        back_btn.zPosition = 1.0
-        
-        box1 = SKSpriteNode(imageNamed:"weapon_box")
-        box1.xScale = 0.45
-        box1.yScale = 0.45
-        box1.position = CGPoint(x:CGRectGetMidX(self.frame)-120, y:CGRectGetMaxY(self.frame)*0.85)
-        box1.name = "box1"
-        box1.zPosition = 1.0
-        
-        box2 = SKSpriteNode(imageNamed:"weapon_box")
-        box2.xScale = 0.45
-        box2.yScale = 0.45
-        box2.position = CGPoint(x:CGRectGetMidX(self.frame)+0, y:CGRectGetMaxY(self.frame)*0.85)
-        box2.name = "box2"
-        box2.zPosition = 1.0
-        
-        box3 = SKSpriteNode(imageNamed:"weapon_box")
-        box3.xScale = 0.45
-        box3.yScale = 0.45
-        box3.position = CGPoint(x:CGRectGetMidX(self.frame)+120, y:CGRectGetMaxY(self.frame)*0.85)
-        box3.name = "box3"
-        box3.zPosition = 1.0
-        
-        
-        Weapon1 = SKSpriteNode(imageNamed:"weapon_blank")
-        Weapon1.xScale = 0.35
-        Weapon1.yScale = 0.35
-        Weapon1.position = CGPoint(x:CGRectGetMidX(self.frame)-120, y:CGRectGetMaxY(self.frame)*0.85)
-        Weapon1.name = "weapon1"
-        Weapon1.zPosition = 1.0
-        
-        Weapon2 = SKSpriteNode(imageNamed:"weapon_blank")
-        Weapon2.xScale = 0.35
-        Weapon2.yScale = 0.35
-        Weapon2.position = CGPoint(x:CGRectGetMidX(self.frame)+0, y:CGRectGetMaxY(self.frame)*0.85)
-        Weapon2.name = "weapon2"
-        Weapon2.zPosition = 1.0
-        
-        Weapon3 = SKSpriteNode(imageNamed:"weapon_blank")
-        Weapon3.xScale = 0.35
-        Weapon3.yScale = 0.35
-        Weapon3.position = CGPoint(x:CGRectGetMidX(self.frame)+120, y:CGRectGetMaxY(self.frame)*0.85)
-        Weapon3.name = "weapon3"
-        Weapon3.zPosition = 1.0
-        
-        confirm_btn = SKSpriteNode(imageNamed:"Confirm")
-        confirm_btn.xScale = 0.5
-        confirm_btn.yScale = 0.5
-        confirm_btn.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMaxY(self.frame)*0.1)
-        confirm_btn.name = "confirm_btn"
-        confirm_btn.zPosition = 1.0
-        
-        self.addChild(forward_btn)
-        self.addChild(back_btn)
-        
-        self.addChild(box1)
-        self.addChild(box2)
-        self.addChild(box3)
-        
-        self.addChild(Weapon1)
-        self.addChild(Weapon2)
-        self.addChild(Weapon3)
-        
-        self.addChild(confirm_btn)
-        
+    }
+    
+    func loadWeaponSlide(){
         for var i=0; i<arrayOfStrings.count; i++ {
             var weapon: SKNode! = nil
             let Te = SKTexture (imageNamed:arrayOfStrings[i])
@@ -138,20 +71,133 @@ class SelectWeaponScene: SKScene {
             
             //just for initial scene
             if(i==0){
-                weapon.xScale = 0.6
-                weapon.yScale = 0.6
+                weapon.xScale = 1
+                weapon.yScale = 1
             }
             else{
-                weapon.xScale = 0.35
-                weapon.yScale = 0.35
+                weapon.xScale = 0.5
+                weapon.yScale = 0.5
             }
             
-            weapon.position = CGPoint(x:CGRectGetMidX(self.frame)+(CGFloat(i)*120), y:CGRectGetMidY(self.frame));
+            weapon.position = CGPointMake((CGFloat(i)*Distance), 0);
             weapon.name = arrayOfStrings[i]
             
             WEAPONS.append(weapon)
-            self.addChild(weapon)
+            centerBlock.addChild(weapon)
         }
+    }
+    
+    func loadBackground(){
+        let texture = SKTexture(image: UIImage(named: Constants.SelectWeaponScene.Background)!)
+        let background = SKSpriteNode(texture: texture, size: frame.size)
+        
+        background.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
+        background.zPosition = -10
+        addChild(background)
+    }
+    
+    func loadCenterBlock(){
+        let image = UIImage(named: Constants.SelectWeaponScene.CenterBlock)!
+        let texture = SKTexture(image: image)
+        let cropNode = SKCropNode()
+        
+        centerBlock = SKSpriteNode(texture: texture, size: CGSizeMake(image.size.width * 0.38,image.size.height * 0.33))
+        //centerBlock.position = CGPointMake(frame.midX, frame.midY)
+        //addChild(centerBlock)
+        
+        let crop = SKSpriteNode(color: UIColor.blackColor(), size: centerBlock.size)
+        //crop.position = CGPointMake(frame.midX, frame.midY)
+        
+        cropNode.position = CGPointMake(frame.midX, frame.midY)
+        cropNode.maskNode = crop
+        cropNode.addChild(centerBlock)
+        addChild(cropNode)
+        
+
+
+    }
+    
+    func loadWeaponSelect(){
+        let texture = SKTexture(image: UIImage(named: Constants.SelectWeaponScene.WeaponSelect)!)
+        let weaponSelect = SKSpriteNode(texture: texture, size: CGSizeMake(270.0,25.0))
+        
+        weaponSelect.position = CGPoint(x: self.frame.midX, y: self.frame.midY + centerBlock.frame.height/2 + 50)
+        addChild(weaponSelect)
+        
+    }
+    
+    func loadLeftButton(){
+        back_btn = SKSpriteNode(imageNamed:Constants.SelectWeaponScene.LeftButton)
+        back_btn.position = CGPointMake(frame.midX - centerBlock!.frame.width/2 - 40, frame.midY)
+        back_btn.name = "back_btn"
+        back_btn.xScale = 0.4
+        back_btn.yScale = 0.4
+        back_btn.zPosition = 1.0
+        addChild(back_btn)
+    }
+    
+    func loadRightButton(){
+        forward_btn = SKSpriteNode(imageNamed:Constants.SelectWeaponScene.RightButton)
+        forward_btn.position = CGPointMake(frame.midX + centerBlock!.frame.width/2 + 40, frame.midY)
+        forward_btn.name = "forward_btn"
+        forward_btn.xScale = 0.4
+        forward_btn.yScale = 0.4
+        forward_btn.zPosition = 1.0
+        addChild(forward_btn)
+    }
+    
+    func loadBackButton(){
+        
+        let texture = SKTexture(image: UIImage(named: Constants.BuildConnectionScene.BackButton)!)
+        返回按鈕 = SKSpriteNode(texture: texture, size: CGSizeMake(CGFloat(Constants.Scene.BackButtonSizeWidth) ,CGFloat(Constants.Scene.BackButtonSizeHeight)))
+        返回按鈕.position = CGPoint(x:返回按鈕.frame.width/2,y: 返回按鈕.frame.height/2)
+        addChild(返回按鈕)
+    }
+    
+    func loadStartButton(){
+        
+        let texture = SKTexture(image: UIImage(named: Constants.MainScene.StartButton)!)
+        進入遊戲按鈕 = SKSpriteNode(texture: texture, size: CGSizeMake(182.0,54.0))
+        進入遊戲按鈕.position = CGPoint(x:frame.width - 進入遊戲按鈕.frame.width/2 + 20,y: 進入遊戲按鈕.frame.height/2 + 8)
+        addChild(進入遊戲按鈕)
+    }
+
+    func loadDescriptionLabel(){
+        descrioptionLable = SKLabelNode (fontNamed: Constants.Font)
+        descrioptionLable.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMaxY(self.frame)*0.25)
+        descrioptionLable.fontSize = 20
+        addChild(descrioptionLable)
+        
+        descrioptionLable.text = arrayOfDescription[0]
+        
+    }
+    
+    func loadSlots(){
+        
+        var slots :[SKSpriteNode?] = [nil,nil,nil]
+        for (i,_) in slots.enumerate() {
+            slots[i] = SKSpriteNode(imageNamed: Constants.SelectWeaponScene.Slot)
+            
+            slots[i]!.xScale = 0.4
+            slots[i]!.yScale = 0.4
+            slots[i]!.position = CGPointMake( 70,frame.midY*0.75 + CGFloat(i*75))
+            slots[i]?.zPosition = 1
+            addChild(slots[i]!)
+            
+            selectedWeapons[i] = SKSpriteNode(imageNamed: "weapon_blank")
+            selectedWeapons[i]!.xScale = 0.8
+            selectedWeapons[i]!.yScale = 0.7
+            selectedWeapons[i]!.zPosition = 2
+            
+            slots[i]!.addChild(selectedWeapons[i]!)
+        }
+    }
+    
+    func transitionForNextScene(nextScene: SKScene){
+        let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)
+        removeAllChildren()
+        nextScene.scaleMode = .AspectFill
+        scene?.view?.presentScene(nextScene, transition: transition)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -159,26 +205,28 @@ class SelectWeaponScene: SKScene {
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        // Loop over all the touches in this event
-        for touch: AnyObject in touches {
-            // Get the location of the touch in this scene
-            let location = touch.locationInNode(self)
-            // Check if the location of the touch is within the button's bounds
-            if forward_btn.containsPoint(location) {
+        
+        if let location = touches.first?.locationInNode(self){
+            if 返回按鈕.containsPoint(location){
+                返回按鈕.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
+                let nextScene = BuildConnectionScene(size: scene!.size)
+                transitionForNextScene(nextScene)
+            }
+            else if forward_btn.containsPoint(location) {
                 if(!did_tap){
                     count++;
                     for eachChild in WEAPONS {
                         if(count < arrayOfStrings.count){
                             if(eachChild.name==arrayOfStrings[count]){
-                                enlarge_animation(eachChild, RorL:0, distance: 120, duration:0.5)
+                                enlarge_animation(eachChild, RorL:0, distance: Distance, duration:0.5)
                             }else{
-                                shrink_animation(eachChild, RorL:0, distance: 120, duration:0.5)
+                                shrink_animation(eachChild, RorL:0, distance: Distance, duration:0.5)
                             }
                         }
                         else{
-                            scrollToFirst(eachChild, RorL:0, distance: CGFloat(count-1)*120, duration:0.5)
+                            scrollToFirst(eachChild, RorL:0, distance: CGFloat(count-1)*Distance, duration:0.5)
                             if(eachChild.name == arrayOfStrings.first!){
-                                let enlarge = SKAction.scaleTo(1.5, duration:0.5)
+                                let enlarge = SKAction.scaleTo(1, duration:0.5)
                                 eachChild.runAction(enlarge)
                             }
                             else if(eachChild.name == arrayOfStrings.last!){
@@ -190,25 +238,26 @@ class SelectWeaponScene: SKScene {
                     if(count >= arrayOfStrings.count) {
                         count = 0;
                     }
+                    descrioptionLable.text = arrayOfDescription[count]
                 }
                 did_tap = true;
             }
-            if back_btn.containsPoint(location) {
+            else if back_btn.containsPoint(location) {
                 if(!did_tap){
                     count--;
                     for eachChild in WEAPONS {
                         if(count >= 0){
                             if(eachChild.name==arrayOfStrings[count]){
-                                enlarge_animation(eachChild, RorL:1, distance: 120, duration:0.5)
+                                enlarge_animation(eachChild, RorL:1, distance: Distance, duration:0.5)
                             }
                             else {
-                                shrink_animation(eachChild, RorL:1, distance: 120, duration:0.5)
+                                shrink_animation(eachChild, RorL:1, distance: Distance, duration:0.5)
                             }
                         }
                         else{
-                            scrollToFirst(eachChild, RorL:1, distance: CGFloat(arrayOfStrings.count-1)*120, duration:0.5)
+                            scrollToFirst(eachChild, RorL:1, distance: CGFloat(arrayOfStrings.count-1)*Distance, duration:0.5)
                             if(eachChild.name == arrayOfStrings.last!){
-                                let enlarge = SKAction.scaleTo(1.5, duration:0.5)
+                                let enlarge = SKAction.scaleTo(1, duration:0.5)
                                 eachChild.runAction(enlarge)
                             }
                             if(eachChild.name == arrayOfStrings.first!){
@@ -220,97 +269,90 @@ class SelectWeaponScene: SKScene {
                     if(count < 0) {
                         count = arrayOfStrings.count-1;
                     }
+                    descrioptionLable.text = arrayOfDescription[count]
                 }
                 did_tap = true;
             }
-            
-            if confirm_btn.containsPoint(location) {
+                
+            else if 進入遊戲按鈕.containsPoint(location) {
                 
                 for weapon in weaponArray {
                     if weapon == nil {
                         return
                     }
                 }
-                
                 while !EnemyCharacterLoader.isLoaded() {
                     sleep(1)
                 }
                 
                 let nextScene = GameScene2(size: scene!.size)
                 nextScene.scaleMode = SKSceneScaleMode.ResizeFill
-                print(weaponArray)
                 nextScene.weaponManager.candidateWeaponTypes = weaponArray
                 
                 let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)
                 
                 removeAllChildren()
                 scene?.view?.presentScene(nextScene, transition: transition)
-                    
-                
             }
             
-            if(self.nodeAtPoint(location).name != nil && WEAPONS.contains(self.nodeAtPoint(location))){
-                let name:String = self.nodeAtPoint(location).name!
-                let nameOfIndex = arrayOfStrings.indexOf(name)!
-                for eachChild in WEAPONS {
-                    if(eachChild.name == name){
-                        
-                        let move_dis:CGFloat = CGFloat(abs(nameOfIndex-count))*120
-                        if(nameOfIndex==count){}
-                        else if(nameOfIndex>count){
-                            enlarge_animation(eachChild, RorL:0, distance: move_dis, duration:0.5)
-                        }
-                        else{
-                            enlarge_animation(eachChild, RorL:1, distance: move_dis, duration:0.5)
-                        }
-                        
-                        descrioptionLable.text = arrayOfDescription[count]
-                        
-                        
-                        switch(select_count){
-                        case 0:
-                            Weapon1.texture = SKTexture(imageNamed: name)
-                            break
-                        case 1:
-                            Weapon2.texture = SKTexture(imageNamed: name)
-                            break
-                        case 2:
-                            Weapon3.texture = SKTexture(imageNamed: name)
-                            break
-                        default:
-                            break
-                        }
-                        
-                        weaponArray[select_count] = eachChild.name!
-                        select_count = (++select_count) % 3
-                        
-                    }else{
-                        
-                        let move_dis2:CGFloat = CGFloat(abs(nameOfIndex-count))*120
-                        
-                        if(nameOfIndex==count){}
-                        else if(nameOfIndex>count){
-                            shrink_animation(eachChild, RorL:0, distance: move_dis2, duration:0.5)
-                        }
-                        else{
-                            shrink_animation(eachChild, RorL:1, distance: move_dis2, duration:0.5)
+            else if(self.nodeAtPoint(location).name != nil && WEAPONS.contains(self.nodeAtPoint(location))){
+                
+                //check if it is in touchRect
+                touchRect = SKSpriteNode(texture: nil, size:  centerBlock.size)
+                touchRect.position = CGPointMake(frame.midX, frame.midY)
+                addChild(touchRect)
+                
+                if touchRect!.containsPoint(location){
+                    touchRect?.removeFromParent()
+                    let name:String = self.nodeAtPoint(location).name!
+                    let nameOfIndex = arrayOfStrings.indexOf(name)!
+                    for eachChild in WEAPONS {
+                        if(eachChild.name == name){
+                            
+                            let move_dis:CGFloat = CGFloat(abs(nameOfIndex-count))*Distance
+                            if(nameOfIndex==count){}
+                            else if(nameOfIndex>count){
+                                enlarge_animation(eachChild, RorL:0, distance: move_dis, duration:0.5)
+                            }
+                            else{
+                                enlarge_animation(eachChild, RorL:1, distance: move_dis, duration:0.5)
+                            }
+                            
+                            selectedWeapons[select_count]!.texture = SKTexture(imageNamed: name)
+                            
+                            descrioptionLable.text = arrayOfDescription[nameOfIndex]
+                            weaponArray[select_count] = eachChild.name!
+                            select_count = (++select_count) % 3
+                            
+                            
+                        }else{
+                            
+                            let move_dis2:CGFloat = CGFloat(abs(nameOfIndex-count))*Distance
+                            
+                            if(nameOfIndex==count){}
+                            else if(nameOfIndex>count){
+                                shrink_animation(eachChild, RorL:0, distance: move_dis2, duration:0.5)
+                            }
+                            else{
+                                shrink_animation(eachChild, RorL:1, distance: move_dis2, duration:0.5)
+                            }
                         }
                     }
+                    
+                    let add_count:Int = abs(nameOfIndex-count)
+                    
+                    if(nameOfIndex==count){
+                    }
+                    else if(nameOfIndex>count){
+                        count += add_count
+                    }
+                    else{
+                        count -= add_count
+                    }
+
                 }
-                
-                let add_count:Int = abs(nameOfIndex-count)
-                
-                if(nameOfIndex==count){
-                }
-                else if(nameOfIndex>count){
-                    count += add_count
-                }
-                else{
-                    count -= add_count
-                }
-                
+                touchRect?.removeFromParent()
             }
-            
         }
     }
     
@@ -319,31 +361,25 @@ class SelectWeaponScene: SKScene {
         let moveToRight = SKAction.moveTo(CGPointMake(weapon.position.x+distance,weapon.position.y), duration:duration)
         let moveToLeft = SKAction.moveTo(CGPointMake(weapon.position.x-distance,weapon.position.y), duration:duration)
         
-        let enlarge = SKAction.scaleTo(1.5, duration:duration)
+        let enlarge = SKAction.scaleTo(1, duration:duration)
         
         weapon.runAction(enlarge);
         
         if(RorL==1){
             weapon.runAction(moveToRight, completion: {
-                
                 let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
                 dispatch_after(delayTime, dispatch_get_main_queue()) {
                     self.did_tap = false;
-                    
                 }
-                
             })
-            
         }
         else{
             weapon.runAction(moveToLeft, completion: {
                 let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
                 dispatch_after(delayTime, dispatch_get_main_queue()) {
                     self.did_tap = false;
-                    
                 }
             })
-            
         }
         
     }

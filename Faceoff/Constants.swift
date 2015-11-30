@@ -53,13 +53,36 @@ struct Constants {
         static let BackButton = "buildconnectionscene_back_button.png"
     }
     
+    struct SelectWeaponScene {
+        static let Background = "selectweaponscene_background.jpg"
+        static let WeaponSelect = "selectweaponscene_weapon_select.png"
+        static let LeftButton = "selectweaponscene_left_button.png"
+        static let RightButton = "selectweaponscene_right_button.png"
+        static let CenterBlock = "selectweaponscene_center_block.png"
+        static let Slot = "selectweaponscene_slot.png"
+    }
+    
     struct CharacterManager {
         static let maxOfCandidateNumber = 3
     }
     
     struct GameScene {
         
+        static let Background = "gamescene_background.jpg"
+        static let StatusBar = "gamescene_status.png"
+        static let Hp = "gamescene_hp.png"
+        static let Mp = "gamescene_mp.png"
+        static let HpBar = "gamescene_hp_bar.png"
+        static let MpBar = "gamescene_mp_bar.png"
+        static let MpLast = "gamescene_mp_last.png"
+        static let WeaponSlot = "gamescene_weapon_slot.png"
+        static let EnemySlot = "gamescene_enemy_slot.png"
+        static let EnemyMark = "gamescene_enemy_mark.png"
+        
+        
         static let Velocity = 500.0
+        
+        //about contact detection
         static let Character = "character"
         static let Fire = "fire"
         static let PoweredFire = "poweredfire"

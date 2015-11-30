@@ -18,6 +18,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     var contentCreated: Bool = false
     var character: CharacterNode!
     var enemy: SKSpriteNode!
+    var enemyMark: SKSpriteNode!
     var enemyImageBase64String = ""
     var fireMutexReady = true
     var startMoving = true;
@@ -76,7 +77,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
             if let info: [String] = userInfo["location"] as? [String] {
                 if let normalizedX = Double(info[0]) {
                     let x = CGFloat(normalizedX) * self.size.width
-                    enemy.position.x = x
+                    enemyMark.position.x = x
                 }
             }
                 
@@ -126,11 +127,13 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
         weaponManager.loadWeapons(self)
         setupCharacter()
         setupEnemyCharacter()
+        setupEnemyMark()
         setupHealthBar()
         setupOpponentHealthBar()
         setupMpBar()
         setupenemyMapBar()
         loadBackground()
+        loadCharacterStatus()
         loadWeapons()
         resetMutex()
         userInteractionEnabled = true
@@ -148,19 +151,60 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     }
     
     func loadBackground() {
-        guard let _ = childNodeWithName("background") as! SKSpriteNode? else {
-            let texture = SKTexture(image: UIImage(named: "background4.jpg")!)
-            let node = SKSpriteNode(texture: texture)
-            node.xScale = 0.5
-            node.yScale = 0.5
-            node.position = CGPoint(x: frame.midX, y: frame.midY)
-            node.zPosition = -100
+        guard let _ = childNodeWithName(Constants.GameScene.Background) as! SKSpriteNode? else {
+            let image = UIImage(named: Constants.GameScene.Background)
+            let texture = SKTexture(image: image!)
+            let background = SKSpriteNode(texture: texture,size:frame.size)
+            background.name = Constants.GameScene.Background
+            background.position = CGPoint(x: frame.midX, y: frame.midY)
+            background.zPosition = -100
             
-            addChild(node)
+            addChild(background)
             return
         }
     }
+    
 
+
+    func loadCharacterStatus(){
+        let statusNode = SKSpriteNode(texture: nil, size: CGSizeMake(133.4, 62.5))
+        
+        let statusBar = SKSpriteNode(texture: SKTexture(imageNamed: Constants.GameScene.StatusBar),size:statusNode.size )
+        let hpBar = SKSpriteNode(texture: SKTexture(imageNamed: Constants.GameScene.MpBar),size:CGSizeMake(statusNode.size.width*0.85,9))
+        let mpBar = SKSpriteNode(texture: SKTexture(imageNamed: Constants.GameScene.HpBar),size:CGSizeMake(statusNode.size.width*0.87,9))
+        let hp = SKSpriteNode(texture: SKTexture(imageNamed: Constants.GameScene.Hp),size:CGSizeMake(statusNode.size.width*0.15,27))
+        let mp = SKSpriteNode(texture: SKTexture(imageNamed: Constants.GameScene.Mp),size:hp.size)
+        let mpLast = SKSpriteNode(texture: SKTexture(imageNamed: Constants.GameScene.MpLast),size:CGSizeMake(statusNode.size.width*0.07,37))
+        
+        
+        statusNode.position = CGPoint(x:statusNode.frame.width/2 + 20 , y: statusNode.frame.height/2 + 20)
+        hpBar.position = CGPointMake(7, -23)
+        mpBar.position = CGPointMake(7, -10)
+        mpLast.position = CGPointMake(-statusNode.size.width/2 + 9, -8)
+        hp.position = CGPointMake(hpBar.position.x + hpBar.frame.width/2 + 16, -12)
+        mp.position = CGPointMake(mpBar.position.x + mpBar.frame.width/2 + 14, -26)
+        
+        let hpCropNode = SKCropNode()
+        hpCropNode.addChild(hpBar)
+        
+        var hpCrop = SKSpriteNode(color: UIColor.blackColor(),size:CGSizeMake(statusNode.size.width*0.85,9))
+        hpCrop.position = hpBar.position
+        hpCrop.size.width = hpCrop.size.width * 0.7
+        hpCrop.position.x = -(hpBar.size.width - hpCrop.size.width)/2
+        hpCropNode.maskNode = hpCrop
+        
+        statusNode.addChild(statusBar)
+        statusNode.addChild(hpCropNode)
+        statusNode.addChild(mpBar)
+        statusNode.addChild(mp)
+        statusNode.addChild(hp)
+        statusNode.addChild(mpLast)
+        addChild(statusNode)
+        
+       
+    }
+    
+    
     func setupHealthBar() {
         hp = HPManager(view: view!)
         hp!.load(self,positionX: view!.frame.width-(hp!.barWidth)/2.0)
@@ -188,10 +232,23 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     }
     
     func setupEnemyCharacter(){
-        enemy = SKSpriteNode(texture: SKTexture(image: CharacterManager.getEnemyCharacterFromLocalStorage()!))
-        enemy.position = CGPointMake(self.frame.midX,self.frame.height - enemy.frame.height/2 )
-        addChild(enemy)
         
+        let image = UIImage(named: Constants.GameScene.EnemySlot)
+        let texture = SKTexture(image: image!)
+        let enemySlot = SKSpriteNode(texture: texture,size:CGSizeMake(55,55))
+        
+        enemySlot.position = CGPointMake(self.frame.width - enemySlot.frame.width/2 - 15 ,self.frame.height - enemySlot.frame.height/2 - 5 )
+        addChild(enemySlot)
+        
+        enemy = SKSpriteNode(texture: SKTexture(image: CharacterManager.getEnemyCharacterFromLocalStorage()!),size:CGSizeMake(50,50))
+        enemySlot.addChild(enemy)
+        
+    }
+    
+    func setupEnemyMark(){
+        enemyMark = SKSpriteNode(texture: SKTexture(imageNamed: Constants.GameScene.EnemyMark),size: CGSizeMake(15,10))
+        enemyMark.position = CGPointMake(self.frame.midX, self.frame.height - enemyMark.frame.height/2 - 5 )
+        addChild(enemyMark)
     }
     
     func loadWeapons(){
@@ -233,10 +290,8 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
                 
                 self.processLocationSendingForUpdate(currentTime)
                 self.processManaForUpdate(currentTime)
-                
             }
         }
-        
     }
 
     func processLocationSendingForUpdate(currentTime: CFTimeInterval){
