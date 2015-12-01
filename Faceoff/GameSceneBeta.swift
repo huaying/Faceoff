@@ -133,7 +133,6 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
         setupMpBar()
         setupenemyMapBar()
         loadBackground()
-        loadCharacterStatus()
         loadWeapons()
         resetMutex()
         userInteractionEnabled = true
@@ -166,63 +165,32 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     
 
 
-    func loadCharacterStatus(){
-        let statusNode = SKSpriteNode(texture: nil, size: CGSizeMake(133.4, 62.5))
-        
-        let statusBar = SKSpriteNode(texture: SKTexture(imageNamed: Constants.GameScene.StatusBar),size:statusNode.size )
-        let hpBar = SKSpriteNode(texture: SKTexture(imageNamed: Constants.GameScene.MpBar),size:CGSizeMake(statusNode.size.width*0.85,9))
-        let mpBar = SKSpriteNode(texture: SKTexture(imageNamed: Constants.GameScene.HpBar),size:CGSizeMake(statusNode.size.width*0.87,9))
-        let hp = SKSpriteNode(texture: SKTexture(imageNamed: Constants.GameScene.Hp),size:CGSizeMake(statusNode.size.width*0.15,27))
-        let mp = SKSpriteNode(texture: SKTexture(imageNamed: Constants.GameScene.Mp),size:hp.size)
-        let mpLast = SKSpriteNode(texture: SKTexture(imageNamed: Constants.GameScene.MpLast),size:CGSizeMake(statusNode.size.width*0.07,37))
-        
-        
-        statusNode.position = CGPoint(x:statusNode.frame.width/2 + 20 , y: statusNode.frame.height/2 + 20)
-        hpBar.position = CGPointMake(7, -23)
-        mpBar.position = CGPointMake(7, -10)
-        mpLast.position = CGPointMake(-statusNode.size.width/2 + 9, -8)
-        hp.position = CGPointMake(hpBar.position.x + hpBar.frame.width/2 + 16, -12)
-        mp.position = CGPointMake(mpBar.position.x + mpBar.frame.width/2 + 14, -26)
-        
-        let hpCropNode = SKCropNode()
-        hpCropNode.addChild(hpBar)
-        
-        var hpCrop = SKSpriteNode(color: UIColor.blackColor(),size:CGSizeMake(statusNode.size.width*0.85,9))
-        hpCrop.position = hpBar.position
-        hpCrop.size.width = hpCrop.size.width * 0.7
-        hpCrop.position.x = -(hpBar.size.width - hpCrop.size.width)/2
-        hpCropNode.maskNode = hpCrop
-        
-        statusNode.addChild(statusBar)
-        statusNode.addChild(hpCropNode)
-        statusNode.addChild(mpBar)
-        statusNode.addChild(mp)
-        statusNode.addChild(hp)
-        statusNode.addChild(mpLast)
-        addChild(statusNode)
-        
-       
-    }
     
     
     func setupHealthBar() {
         hp = HPManager(view: view!)
-        hp!.load(self,positionX: view!.frame.width-(hp!.barWidth)/2.0)
+        hp!.load(self,enemy: false)
+        //hp!.load(self,positionX: view!.frame.width-(hp!.barWidth)/2.0)
+        
     }
     
     func setupOpponentHealthBar() {
         enemyHp = HPManager(view: view!)
-        enemyHp!.load(self)
+        enemyHp!.load(self,enemy: true)
+        //enemyHp!.load(self)
+        
     }
     
     func setupMpBar() {
         mp = MPManager(view: view!)
-        mp!.load(self,positionX: view!.frame.width-(mp!.barWidth))
+        mp!.load(self,enemy: false)
+        //mp!.load(self,positionX: view!.frame.width-(mp!.barWidth))
     }
     
     func setupenemyMapBar() {
         enemyMp = MPManager(view: view!)
-        enemyMp!.load(self,positionX: mp!.barWidth)
+        enemyMp!.load(self,enemy: true)
+        //enemyMp!.load(self,positionX: mp!.barWidth)
     }
     
     func setupCharacter() {
@@ -237,7 +205,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
         let texture = SKTexture(image: image!)
         let enemySlot = SKSpriteNode(texture: texture,size:CGSizeMake(55,55))
         
-        enemySlot.position = CGPointMake(self.frame.width - enemySlot.frame.width/2 - 15 ,self.frame.height - enemySlot.frame.height/2 - 5 )
+        enemySlot.position = CGPointMake(self.frame.width - enemySlot.frame.width/2 - 20 ,self.frame.height - enemySlot.frame.height/2 - 5 )
         addChild(enemySlot)
         
         enemy = SKSpriteNode(texture: SKTexture(image: CharacterManager.getEnemyCharacterFromLocalStorage()!),size:CGSizeMake(50,50))

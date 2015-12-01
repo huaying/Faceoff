@@ -81,6 +81,8 @@ struct Constants {
         
         
         static let Velocity = 500.0
+        static let SelfStatusPanel = "SelfStatusPanel"
+        static let EnemyStatusPanel = "EnemyStatusPanel"
         
         //about contact detection
         static let Character = "character"
