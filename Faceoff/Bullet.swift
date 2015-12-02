@@ -51,9 +51,10 @@ class Bullet: Weapon {
             PhysicsSetting.setupFire(bullet!)
             
             if fromEnemy {
-                bullet!.yScale = -bullet!.yScale
-                bullet!.name = Constants.GameScene.EnemyFire
+                bullet!.size.height *= -1
+                
                 PhysicsSetting.setupEnemyFire(bullet!)
+                bullet!.name = Constants.GameScene.EnemyFire
             }
             
             let bulletAction = SKAction.sequence([SKAction.moveBy(vector, duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
@@ -66,10 +67,7 @@ class Bullet: Weapon {
     override func getDamage() -> Double {
         return damage
     }
-    
 }
-
-
 
 class BounsBullet: Weapon{
     
@@ -83,3 +81,5 @@ class BounsBullet: Weapon{
         bullet!.yScale = 0.2
     }
 }
+
+

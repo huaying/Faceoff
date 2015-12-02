@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SpriteKit
 
 class Tools {
     
@@ -33,4 +34,27 @@ class Tools {
         return NSKeyedUnarchiver.unarchiveObjectWithData(nsdata) as? NSDictionary
     }
  
+    static func cropImageToCircle(image: UIImage) -> UIImage{
+        let imageView = UIImageView(frame: CGRectMake(0,0,image.size.height,image.size.height))
+        imageView.image = image
+        imageView.contentMode = .Center
+        imageView.layer.cornerRadius = image.size.height/2;
+        imageView.layer.masksToBounds = true
+        
+        var layer1: CALayer = CALayer()
+        
+        layer1 = imageView.layer
+        UIGraphicsBeginImageContext(CGSize(width:image.size.height,height:image.size.height))
+        layer1.renderInContext(UIGraphicsGetCurrentContext()!)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
+
+    static func delay(delay:Double, closure:()->()) {
+        
+        dispatch_after(
+            dispatch_time( DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), closure)
+    }
 }

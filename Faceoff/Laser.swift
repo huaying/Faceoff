@@ -13,6 +13,8 @@ class Laser: Weapon {
     
     var damage: Double = 0
     var mana: Double = 1.5
+    let chargeWait = SKAction.waitForDuration(0.3)
+    
     
     override init(sceneNode :SKScene){
         super.init(sceneNode: sceneNode)
@@ -73,7 +75,7 @@ class Laser: Weapon {
         PhysicsSetting.setupFire(bullet!)
         
         if fromEnemy {
-            bullet!.yScale = -bullet!.yScale
+            bullet!.size.height *= -1
             bullet!.name = Constants.GameScene.EnemyPoweredFire
             PhysicsSetting.setupEnemyFire(bullet!)
         }
@@ -103,9 +105,11 @@ class Laser: Weapon {
         
         let character = getCharacter()!
         
-        character.runAction(SKAction.waitForDuration(0.3), completion: {
+        
+        let chargeAction = {
             if self.isFirePreparing {
                 
+                self.gameScene!.velocityMultiplier = 0
                 self.stopFirePreparingAction()
                 
                 let sksPath = NSBundle.mainBundle().pathForResource("MyParticle", ofType: "sks")
@@ -117,11 +121,15 @@ class Laser: Weapon {
                 
                 character.addChild(self.firePreparingEmitter!)
             }
-        })
+        }
+        character.runAction(SKAction.sequence([chargeWait,SKAction.runBlock(chargeAction)]),withKey: "chargeAction")
+
     }
     
     override func stopFirePreparingAction() {
+        let character = getCharacter()!
         isFirePreparing = false
+        character.removeActionForKey("chargeAction")
         firePreparingEmitter?.removeFromParent()
     }
     

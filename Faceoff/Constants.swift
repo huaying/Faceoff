@@ -98,6 +98,7 @@ struct Constants {
             static let Enemy: UInt32 = 0x1 << 2
             static let Fire: UInt32 = 0x1 << 3
             static let EnemyFire: UInt32 = 0x1 << 4
+            static let EnemyPoweredFire: UInt32 = 0x1 << 5
         }
     }
     
