@@ -59,7 +59,12 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     var touchStatus: TouchStatus = .None
     let pause = SKTexture(imageNamed: "pause")
     let play = SKTexture(imageNamed: "play")
-
+    
+    var resumeButton: SKSpriteNode?
+    var restartButton: SKSpriteNode?
+    var exitButton: SKSpriteNode?
+    var resultLabel: SKLabelNode?
+    
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
 
@@ -84,7 +89,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
             if let info: [String] = userInfo["location"] as? [String] {
                 if let normalizedX = Double(info[0]) {
                     let x = CGFloat(normalizedX) * self.size.width
-                    enemyMark.position.x = x
+                    enemyMark.runAction(SKAction.moveToX(x, duration: 0.2))
                 }
             }
                 
@@ -111,11 +116,8 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
                     if hp <= 0 {
                         dispatch_async(dispatch_get_main_queue(),{
                             self.stopGame()
-                            let alert = UIAlertView(title: "",
-                                message: "YOU WIN!",
-                                delegate: self,
-                                cancelButtonTitle: "OK")
-                            alert.show()
+                            self.setupGameEndPanel(true)
+                            //you win
                         })
                     }
                 }
@@ -152,40 +154,10 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
         resetMutex()
         userInteractionEnabled = true
         isGameStart = true
-    }
-    
-    
-    
-    func pauseGame()
-    {
-        view!.scene?.paused = true
-        //self.userInteractionEnabled = false
-    }
-    func resumeGame()
-    {
-        view!.scene?.paused = false
-        //self.userInteractionEnabled = true
-    }
-    
-    
-    
-    func setupStatusButton(){
-       // pauseMask.setco
-        statusButton = SKSpriteNode(texture: pause)
-        statusButton.position = CGPoint(x: frame.minX + CGFloat(15) , y: frame.maxY - CGFloat(15))
-        statusButton.setScale(0.07)
-        statusButton.alpha = 0.5
-        addChild(statusButton)
-    }
 
-    
-    func stopGame(){
-        isGameStart = false
-        weaponManager.cleanWeapons()
-        self.removeAllChildren()
     }
     
-    func resetMutex() {
+     func resetMutex() {
         weaponMutex = [true,true,true]
     }
     
@@ -202,10 +174,6 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
             return
         }
     }
-    
-
-
-    
     
     func setupHealthBar() {
         hp = HPManager(view: view!)
@@ -266,10 +234,9 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
             
             let name = weaponManager.candidateWeaponTypes![i]!
             let weaponImage = Tools.cropImageToCircle(UIImage(named: name)!)
-            let weapon = SKSpriteNode(texture: SKTexture(image: weaponImage), size: CGSizeMake(35,35))
+            let weapon = SKSpriteNode(texture: SKTexture(image: weaponImage), size: CGSizeMake(45,45))
             
-            weapon.position = CGPointMake(scene!.size.width-30,CGFloat(65*(i+1)))
-            weapon.size = CGSizeMake(40,40)
+            weapon.position = CGPointMake(scene!.size.width-35,CGFloat(65*(i+1)))
             weapon.name = name
             //weaponSlot.addChild(weapon)
             weapons!.append(weapon)
@@ -344,33 +311,70 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
         }
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        /* Called when a touch begins */
-        
-        //pause function
+    func pauseButtonHandle(touches: Set<UITouch>){
         if let location = touches.first?.locationInNode(self){
-            
             if statusButton.containsPoint(location){
-//                statusButton.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
-                
                 if(needPause){
-                    
                     statusButton.texture = play
                     needPause = false
                     btAdvertiseSharedInstance.update("pause")
                     pauseGame()
-                }
-                else if(!needPause){
+                }else if(!needPause){
                     statusButton.texture = pause
                     btAdvertiseSharedInstance.update("resume")
                     needPause = true
                     resumeGame()
                 }
-                //pause the game
-                //jump out the alert view
-                
             }
         }
+    }
+    
+    func exitButtonHandle(touches: Set<UITouch>){
+        if let location = touches.first?.locationInNode(self){
+            
+            if exitButton != nil && exitButton!.containsPoint(location){
+                removeAllChildren()
+                let nextScene = MainScene(size: scene!.size)
+                transitionForNextScene(nextScene)
+            }
+        }
+    }
+    
+    func restartButtonHandle(touches: Set<UITouch>){
+        if let location = touches.first?.locationInNode(self){
+            if restartButton != nil && restartButton!.containsPoint(location){
+                removeGameEndPanel()
+                setupGame()
+            }
+        }
+    }
+    
+    func resumeButtonHandle(touches: Set<UITouch>){
+        if let location = touches.first?.locationInNode(self){
+            if resumeButton != nil && resumeButton!.containsPoint(location){
+                statusButton.texture = pause
+                btAdvertiseSharedInstance.update("resume")
+                needPause = true
+                resumeGame()
+                removePausePanel()
+            }
+        }
+    }
+    
+    func transitionForNextScene(nextScene: SKScene){
+        let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)
+        removeAllChildren()
+        nextScene.scaleMode = .AspectFill
+        scene?.view?.presentScene(nextScene, transition: transition)
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        /* Called when a touch begins */
+        
+        pauseButtonHandle(touches)
+        exitButtonHandle(touches)
+        restartButtonHandle(touches)
+        resumeButtonHandle(touches)
         
         if isGameStart {
             if touchStatus == .Began || touchStatus == .None {
@@ -394,7 +398,6 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
                         for (i,node) in weapons!.enumerate() {
                             if node.containsPoint(location) {
                                 lockWeapon(i, node: node)
-
                                 return
                             }
                         }
@@ -420,28 +423,27 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
         
         if(weaponMutex[index]) {
             bulletFireMutex += 1
+            
             weaponMutex[index] = false;
-            
-            //node.runAction(SKAction.scaleTo(1.5, duration: 0.5))
-            
             weaponManager.setCharacterWeapon(node.name!)
             let cdtime = weaponManager.weapon?.getCDtime()
             let usctime = weaponManager.weapon?.getUscTime()
-            //weaponManager.weapon = weaponManager.makeWeapon(node.name!)
+            
             print("weapon name is " + node.name!)
             btAdvertiseSharedInstance.update("weapon",data: ["weapon":node.name!])
+            
+            
+            //add weaponSlot
             let weaponSlot = SKSpriteNode(imageNamed: Constants.GameScene.WeaponSlot)
-            weaponSlot.size = CGSizeMake(44,44)
+            weaponSlot.size = CGSizeMake(50,50)
             node.addChild(weaponSlot)
+            
             node.runAction(SKAction.waitForDuration(usctime!), completion: {
                 self.bulletFireMutex -= 1
                 if self.bulletFireMutex == 0 {
                     self.weaponManager.setCharacterWeapon(Constants.Weapon.WeaponType.Bullet)
-                    //self.weaponManager.weapon = self.weaponManager.makeWeapon(Constants.Weapon.WeaponType.Bullet)
                     btAdvertiseSharedInstance.update("weapon",data: ["weapon":Constants.Weapon.WeaponType.Bullet])
                 }
-                
-                //node.runAction(SKAction.scaleTo(1, duration: 0.5))
                 
                 let cd = CDAnimationBuilder()
                 let child = SKSpriteNode(texture: nil, size: node.size)
@@ -455,6 +457,22 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
                     child.removeFromParent()
                 })
             })
+            
+            
+            //add weaponEnableNotification
+            let weaponNotification = SKSpriteNode(imageNamed: node.name!)
+            weaponNotification.size = CGSizeMake(200,200)
+            weaponNotification.position = CGPointMake(frame.midX,frame.midY)
+            weaponNotification.alpha = 0.0
+            addChild(weaponNotification)
+            weaponNotification.runAction(SKAction.sequence([
+                SKAction.fadeAlphaTo(0.5, duration: 0.5),
+                SKAction.waitForDuration(0.5),
+                SKAction.fadeAlphaTo(0.0, duration: 0.5),
+                SKAction.runBlock({weaponNotification.removeFromParent()})
+            ]))
+            
+            
         }
     }
 
@@ -523,20 +541,86 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
                 //do something but not profEmitterActionAtPosition
             }
             else if(hp!.powerValue <= 0){
-                
                 stopGame()
-                let alert = UIAlertView(title: "",
-                    message: "YOU LOSE!",
-                    delegate: self,
-                    cancelButtonTitle: "OK")
-                alert.show()
+                setupGameEndPanel(false)
+                //you lose
             }
         }
     }
     
-    func alertView(View: UIAlertView!, clickedButtonAtIndex buttonIndex: Int){
-        setupGame()
+    func setupPausePanel(){
+        resumeButton = SKSpriteNode(imageNamed: Constants.GameScene.ReumeButton)
+        exitButton = SKSpriteNode(imageNamed: Constants.GameScene.ExitButton)
+        resumeButton!.zPosition = character.zPosition + 1
+        exitButton!.zPosition = character.zPosition + 1
+        resumeButton!.size = CGSizeMake(50,50)
+        exitButton!.size = CGSizeMake(50,50)
+        resumeButton!.position = CGPointMake(frame.midX - 30, frame.midY)
+        exitButton!.position = CGPointMake(frame.midX + 30, frame.midY)
+        addChild(resumeButton!)
+        addChild(exitButton!)
     }
     
+    func setupGameEndPanel(isWin: Bool){
+        resultLabel = SKLabelNode(fontNamed: Constants.Font)
+        resultLabel!.position = CGPointMake(frame.midX, frame.maxY * 2/3)
+        
+        if isWin {
+            resultLabel!.text = "You Win!"
+        }else{
+            resultLabel!.text = "You Lose!"
+        }
+            
+        restartButton = SKSpriteNode(imageNamed: Constants.GameScene.RestartButton)
+        restartButton!.size = CGSizeMake(50,50)
+        restartButton!.position = CGPointMake(frame.midX - 40, frame.maxY * 1/3)
+        
+        exitButton = SKSpriteNode(imageNamed: Constants.GameScene.ExitButton)
+        exitButton!.size = CGSizeMake(50,50)
+        exitButton!.position = CGPointMake(frame.midX + 40, frame.maxY * 1/3)
+        
+        addChild(resultLabel!)
+        addChild(restartButton!)
+        addChild(exitButton!)
+    }
     
+    func setupStatusButton(){
+        // pauseMask.setco
+        statusButton = SKSpriteNode(texture: pause)
+        statusButton.position = CGPoint(x: frame.minX + CGFloat(15) , y: frame.maxY - CGFloat(15))
+        statusButton.setScale(0.07)
+        statusButton.alpha = 0.5
+        addChild(statusButton)
+    }
+    
+    func removePausePanel(){
+        resumeButton?.removeFromParent()
+        exitButton?.removeFromParent()
+    }
+    
+    func removeGameEndPanel(){
+        resultLabel?.removeFromParent()
+        restartButton?.removeFromParent()
+        exitButton?.removeFromParent()
+    }
+    
+    func pauseGame(){
+        view!.scene?.paused = true
+        isGameStart = false
+        setupPausePanel()
+    }
+    
+    func resumeGame(){
+        view!.scene?.paused = false
+        isGameStart = true
+        removePausePanel()
+    }
+    
+    func stopGame(){
+        isGameStart = false
+        weaponManager.cleanWeapons()
+        self.removeAllChildren()
+    }
+    
+
 }

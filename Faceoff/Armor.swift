@@ -49,8 +49,9 @@ class Armor: Bullet {
         let character = getCharacter()!
         
         armor!.name = Constants.Weapon.WeaponImage.Armor
-        armor!.size.height = character.size.height * 2.5
-        armor!.size.width = character.size.width * 2.5
+        armor!.size.height = character.size.height * 2
+        armor!.size.width = character.size.width * 2
+        armor!.position.y = character.size.width
         armor?.zPosition = character.zPosition+1
         character.addChild(armor!)
         effectTimer = NSTimer.scheduledTimerWithTimeInterval(UseTime,

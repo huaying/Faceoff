@@ -117,7 +117,9 @@ struct Constants {
         static let WeaponSlot = "gamescene_weapon_slot.png"
         static let EnemySlot = "gamescene_enemy_slot.png"
         static let EnemyMark = "gamescene_enemy_mark.png"
-        
+        static let ReumeButton = "Play.png"
+        static let RestartButton = "Restart.png"
+        static let ExitButton = "Exit.png"
         
         static let Velocity = 500.0
         static let SelfStatusPanel = "SelfStatusPanel"
@@ -147,17 +149,17 @@ struct Constants {
         //For Select
         struct WeaponType {
             static let Bullet = "Missel"
-            static let IceBullet = "Frozen"
-            static let FireBullet = "Fire"
-            static let MultiBullet = "Shotgun"
+            static let IceBullet = "IceBullet.png"
+            static let FireBullet = "FireBullet.png"
+            static let MultiBullet = "MultiBullet.png"
             static let BonusBullet = "DoubleBonus"
             static let Laser = "Ultimate"
-            static let Invisibility = "Invisibility_Cloak"
-            static let Heal = "Heal"
-            static let Armor = "armor"
+            static let Invisibility = "Invisibility.png"
+            static let Heal = "Heal.png"
+            static let Armor = "Armors.png"
             static let LightBullet = "lightbullet"
-            static let AddMp = "AddMp"
-            static let ExpandEnemy = "expend"
+            static let AddMp = "AddMp.png"
+            static let ExpandEnemy = "ExpandEnemy.png"
         }
         
         //For Shooting
@@ -171,7 +173,7 @@ struct Constants {
             static let Invisibility = "Invisibility_Cloak"
             static let Heal = "Heal"
             static let Detect = "Detect"
-            static let Armor = "armor"
+            static let Armor = "Armors.png"
             static let LightBullet = "light_bullet.png"
         }
         
@@ -181,7 +183,7 @@ struct Constants {
             WeaponType.IceBullet:"Freezes opponent for 3 sec",
             WeaponType.MultiBullet:"Shot 3 bullets every shot",
             WeaponType.Invisibility:"Let yourself invisible for 8 sec",
-            WeaponType.Heal:"Add 20 hp to yourself",
+            WeaponType.Heal:"Add 50 hp to yourself",
             WeaponType.Armor:"Give yourself an armor and Deducts 70% damage",
             WeaponType.AddMp:"Add 30 mp to yourself",
             WeaponType.ExpandEnemy:"Expand the size of your enemy by 5 times"

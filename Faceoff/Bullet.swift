@@ -11,7 +11,7 @@ import SpriteKit
 
 class Bullet: Weapon {
     
-    var damage: Double = 3.0
+    var damage: Double = 2.0
     
     override init(sceneNode :SKScene){
         super.init(sceneNode: sceneNode)

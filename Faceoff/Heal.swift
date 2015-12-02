@@ -13,7 +13,7 @@ class Heal: Bullet {
     
     var armor: SKSpriteNode?
     var reduce: Double = 0.3
-    var CDTime: Double = 30
+    var CDTime: Double = 25
     var UseTime: Double = 1
     var mp: Double = 20
     var effectTimer: NSTimer!

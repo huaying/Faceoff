@@ -11,10 +11,9 @@ import SpriteKit
 class AddMp: Bullet {
     
     var armor: SKSpriteNode?
-    var reduce: Double = 0.3
-    var CDTime: Double = 30
+    var CDTime: Double = 20
     var UseTime: Double = 1
-    var mp: Double = 20
+    var mp: Double = 30
     var effectTimer: NSTimer!
     
     override init(sceneNode :SKScene){
@@ -23,10 +22,6 @@ class AddMp: Bullet {
     
     override func positveEffect() {
         gameScene!.decreaseMana(-CGFloat(mp))
-    }
-    
-    override func getReduce() -> Double {
-        return reduce
     }
     
     override func getCDtime() -> Double {
