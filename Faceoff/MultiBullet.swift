@@ -10,6 +10,9 @@ import Foundation
 import SpriteKit
 
 class MultiBullet: Bullet {
+    var CDTime: Double = 6
+    var UseTime: Double = 8
+    var mp: Double = 20
     
     override init(sceneNode :SKScene){
         super.init(sceneNode: sceneNode)
@@ -23,6 +26,14 @@ class MultiBullet: Bullet {
         
         let normalizedX = 1 - (bulletPosition.x/gameScene!.size.width)
         btAdvertiseSharedInstance.update("fire-multibullet",data: ["x":normalizedX.description])
+    }
+
+    override func getLosingMp() -> Double {
+        return mp
+    }
+    
+    override func positveEffect() {
+        gameScene!.decreaseMana(CGFloat(getLosingMp()))
     }
     
     override func fireFromEnemy(fireInfo: [String]) {
@@ -88,5 +99,12 @@ class MultiBullet: Bullet {
         }
     }
     
+    override func getCDtime() -> Double {
+        return CDTime
+    }
+    
+    override func getUscTime() -> Double {
+        return UseTime
+    }
     
 }

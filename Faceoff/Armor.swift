@@ -13,6 +13,10 @@ class Armor: Bullet {
     
     var armor: SKSpriteNode?
     var reduce: Double = 0.3
+    var CDTime: Double = 5
+    var UseTime: Double = 5
+    var mp: Double = 10
+    var effectTimer: NSTimer!
     
     override init(sceneNode :SKScene){
         super.init(sceneNode: sceneNode)
@@ -20,10 +24,23 @@ class Armor: Bullet {
     
     override func positveEffect() {
         enableArmor()
+        gameScene!.decreaseMana(CGFloat(getLosingMp()))
     }
     
     override func getReduce() -> Double {
         return reduce
+    }
+    
+    override func getCDtime() -> Double {
+        return CDTime
+    }
+    
+    override func getUscTime() -> Double {
+        return UseTime
+    }
+    
+    override func getLosingMp() -> Double {
+        return mp
     }
     
     func enableArmor(){
@@ -36,7 +53,11 @@ class Armor: Bullet {
         armor!.size.width = character.size.width * 2.5
         armor?.zPosition = character.zPosition+1
         character.addChild(armor!)
-        
+        effectTimer = NSTimer.scheduledTimerWithTimeInterval(UseTime,
+            target: self,
+            selector: "disableArmor",
+            userInfo: nil,
+            repeats: false)
     }
     
     func disableArmor(){

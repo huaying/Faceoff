@@ -57,7 +57,7 @@ class Laser: Weapon {
                 let bulletPosition = CGPointMake(x, gameScene!.frame.height/2)
                 fire(bulletPosition,laserWidth: CGFloat(laserWidth),fromEnemy: true)
                 
-                damage = laserWidth/40
+                damage = laserWidth/20
             }
         }
         

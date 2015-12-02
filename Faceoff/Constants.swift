@@ -154,9 +154,9 @@ struct Constants {
             static let Laser = "Ultimate"
             static let Invisibility = "Invisibility_Cloak"
             static let Heal = "Heal"
-            static let Detect = "Detect"
             static let Armor = "armor"
             static let LightBullet = "lightbullet"
+            static let AddMp = "AddMp"
         }
         
         //For Shooting
@@ -176,13 +176,13 @@ struct Constants {
         
         static let Sets = [
             
-            WeaponType.FireBullet:"Keeps opponent blame and deducts him 30 point",
-            WeaponType.IceBullet:"Slow down opponent for 50%",
+            WeaponType.FireBullet:"Keeps opponent flame and deducts him 2 hp/sec",
+            WeaponType.IceBullet:"Freezes opponent for 3 sec",
             WeaponType.MultiBullet:"Shot 3 bullets every shot",
-            WeaponType.Invisibility:"Let yourself invisible",
-            WeaponType.Heal:"Add 20 points to yourself",
-            WeaponType.Detect:"Find opponent even he has heal",
-            WeaponType.Armor:"Give yourself an armor"
+            WeaponType.Invisibility:"Let yourself invisible for 8 sec",
+            WeaponType.Heal:"Add 20 hp to yourself",
+            WeaponType.Armor:"Give yourself an armor and Deducts 70% damage",
+            WeaponType.AddMp:"Add 30 mp to yourself"
         ]
         
         struct Effect {

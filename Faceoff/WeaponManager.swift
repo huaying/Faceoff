@@ -95,9 +95,19 @@ class WeaponManager: NSObject{
         else if weaponType == Constants.Weapon.WeaponType.Armor {
             weapon = Armor(sceneNode: sceneNode)
         }
+        else if weaponType == Constants.Weapon.WeaponType.Heal {
+            weapon = Heal(sceneNode: sceneNode)
+        }
+        else if weaponType == Constants.Weapon.WeaponType.Invisibility {
+            weapon = Invisible(sceneNode: sceneNode)
+        }
+        else if weaponType == Constants.Weapon.WeaponType.AddMp {
+            weapon = AddMp(sceneNode: sceneNode)
+        }
         else {
             weapon = Bullet(sceneNode: sceneNode)
         }
+
         
         return weapon
     }

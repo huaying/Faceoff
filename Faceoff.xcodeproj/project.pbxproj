@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A0BB1E41C0E7344001FA416 /* Heal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0BB1E31C0E7344001FA416 /* Heal.swift */; };
+		0A0BB1E61C0E7350001FA416 /* Invisible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0BB1E51C0E7350001FA416 /* Invisible.swift */; };
+		0A0BB1E81C0E735B001FA416 /* AddMp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0BB1E71C0E735B001FA416 /* AddMp.swift */; };
 		0A12C0CC1C01A001003E9894 /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A12C0CB1C01A001003E9894 /* Tools.swift */; };
 		0A12C0CE1C02BB4D003E9894 /* PhysicsSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A12C0CD1C02BB4D003E9894 /* PhysicsSetting.swift */; };
 		0A12C0D01C0594B8003E9894 /* EnemyCharacterLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A12C0CF1C0594B8003E9894 /* EnemyCharacterLoader.swift */; };
@@ -152,6 +155,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A0BB1E31C0E7344001FA416 /* Heal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Heal.swift; sourceTree = "<group>"; };
+		0A0BB1E51C0E7350001FA416 /* Invisible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Invisible.swift; sourceTree = "<group>"; };
+		0A0BB1E71C0E735B001FA416 /* AddMp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddMp.swift; sourceTree = "<group>"; };
 		0A12C0CB1C01A001003E9894 /* Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		0A12C0CD1C02BB4D003E9894 /* PhysicsSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsSetting.swift; sourceTree = "<group>"; };
 		0A12C0CF1C0594B8003E9894 /* EnemyCharacterLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnemyCharacterLoader.swift; sourceTree = "<group>"; };
@@ -461,6 +467,9 @@
 				A32CBE181BF7DE0E007186D9 /* CDAnimationBuilder.swift */,
 				0AE37FE91BFF10E9001DF241 /* Weapon.swift */,
 				0A4D1DB81C0BB0FD0015E264 /* Armor.swift */,
+				0A0BB1E31C0E7344001FA416 /* Heal.swift */,
+				0A0BB1E71C0E735B001FA416 /* AddMp.swift */,
+				0A0BB1E51C0E7350001FA416 /* Invisible.swift */,
 				0A4D1DB21C0AC5370015E264 /* MultiBullet.swift */,
 				0A4D1DAE1C0AC4F30015E264 /* IceBullet.swift */,
 				0A4D1DB01C0AC5170015E264 /* FireBullet.swift */,
@@ -751,6 +760,7 @@
 				71B30A2C1BD6222400ABAAFC /* GameOverScene.swift in Sources */,
 				0AE37FE61BFC7F88001DF241 /* GameSceneBeta.swift in Sources */,
 				0A4D1DB91C0BB0FD0015E264 /* Armor.swift in Sources */,
+				0A0BB1E81C0E735B001FA416 /* AddMp.swift in Sources */,
 				0A4D1DAB1C0AC47A0015E264 /* Bullet.swift in Sources */,
 				0A4D1DAF1C0AC4F30015E264 /* IceBullet.swift in Sources */,
 				0ACFD4921BF55AEE00563AFB /* CameraViewController.swift in Sources */,
@@ -764,6 +774,7 @@
 				A305A3F31BDB3E45004B6186 /* MainScene.swift in Sources */,
 				0AA31AE71BF6B2EC000DFE4D /* CharacterManager.swift in Sources */,
 				A32CBE191BF7DE0E007186D9 /* CDAnimationBuilder.swift in Sources */,
+				0A0BB1E61C0E7350001FA416 /* Invisible.swift in Sources */,
 				71E8A0A91BD4605C002832EE /* GameViewController.swift in Sources */,
 				A364D3A61BF1AE7F00D352B1 /* BTAdvertise.swift in Sources */,
 				0AE37FEC1BFF21BD001DF241 /* CharacterNode.swift in Sources */,
@@ -778,6 +789,7 @@
 				0AA31AF91BF825B8000DFE4D /* Constants.swift in Sources */,
 				0AE37FE11BF9C41B001DF241 /* SKActionExtension.swift in Sources */,
 				0A4D1DB31C0AC5370015E264 /* MultiBullet.swift in Sources */,
+				0A0BB1E41C0E7344001FA416 /* Heal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,9 +13,12 @@ class FireBullet: Weapon{
     
     var burnEffectImg: SKSpriteNode!
     var minusLable: SKLabelNode!
-    var damage: Double = 3.0
+    var damage: Double = 4.0
     var effectTimer: NSTimer!
     var effectTimes = 0
+    var CDTime: Double = 5
+    var UseTime: Double = 8
+    var mp: Double = 25
     
     override init(sceneNode :SKScene){
         super.init(sceneNode: sceneNode)
@@ -66,9 +69,6 @@ class FireBullet: Weapon{
             gameScene!.addChild(bullet!)
         }
         
-    }
-    override func getDamage() -> Double {
-        return damage
     }
     
     override func effect(character:CharacterNode){
@@ -122,5 +122,24 @@ class FireBullet: Weapon{
         effectTimes = 0
         burnEffectImg?.removeFromParent()
         minusLable?.removeFromParent()
+    }
+    
+    override func getLosingMp() -> Double {
+        return mp
+    }
+    
+    override func getDamage() -> Double {
+        return damage
+    }
+    
+    override func getCDtime() -> Double {
+        return CDTime
+    }
+    
+    override func getUscTime() -> Double {
+        return UseTime
+    }
+    override func positveEffect() {
+        gameScene!.decreaseMana(CGFloat(getLosingMp()))
     }
 }

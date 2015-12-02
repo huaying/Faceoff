@@ -12,8 +12,12 @@ import SpriteKit
 class IceBullet: Weapon {
     
     var frozenEffectImg: SKSpriteNode!
-    var damage: Double = 3.0
+    var damage: Double = 5.0
     var effectTimer: NSTimer!
+    var CDTime: Double = 6
+    var UseTime: Double = 8
+    var mp: Double = 20
+
     
     override init(sceneNode :SKScene){
         super.init(sceneNode: sceneNode)
@@ -77,16 +81,32 @@ class IceBullet: Weapon {
         
         character.addChild(frozenEffectImg)
         
+        
         effectTimer = NSTimer.scheduledTimerWithTimeInterval(2,
             target: self,
             selector: "removeEffect",
             userInfo: nil,
             repeats: true)
+
+    }
+    
+    override func positveEffect() {
+        gameScene!.decreaseMana(CGFloat(getLosingMp()))
     }
     
     override func removeEffect(){
         frozenEffectImg?.removeFromParent()
         gameScene?.velocityMultiplier = Constants.GameScene.Velocity
     }
-
+    override func getCDtime() -> Double {
+        return CDTime
+    }
+    
+    override func getUscTime() -> Double {
+        return UseTime
+    }
+    
+    override func getLosingMp() -> Double {
+        return mp
+    }
 }

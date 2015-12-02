@@ -42,11 +42,16 @@ class Weapon: NSObject{
     func getDamage() -> Double { return 0 }
     func getReduce() -> Double { return 1 }
     func getManaUse() -> Double { return 0 }
-    
+    func getCDtime() -> Double { return 0 }
+    func getUscTime() -> Double { return 0 }
     func getCharacter() -> SKSpriteNode? {
         return gameScene!.character
     }
+    func getLosingMp() -> Double { return 0 }
 }
+
+
+
 
 
 

@@ -48,6 +48,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     let EnemyName = Constants.GameScene.Enemy
     let EnemyFireName = Constants.GameScene.EnemyFire
     let EnemyPoweredFire = Constants.GameScene.EnemyPoweredFire
+    var bulletFireMutex = 0
     
     enum TouchStatus {
         case Began
@@ -260,25 +261,20 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     
     func loadWeapons(){
         
-        weapons = [
-            addSprite(weaponManager.candidateWeaponTypes![0]!, location: CGPoint(x: scene!.size.width-30,y: 195.0),scale: 1, z:-1),
-            addSprite(weaponManager.candidateWeaponTypes![1]!, location: CGPoint(x: scene!.size.width-30,y: 130.0),scale: 1, z:-1),
-            addSprite(weaponManager.candidateWeaponTypes![2]!, location: CGPoint(x: scene!.size.width-30,y: 65.0),scale: 1, z:-1),
-        ]
-    }
-    
-    func addSprite(imageNamed: String, location: CGPoint, scale: CGFloat, z:CGFloat) -> SKSpriteNode {
-        //print(imageNamed)
-        let sprite = SKSpriteNode(imageNamed:imageNamed)
-        sprite.name = imageNamed
-        sprite.size.height = 35
-        sprite.size.width = 35
-        sprite.xScale = scale
-        sprite.yScale = scale
-        sprite.zPosition = z
-        sprite.position = location
-        self.addChild(sprite)
-        return sprite
+        weapons = []
+        for i in 0..<3{
+            
+            let name = weaponManager.candidateWeaponTypes![i]!
+            let weaponImage = Tools.cropImageToCircle(UIImage(named: name)!)
+            let weapon = SKSpriteNode(texture: SKTexture(image: weaponImage), size: CGSizeMake(35,35))
+            
+            weapon.position = CGPointMake(scene!.size.width-30,CGFloat(65*(i+1)))
+            weapon.size = CGSizeMake(40,40)
+            weapon.name = name
+            //weaponSlot.addChild(weapon)
+            weapons!.append(weapon)
+            addChild(weapon)
+        }
     }
     
     // Scene Update
@@ -422,30 +418,37 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     func lockWeapon(index: Int, node: SKSpriteNode) {
         
         if(weaponMutex[index]) {
-            
-            print("lockWeapon is " + String(index))
+            bulletFireMutex += 1
             weaponMutex[index] = false;
             
-            node.runAction(SKAction.scaleTo(1.5, duration: 0.5))
+            //node.runAction(SKAction.scaleTo(1.5, duration: 0.5))
             
             weaponManager.setCharacterWeapon(node.name!)
+            let cdtime = weaponManager.weapon?.getCDtime()
+            let usctime = weaponManager.weapon?.getUscTime()
             //weaponManager.weapon = weaponManager.makeWeapon(node.name!)
+            print("weapon name is " + node.name!)
             btAdvertiseSharedInstance.update("weapon",data: ["weapon":node.name!])
-            
-            node.runAction(SKAction.waitForDuration(3.0), completion: {
+            let weaponSlot = SKSpriteNode(imageNamed: Constants.GameScene.WeaponSlot)
+            weaponSlot.size = CGSizeMake(44,44)
+            node.addChild(weaponSlot)
+            node.runAction(SKAction.waitForDuration(usctime!), completion: {
+                self.bulletFireMutex -= 1
+                if self.bulletFireMutex == 0 {
+                    self.weaponManager.setCharacterWeapon(Constants.Weapon.WeaponType.Bullet)
+                    //self.weaponManager.weapon = self.weaponManager.makeWeapon(Constants.Weapon.WeaponType.Bullet)
+                    btAdvertiseSharedInstance.update("weapon",data: ["weapon":Constants.Weapon.WeaponType.Bullet])
+                }
                 
-                self.weaponManager.setCharacterWeapon(Constants.Weapon.WeaponType.Bullet)
-            //self.weaponManager.weapon = self.weaponManager.makeWeapon(Constants.Weapon.WeaponType.Bullet)
-            btAdvertiseSharedInstance.update("weapon",data: ["weapon":Constants.Weapon.WeaponType.Bullet])
-                
-                node.runAction(SKAction.scaleTo(1, duration: 0.5))
+                //node.runAction(SKAction.scaleTo(1, duration: 0.5))
                 
                 let cd = CDAnimationBuilder()
                 let child = SKSpriteNode(texture: nil, size: node.size)
                 
                 child.zPosition = 5
+                weaponSlot.removeFromParent()
                 node.addChild(child)
-                child.runAction(cd.initCdAnimation("cd", time: 3.0), completion: {
+                child.runAction(cd.initCdAnimation("cd", time: cdtime!), completion: {
                     
                     self.weaponMutex[index] = true;
                     child.removeFromParent()
