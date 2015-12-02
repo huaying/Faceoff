@@ -135,6 +135,9 @@
 		A3CCCCB81BEE8F0300A94859 /* Warning.wav in Resources */ = {isa = PBXBuildFile; fileRef = A3CCCCAD1BEE8F0300A94859 /* Warning.wav */; };
 		A3ED08F11BE0032600B60AFF /* BuildConnectionScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3ED08F01BE0032600B60AFF /* BuildConnectionScene.swift */; };
 		A3ED08F31BE0064000B60AFF /* ScrollNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3ED08F21BE0064000B60AFF /* ScrollNode.swift */; };
+		E4DFF5CC1C0E852A00BB6272 /* EnlargeEnemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DFF5CB1C0E852A00BB6272 /* EnlargeEnemy.swift */; };
+		E4DFF5CE1C0E86A000BB6272 /* AddMp.png in Resources */ = {isa = PBXBuildFile; fileRef = E4DFF5CD1C0E86A000BB6272 /* AddMp.png */; };
+		E4DFF5D01C0E870400BB6272 /* expend.png in Resources */ = {isa = PBXBuildFile; fileRef = E4DFF5CF1C0E870400BB6272 /* expend.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -288,6 +291,9 @@
 		A3CCCCAD1BEE8F0300A94859 /* Warning.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Warning.wav; sourceTree = "<group>"; };
 		A3ED08F01BE0032600B60AFF /* BuildConnectionScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildConnectionScene.swift; sourceTree = "<group>"; };
 		A3ED08F21BE0064000B60AFF /* ScrollNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollNode.swift; sourceTree = "<group>"; };
+		E4DFF5CB1C0E852A00BB6272 /* EnlargeEnemy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnlargeEnemy.swift; sourceTree = "<group>"; };
+		E4DFF5CD1C0E86A000BB6272 /* AddMp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AddMp.png; sourceTree = "<group>"; };
+		E4DFF5CF1C0E870400BB6272 /* expend.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = expend.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -376,6 +382,7 @@
 			children = (
 				0AA31AEE1BF824CC000DFE4D /* mainscene_start_button.png */,
 				0AA31AEC1BF824B4000DFE4D /* mainscene_slot.png */,
+				E4DFF5CD1C0E86A000BB6272 /* AddMp.png */,
 				0AA31AFD1BF85A61000DFE4D /* mainscene_mainslotwithoutplus.png */,
 				0AA31AF01BF824DF000DFE4D /* mainscene_mainslot.png */,
 				0AA31AFF1BF85A7B000DFE4D /* mainscene_plus.png */,
@@ -433,6 +440,7 @@
 				A304104E1BE942F00004D7B1 /* Missel@2x.png */,
 				A304104F1BE942F00004D7B1 /* Missel_hit@2x.png */,
 				A30410501BE942F00004D7B1 /* prof@2x.png */,
+				E4DFF5CF1C0E870400BB6272 /* expend.png */,
 				A30410511BE942F00004D7B1 /* Ready.png */,
 				A30410521BE942F00004D7B1 /* Ship.png */,
 				A30410531BE942F00004D7B1 /* Ship@2x.png */,
@@ -475,6 +483,7 @@
 				0A4D1DB01C0AC5170015E264 /* FireBullet.swift */,
 				0A4D1DAC1C0AC4BF0015E264 /* Laser.swift */,
 				0A4D1DAA1C0AC47A0015E264 /* Bullet.swift */,
+				E4DFF5CB1C0E852A00BB6272 /* EnlargeEnemy.swift */,
 			);
 			name = Weapon;
 			sourceTree = "<group>";
@@ -601,7 +610,7 @@
 				TargetAttributes = {
 					71E8A09E1BD4605C002832EE = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 5XLQ67P82L;
+						DevelopmentTeam = R7F265Z9Q7;
 					};
 					71E8A0B61BD4605C002832EE = {
 						CreatedOnToolsVersion = 7.0;
@@ -698,10 +707,12 @@
 				A327BF6E1BF7D14300631160 /* burn@2x.png in Resources */,
 				A30410631BE942F00004D7B1 /* InvaderB_00@2x.png in Resources */,
 				0A4D1DA11C07FD1E0015E264 /* buildconnectionscene_back_button.png in Resources */,
+				E4DFF5CE1C0E86A000BB6272 /* AddMp.png in Resources */,
 				0A4D1DA71C0A83970015E264 /* ice_bullet.png in Resources */,
 				711C3E491BD790B1000B724D /* profParticle.png in Resources */,
 				0AA31B001BF85A7B000DFE4D /* mainscene_plus.png in Resources */,
 				711C3E441BD79074000B724D /* MyParticle.sks in Resources */,
+				E4DFF5D01C0E870400BB6272 /* expend.png in Resources */,
 				0A4D1DB71C0B08540015E264 /* fire_effect.png in Resources */,
 				0A4D1DB51C0AC71F0015E264 /* armor.png in Resources */,
 				A304106C1BE942F00004D7B1 /* prof@2x.png in Resources */,
@@ -780,6 +791,7 @@
 				0AE37FEC1BFF21BD001DF241 /* CharacterNode.swift in Sources */,
 				0AE37FE41BFC57B4001DF241 /* PowerManager.swift in Sources */,
 				A364D3A71BF1AE7F00D352B1 /* BTDiscovery.swift in Sources */,
+				E4DFF5CC1C0E852A00BB6272 /* EnlargeEnemy.swift in Sources */,
 				A364D3A81BF1AE7F00D352B1 /* BTService.swift in Sources */,
 				0A12C0CC1C01A001003E9894 /* Tools.swift in Sources */,
 				0A12C0D01C0594B8003E9894 /* EnemyCharacterLoader.swift in Sources */,
@@ -922,9 +934,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "$(SRCROOT)/Faceoff/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = huayingt.Faceoff;
+				PRODUCT_BUNDLE_IDENTIFIER = huayingjh.Faceoff;
 				PRODUCT_NAME = Faceoff;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -938,9 +950,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "$(SRCROOT)/Faceoff/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = huayingt.Faceoff;
+				PRODUCT_BUNDLE_IDENTIFIER = huayingjh.Faceoff;
 				PRODUCT_NAME = Faceoff;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;

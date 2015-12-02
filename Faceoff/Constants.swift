@@ -157,6 +157,7 @@ struct Constants {
             static let Armor = "armor"
             static let LightBullet = "lightbullet"
             static let AddMp = "AddMp"
+            static let ExpandEnemy = "expend"
         }
         
         //For Shooting
@@ -182,7 +183,8 @@ struct Constants {
             WeaponType.Invisibility:"Let yourself invisible for 8 sec",
             WeaponType.Heal:"Add 20 hp to yourself",
             WeaponType.Armor:"Give yourself an armor and Deducts 70% damage",
-            WeaponType.AddMp:"Add 30 mp to yourself"
+            WeaponType.AddMp:"Add 30 mp to yourself",
+            WeaponType.ExpandEnemy:"Expand the size of your enemy by 5 times"
         ]
         
         struct Effect {

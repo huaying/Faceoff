@@ -70,7 +70,7 @@ class WeaponManager: NSObject{
         }
     }
     
-    func makeWeapon(weaponType: String) -> Weapon {
+    func makeWeapon(var weaponType: String) -> Weapon {
         
         var weapon: Weapon!
         
@@ -103,6 +103,9 @@ class WeaponManager: NSObject{
         }
         else if weaponType == Constants.Weapon.WeaponType.AddMp {
             weapon = AddMp(sceneNode: sceneNode)
+        }
+        else if weaponType == Constants.Weapon.WeaponType.ExpandEnemy {
+            weapon = EnlargeEnemy(sceneNode: sceneNode)
         }
         else {
             weapon = Bullet(sceneNode: sceneNode)
