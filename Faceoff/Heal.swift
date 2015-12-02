@@ -45,7 +45,7 @@ class Heal: Bullet {
     }
     
     func enableCure(){
-        gameScene!.decreaseHealth(-50.0)
+        gameScene!.decreaseHealth(-30.0)
     }
 }
 

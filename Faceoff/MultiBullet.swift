@@ -67,7 +67,7 @@ class MultiBullet: Bullet {
             
             bulletLeft!.name = Constants.GameScene.Fire
             bulletMiddle!.name = Constants.GameScene.Fire
-            bulletMiddle!.name = Constants.GameScene.Fire
+            bulletRight!.name = Constants.GameScene.Fire
             
             PhysicsSetting.setupFire(bulletLeft!)
             PhysicsSetting.setupFire(bulletMiddle!)
@@ -89,9 +89,9 @@ class MultiBullet: Bullet {
             bulletMiddle!.position = fromPosition
             bulletRight!.position = fromPosition
             
-            let bulletLeftAction = SKAction.sequence([SKAction.moveBy(CGVectorMake(bulletLeft!.size.width * -3, vector.dy), duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
+            let bulletLeftAction = SKAction.sequence([SKAction.moveBy(CGVectorMake(bulletLeft!.size.width * -2, vector.dy), duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
             let bulletMiddleAction = SKAction.sequence([SKAction.moveBy(CGVectorMake(0, vector.dy), duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
-            let bulletRightAction = SKAction.sequence([SKAction.moveBy(CGVectorMake(bulletLeft!.size.width * 3, vector.dy), duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
+            let bulletRightAction = SKAction.sequence([SKAction.moveBy(CGVectorMake(bulletLeft!.size.width * 2, vector.dy), duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
             
             bulletLeft!.runAction(bulletLeftAction)
             bulletMiddle!.runAction(bulletMiddleAction)

@@ -13,7 +13,7 @@ import AVFoundation
 class Laser: Weapon {
     
     var damage: Double = 0
-    var mana: Double = 1.5
+    var mana: Double = 2.5
     let chargeWait = SKAction.waitForDuration(0.3)
     var kameCharge : AVAudioPlayer! = nil
     
@@ -62,7 +62,7 @@ class Laser: Weapon {
                 let bulletPosition = CGPointMake(x, gameScene!.frame.height/2)
                 fire(bulletPosition,laserWidth: CGFloat(laserWidth),fromEnemy: true)
                 
-                damage = laserWidth/20
+                damage = laserWidth/10
             }
         }
         

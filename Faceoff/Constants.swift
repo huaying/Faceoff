@@ -29,7 +29,7 @@ struct Constants {
         static let Help = "button.wav"
         
         static let BulletFire = "ShipBullet.wav"
-        static let IceBulletFire = "IceBulletFire"
+        static let IceBulletFire = "IceBulletFire.wav"
         static let FireBulletFire = "FireBulletFire.wav"
         static let MultiBulletFire = "ShipBullet.wav"
         static let BonusBulletFire = "button.wav"

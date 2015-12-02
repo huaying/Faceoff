@@ -12,7 +12,7 @@ import SpriteKit
 class IceBullet: Weapon {
     
     var frozenEffectImg: SKSpriteNode!
-    var damage: Double = 5.0
+    var damage: Double = 4.0
     var effectTimer: NSTimer!
     var CDTime: Double = 6
     var UseTime: Double = 8
@@ -65,7 +65,7 @@ class IceBullet: Weapon {
             let bulletAction = SKAction.sequence([SKAction.moveBy(vector, duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
             
             bullet!.runAction(bulletAction)
-            Tools.playSound(Constants.Audio.IceBulletFire, node: bullet!)
+            Tools.playSound(Constants.Audio.IceBulletFire, node: gameScene!)
             gameScene!.addChild(bullet!)
         }
     }
@@ -83,7 +83,7 @@ class IceBullet: Weapon {
         character.addChild(frozenEffectImg)
         
         
-        effectTimer = NSTimer.scheduledTimerWithTimeInterval(2,
+        effectTimer = NSTimer.scheduledTimerWithTimeInterval(1,
             target: self,
             selector: "removeEffect",
             userInfo: nil,

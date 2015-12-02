@@ -212,7 +212,7 @@ class SelectWeaponScene: SKScene {
         if let location = touches.first?.locationInNode(self){
             if 返回按鈕.containsPoint(location){
                 Tools.playSound(Constants.Audio.TransButton, node: self)
-                let nextScene = BuildConnectionScene(size: scene!.size)
+                let nextScene = PlayModeScene(size: scene!.size)
                 transitionForNextScene(nextScene)
             }
             else if forward_btn.containsPoint(location) {
