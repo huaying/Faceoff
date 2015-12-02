@@ -281,23 +281,36 @@ class SelectWeaponScene: SKScene {
                 
                 Tools.playSound(Constants.Audio.TransButton, node: self)
                 
+                let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)
+                
                 for weapon in weaponArray {
                     if weapon == nil {
                         return
                     }
                 }
-                while !EnemyCharacterLoader.isLoaded() {
-                    sleep(1)
+                if !btAdvertiseSharedInstance.single{
+                    
+                    while !EnemyCharacterLoader.isLoaded() {
+                        sleep(1)
+                    }
+                    
+                    let nextScene = GameScene2(size: scene!.size)
+                    nextScene.scaleMode = SKSceneScaleMode.ResizeFill
+                    nextScene.weaponManager.candidateWeaponTypes = weaponArray
+                    
+                    scene?.view?.presentScene(nextScene, transition: transition)
+                    
+                }
+                else{
+                    
+                    let nextScene = GameScene3(size: scene!.size)
+                    nextScene.scaleMode = SKSceneScaleMode.ResizeFill
+                    nextScene.weaponManager.candidateWeaponTypes = weaponArray
+                    
+                    scene?.view?.presentScene(nextScene, transition: transition)
                 }
                 
-                let nextScene = GameScene2(size: scene!.size)
-                nextScene.scaleMode = SKSceneScaleMode.ResizeFill
-                nextScene.weaponManager.candidateWeaponTypes = weaponArray
-                
-                let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)
-                
-                removeAllChildren()
-                scene?.view?.presentScene(nextScene, transition: transition)
+
             }
             
             else if(self.nodeAtPoint(location).name != nil && WEAPONS.contains(self.nodeAtPoint(location))){

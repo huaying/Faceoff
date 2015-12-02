@@ -111,4 +111,7 @@ class IceBullet: Weapon {
     override func getLosingMp() -> Double {
         return mp
     }
+    override func getDamage() -> Double {
+        return damage
+    }
 }

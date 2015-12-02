@@ -19,6 +19,7 @@ class Weapon: NSObject{
     var firePreparingEmitter: SKEmitterNode!
     
     var gameScene: GameScene2?
+    var gameSceneSingle: GameScene3?
     
     var isFirePreparing: Bool = false
     
@@ -37,6 +38,10 @@ class Weapon: NSObject{
     func removeEffect(){}
     func positveEffect(){}  //initial effect for self
     func negativeEffect(){} //initial effect for others
+    
+    func effectToMonster(monster:MonsterNode){} //set effect when hit
+    func removeEffectToMonster(){}
+    
     func firePreparingAction(){}
     func stopFirePreparingAction() {}
     func getDamage() -> Double { return 0 }

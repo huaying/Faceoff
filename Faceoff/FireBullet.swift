@@ -16,6 +16,8 @@ class FireBullet: Weapon{
     var damage: Double = 4.0
     var effectTimer: NSTimer!
     var effectTimes = 0
+    var effectToMonsterTimer: NSTimer!
+    var effectToMonsterTimes = 0
     var CDTime: Double = 5
     var UseTime: Double = 8
     var mp: Double = 25
@@ -144,4 +146,31 @@ class FireBullet: Weapon{
     override func positveEffect() {
         gameScene!.decreaseMana(CGFloat(getLosingMp()))
     }
+    
+    override func effectToMonster(monster:MonsterNode){
+        super.effectToMonster(monster)
+        
+        effectToMonsterTimer = NSTimer.scheduledTimerWithTimeInterval(1,
+            target: self,
+            selector: "burnEffectToMonster",
+            userInfo: nil,
+            repeats: true)
+    }
+    
+    func burnEffectToMonster(){
+        
+        if effectToMonsterTimes < 5 {
+            
+            gameSceneSingle?.decreaseMonsterHealth(2.0)
+            effectToMonsterTimes++
+        }else {
+            removeEffectToMonster()
+        }
+    }
+    override func removeEffectToMonster(){
+        effectToMonsterTimer?.invalidate()
+        effectToMonsterTimes = 0
+    }
+    
+
 }

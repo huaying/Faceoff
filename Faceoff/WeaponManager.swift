@@ -70,7 +70,7 @@ class WeaponManager: NSObject{
         }
     }
     
-    func makeWeapon(var weaponType: String) -> Weapon {
+    func makeWeapon(weaponType: String) -> Weapon {
         
         var weapon: Weapon!
         
@@ -183,4 +183,11 @@ class WeaponManager: NSObject{
     func setNegativeEffect(){
         enemyWeapon?.negativeEffect()
     }
+    
+    func effectToMonster(monster: MonsterNode) {
+        //        let fireBullet = IceBullet(sceneNode: sceneNode)
+        //        fireBullet.effect(character)
+        weapon?.effectToMonster(monster)
+    }
+
 }

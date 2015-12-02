@@ -20,6 +20,7 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
     var service = CBMutableService(type: BLEServiceUUID, primary: true)
     var characteristic: CBMutableCharacteristic!
   //private var peripheralBLE: CBPeripheral?
+    var single: Bool = false
   
     override init() {
         super.init()
@@ -103,6 +104,8 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
     
     //Custom data sending handler
     func update(key: String, data: [String: String] = [String:String]()){
+        
+        if single { return }
         
         var needToBeSend = false
         var stringOfData = ""

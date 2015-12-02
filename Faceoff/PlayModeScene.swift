@@ -12,7 +12,8 @@ class PlayModeScene: SKScene {
     var 選擇單人遊戲按鈕: SKNode! = nil
     var 選擇雙人遊戲按鈕: SKNode! = nil
     var 返回按鈕: SKNode! = nil
-    var Img: UIImage! = nil
+    var single = false
+
     
     override func didMoveToView(view: SKView) {
         
@@ -72,10 +73,18 @@ class PlayModeScene: SKScene {
             if 選擇單人遊戲按鈕.containsPoint(location){
                 Tools.playSound(Constants.Audio.TransButton, node: self)
                 print("single play")
-//                let nextScene = GameScene(size: scene!.size)
-//                nextScene.backgroundColor = UIColor.grayColor()
-//                nextScene.scaleMode =  .AspectFill
-//                transitionForNextScene(nextScene)
+                
+                btAdvertiseSharedInstance.single = true
+                
+                let nextScene = SelectWeaponScene(size: scene!.size)
+                nextScene.backgroundColor = UIColor.grayColor()
+                nextScene.scaleMode =  .AspectFill
+                transitionForNextScene(nextScene)
+                
+                //                let nextScene = GameScene3(size: scene!.size)
+                //                nextScene.backgroundColor = UIColor.grayColor()
+                //                nextScene.scaleMode =  .AspectFill
+                //                transitionForNextScene(nextScene)
                 
             }else if 選擇雙人遊戲按鈕.containsPoint(location){
                 Tools.playSound(Constants.Audio.TransButton, node: self)

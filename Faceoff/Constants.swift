@@ -111,6 +111,7 @@ struct Constants {
         static let ReumeButton = "Play.png"
         static let RestartButton = "Restart.png"
         static let ExitButton = "Exit.png"
+        static let MonsterHead = "fireMonsterHead"
         
         static let Velocity = 500.0
         static let SelfStatusPanel = "SelfStatusPanel"
@@ -118,6 +119,7 @@ struct Constants {
         
         //about contact detection
         static let Character = "character"
+        static let Monster = "monster"
         static let Fire = "fire"
         static let PoweredFire = "poweredfire"
         static let EnemyFire = "enemyfire"
@@ -130,7 +132,7 @@ struct Constants {
             static let Enemy: UInt32 = 0x1 << 2
             static let Fire: UInt32 = 0x1 << 3
             static let EnemyFire: UInt32 = 0x1 << 4
-            static let pauseMask: UInt32 = 0x1 << 4
+            static let Monster: UInt32 = 0x1 << 5
         }
     }
     
