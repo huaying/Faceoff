@@ -95,6 +95,7 @@ class IceBullet: Weapon {
     }
     
     override func removeEffect(){
+        effectTimer?.invalidate()
         frozenEffectImg?.removeFromParent()
         gameScene?.velocityMultiplier = Constants.GameScene.Velocity
     }

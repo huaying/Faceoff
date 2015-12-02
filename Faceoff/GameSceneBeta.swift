@@ -406,9 +406,10 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
                             self.fireMutexReady = true
                         })
                     }
+                }else{
+                    velocityMultiplier = Constants.GameScene.Velocity
+
                 }
-                
-                velocityMultiplier = Constants.GameScene.Velocity
                 touchStatus = .Began
             }
         }
