@@ -110,6 +110,13 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
         if key == "location" {
             stringOfData = key + " " + data["x"]! + " " + data["y"]!
         }
+        else if key == "pause" {
+            stringOfData = key
+        }
+            
+        else if key == "resume" {
+            stringOfData = key
+        }
         
         else if key == "hp" {
             stringOfData = key + " " + data["hp"]!

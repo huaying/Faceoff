@@ -205,7 +205,7 @@ class BuildConnectionScene: SKScene {
                         if tmp.text! == peerName[i]{
                             
                             btDiscoverySharedInstance.connectToPeripheral(centralManager, peripheral: peers[i])
-                            
+                            Tools.playSound(Constants.Audio.SelectOpponent, node: self)
                             peerToConnect = peers[i]
                             
                             print(peerToConnect?.name)
@@ -217,7 +217,7 @@ class BuildConnectionScene: SKScene {
         
         if let location = touches.first?.locationInNode(self){
             if 返回按鈕.containsPoint(location){
-                返回按鈕.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
+                Tools.playSound(Constants.Audio.TransButton, node: self)
                 let nextScene = PlayModeScene(size: scene!.size)
                 transitionForNextScene(nextScene)
             }
@@ -227,7 +227,7 @@ class BuildConnectionScene: SKScene {
         
         if let location = touches.first?.locationInNode(self){
             if 遊戲按鈕.containsPoint(location){
-                //遊戲按鈕.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
+                Tools.playSound(Constants.Audio.TransButton, node: self)
                 let nextScene = SelectWeaponScene(size: scene!.size)
                 transitionForNextScene(nextScene)
             }

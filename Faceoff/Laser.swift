@@ -15,7 +15,6 @@ class Laser: Weapon {
     var mana: Double = 1.5
     let chargeWait = SKAction.waitForDuration(0.3)
     
-    
     override init(sceneNode :SKScene){
         super.init(sceneNode: sceneNode)
     }
@@ -105,7 +104,6 @@ class Laser: Weapon {
         
         let character = getCharacter()!
         
-        
         let chargeAction = {
             if self.isFirePreparing {
                 
@@ -123,7 +121,6 @@ class Laser: Weapon {
             }
         }
         character.runAction(SKAction.sequence([chargeWait,SKAction.runBlock(chargeAction)]),withKey: "chargeAction")
-
     }
     
     override func stopFirePreparingAction() {

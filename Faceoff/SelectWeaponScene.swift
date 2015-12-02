@@ -104,11 +104,14 @@ class SelectWeaponScene: SKScene {
         centerBlock = SKSpriteNode(texture: texture, size: CGSizeMake(image.size.width * 0.38,image.size.height * 0.33))
         //centerBlock.position = CGPointMake(frame.midX, frame.midY)
         //addChild(centerBlock)
-        
+        //centerBlock.zPosition = -5
+            
+        //Constants.SelectWeaponScene.centerBlockZ
         let crop = SKSpriteNode(color: UIColor.blackColor(), size: centerBlock.size)
         //crop.position = CGPointMake(frame.midX, frame.midY)
         
         cropNode.position = CGPointMake(frame.midX, frame.midY)
+        cropNode.zPosition = -5
         cropNode.maskNode = crop
         cropNode.addChild(centerBlock)
         addChild(cropNode)
@@ -208,7 +211,7 @@ class SelectWeaponScene: SKScene {
         
         if let location = touches.first?.locationInNode(self){
             if 返回按鈕.containsPoint(location){
-                返回按鈕.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
+                Tools.playSound(Constants.Audio.TransButton, node: self)
                 let nextScene = BuildConnectionScene(size: scene!.size)
                 transitionForNextScene(nextScene)
             }
@@ -276,6 +279,8 @@ class SelectWeaponScene: SKScene {
                 
             else if 進入遊戲按鈕.containsPoint(location) {
                 
+                Tools.playSound(Constants.Audio.TransButton, node: self)
+                
                 for weapon in weaponArray {
                     if weapon == nil {
                         return
@@ -319,7 +324,7 @@ class SelectWeaponScene: SKScene {
                             }
                             
                             selectedWeapons[select_count]!.texture = SKTexture(imageNamed: name)
-                            
+                            Tools.playSound(Constants.Audio.SelectWeaponButton, node: self)
                             descrioptionLable.text = arrayOfDescription[nameOfIndex]
                             weaponArray[select_count] = eachChild.name!
                             select_count = (++select_count) % 3
@@ -364,6 +369,7 @@ class SelectWeaponScene: SKScene {
         let enlarge = SKAction.scaleTo(1, duration:duration)
         
         weapon.runAction(enlarge);
+        Tools.playSound(Constants.Audio.WeaponEnlarge, node: weapon)
         
         if(RorL==1){
             weapon.runAction(moveToRight, completion: {
@@ -415,26 +421,11 @@ class SelectWeaponScene: SKScene {
         
         
     }
-    func moveToFirst(weapon: SKNode, RorL: CGFloat, distance: CGFloat, duration: Double){
-        
-        
-        let moveToLeft = SKAction.moveTo(CGPointMake(weapon.position.x-distance,weapon.position.y), duration:duration)
-        let moveToRight = SKAction.moveTo(CGPointMake(weapon.position.x+distance,weapon.position.y), duration:duration)
-        
-        if(RorL==1){
-            weapon.runAction(moveToLeft)
-            weapon.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
-            
-        }
-        else{
-            weapon.runAction(moveToRight)
-            weapon.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
-            
-        }
-        
-    }
     
     func scrollToFirst(weapon: SKNode, RorL: CGFloat, distance: CGFloat, duration: Double){
+        
+        
+        Tools.playSound(Constants.Audio.WeaponSwift, node: self)
         
         let moveToLeft = SKAction.moveTo(CGPointMake(weapon.position.x-distance,weapon.position.y), duration:duration)
         let moveToRight = SKAction.moveTo(CGPointMake(weapon.position.x+distance,weapon.position.y), duration:duration)

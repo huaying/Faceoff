@@ -15,7 +15,7 @@ class Bullet: Weapon {
     
     override init(sceneNode :SKScene){
         super.init(sceneNode: sceneNode)
-        bulletImageName = Constants.Weapon.WeaponImage.Bullet
+        bulletImageName = Constants.Weapon.WeaponImage.LightBullet
     }
     
     override func fire(){
@@ -44,17 +44,17 @@ class Bullet: Weapon {
     func fire(fromPosition: CGPoint, vector: CGVector, fromEnemy: Bool = false){
         if let bulletImageName = bulletImageName {
             bullet = SKSpriteNode(imageNamed: bulletImageName)
-            bullet!.xScale = 0.5
-            bullet!.yScale = 0.5
+            //used to be 0.5
+            bullet!.xScale = 0.4            
+            bullet!.yScale = 0.4
             bullet!.position = fromPosition
             bullet!.name = Constants.GameScene.Fire
             PhysicsSetting.setupFire(bullet!)
             
             if fromEnemy {
                 bullet!.size.height *= -1
-                
-                PhysicsSetting.setupEnemyFire(bullet!)
                 bullet!.name = Constants.GameScene.EnemyFire
+                PhysicsSetting.setupEnemyFire(bullet!)
             }
             
             let bulletAction = SKAction.sequence([SKAction.moveBy(vector, duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
@@ -67,7 +67,10 @@ class Bullet: Weapon {
     override func getDamage() -> Double {
         return damage
     }
+    
 }
+
+
 
 class BounsBullet: Weapon{
     
@@ -81,5 +84,3 @@ class BounsBullet: Weapon{
         bullet!.yScale = 0.2
     }
 }
-
-

@@ -7,10 +7,49 @@
 //
 
 import Foundation
+import CoreGraphics
 
 struct Constants {
     
     static let Font = "Copperplate"
+    
+    struct Audio {
+        static let TransButton = "button.wav"
+        static let CameraButton = "button.wav"
+        static let SelectWeaponButton = "button.wav"
+        static let WeaponSwift = "button.wav"
+        static let WeaponEnlarge = "button.wav"
+        static let SelectOpponent = "button.wav"
+        static let Preparebackground = "button.wav"
+        static let GameBackground = "button.wav"
+        
+        static let SelecWeaponInGame = "button.wav"
+        static let Help = "button.wav"
+        
+        static let BulletFire = "button.wav"
+        static let IceBulletFire = "button.wav"
+        static let FireBulletFire = "button.wav"
+        static let MultiBulletFire = "button.wav"
+        static let BonusBulletFire = "button.wav"
+        static let LaserFire = "button.wav"
+        static let InvisibilityFire = "button.wav"
+        static let HealFire = "button.wav"
+        static let DetectFire = "button.wav"
+        static let ArmorFire = "button.wav"
+        
+        static let BulletFireFromEnemy = "button.wav"
+        static let IceBulletFireFromEnemy = "button.wav"
+        static let FireBulletFireFromEnemy = "button.wav"
+        static let MultiBulletFireFromEnemy = "button.wav"
+        static let BonusBulletFireFromEnemy = "button.wav"
+        static let LaserFireFromEnemy = "button.wav"
+        static let InvisibilityFireFromEnemy = "button.wav"
+        static let HealFireFromEnemy = "button.wav"
+        static let DetectFireFromEnemy = "button.wav"
+        static let ArmorFireFromEnemy = "button.wav"
+    }
+    
+    
     
     
     struct Character {
@@ -31,7 +70,6 @@ struct Constants {
         static let CharacterSelect = "mainscene_character_select.png"
         static let Plus = "mainscene_plus.png"
         static let DeleteButton = "mainscene_delete.png"
-        
         static let SlotSize = 80.0
     }
     
@@ -60,6 +98,7 @@ struct Constants {
         static let RightButton = "selectweaponscene_right_button.png"
         static let CenterBlock = "selectweaponscene_center_block.png"
         static let Slot = "selectweaponscene_slot.png"
+        static let centerBlockZ = -5
     }
     
     struct CharacterManager {
@@ -98,7 +137,7 @@ struct Constants {
             static let Enemy: UInt32 = 0x1 << 2
             static let Fire: UInt32 = 0x1 << 3
             static let EnemyFire: UInt32 = 0x1 << 4
-            static let EnemyPoweredFire: UInt32 = 0x1 << 5
+            static let pauseMask: UInt32 = 0x1 << 4
         }
     }
     
@@ -117,6 +156,7 @@ struct Constants {
             static let Heal = "Heal"
             static let Detect = "Detect"
             static let Armor = "armor"
+            static let LightBullet = "lightbullet"
         }
         
         //For Shooting
@@ -131,6 +171,7 @@ struct Constants {
             static let Heal = "Heal"
             static let Detect = "Detect"
             static let Armor = "armor"
+            static let LightBullet = "light_bullet.png"
         }
         
         static let Sets = [

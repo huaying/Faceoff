@@ -12,6 +12,7 @@ import SpriteKit
 import Foundation
 
 
+
 class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerControllerDelegate{
     
     var 製造角色按鈕: SKNode! = nil
@@ -23,7 +24,9 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
     var pickedCharacterNode: SKSpriteNode?
     var gestureRecognizer: UILongPressGestureRecognizer?
     
+
     override func didMoveToView(view: SKView) {
+        
         
         loadBackground()
         loadStartButton()
@@ -81,7 +84,8 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
         製造角色按鈕.runAction(SKAction.repeatActionForever(SKAction.rotateByAngle(CGFloat(M_PI), duration:2)))
         mainSlotPlus.position = 製造角色按鈕.position
         mainSlotPlus.runAction(SKAction.repeatActionForever(SKAction.sequence([
-            SKAction.fadeInWithDuration(0.5),                  SKAction.waitForDuration(1),
+            SKAction.fadeInWithDuration(0.5),
+            SKAction.waitForDuration(1),
             SKAction.fadeOutWithDuration(0.5)
             ]))
         )
@@ -175,8 +179,10 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
         if let location = touches.first?.locationInNode(self){
             //if 製造角色按鈕.containsPoint(location){
             if pickedCharacterNode == nil && hypotf(Float(製造角色按鈕.position.x - location.x), Float(製造角色按鈕.position.y - location.y)) < Float(製造角色按鈕.frame.width/2 - 30) {
-                製造角色按鈕.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
-                
+
+                Tools.playSound(Constants.Audio.CameraButton, node: self)
+
+
                 let  vc:UIViewController = self.view!.window!.rootViewController!       
                 vc.presentViewController(CameraViewController(), animated: false, completion:nil)
 
@@ -184,9 +190,11 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
                 
                 
             else if 進入遊戲按鈕.containsPoint(location){
-                進入遊戲按鈕.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
-                
+
+                Tools.playSound(Constants.Audio.TransButton, node: self)
+
                 let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)
+                
                 removeAllChildren()
                 self.view!.removeGestureRecognizer(gestureRecognizer!)
                 let nextScene = PlayModeScene(size: scene!.size)

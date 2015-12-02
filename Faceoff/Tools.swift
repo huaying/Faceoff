@@ -6,8 +6,13 @@
 //  Copyright © 2015 Liang. All rights reserved.
 //
 
-import Foundation
+
+import UIKit
+import GLKit
 import SpriteKit
+import Foundation
+
+
 
 class Tools {
     
@@ -33,25 +38,11 @@ class Tools {
     static func NSDataToDictionary(nsdata: NSData) -> NSDictionary?{
         return NSKeyedUnarchiver.unarchiveObjectWithData(nsdata) as? NSDictionary
     }
- 
-    static func cropImageToCircle(image: UIImage) -> UIImage{
-        let imageView = UIImageView(frame: CGRectMake(0,0,image.size.height,image.size.height))
-        imageView.image = image
-        imageView.contentMode = .Center
-        imageView.layer.cornerRadius = image.size.height/2;
-        imageView.layer.masksToBounds = true
-        
-        var layer1: CALayer = CALayer()
-        
-        layer1 = imageView.layer
-        UIGraphicsBeginImageContext(CGSize(width:image.size.height,height:image.size.height))
-        layer1.renderInContext(UIGraphicsGetCurrentContext()!)
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage
-    }
 
+    static func playSound(audioName: String, node: SKNode){
+        let sound = SKAction.playSoundFileNamed(audioName, waitForCompletion: false)
+        node.runAction(sound)
+    }
     static func delay(delay:Double, closure:()->()) {
         
         dispatch_after(

@@ -12,7 +12,6 @@ class PlayModeScene: SKScene {
     var 選擇單人遊戲按鈕: SKNode! = nil
     var 選擇雙人遊戲按鈕: SKNode! = nil
     var 返回按鈕: SKNode! = nil
-    let background: SKNode! = SKSpriteNode(imageNamed: "spaceship2.jpg")
     var Img: UIImage! = nil
     
     override func didMoveToView(view: SKView) {
@@ -71,7 +70,7 @@ class PlayModeScene: SKScene {
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if let location = touches.first?.locationInNode(self){
             if 選擇單人遊戲按鈕.containsPoint(location){
-                選擇單人遊戲按鈕.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
+                Tools.playSound(Constants.Audio.TransButton, node: self)
                 print("single play")
 //                let nextScene = GameScene(size: scene!.size)
 //                nextScene.backgroundColor = UIColor.grayColor()
@@ -79,14 +78,14 @@ class PlayModeScene: SKScene {
 //                transitionForNextScene(nextScene)
                 
             }else if 選擇雙人遊戲按鈕.containsPoint(location){
-                選擇雙人遊戲按鈕.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
+                Tools.playSound(Constants.Audio.TransButton, node: self)
                 print("multiplayer")
                 let nextScene = BuildConnectionScene(size: scene!.size)
                 nextScene.scaleMode = SKSceneScaleMode.ResizeFill
                 transitionForNextScene(nextScene)
                 
             }else if 返回按鈕.containsPoint(location){
-                返回按鈕.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
+                Tools.playSound(Constants.Audio.TransButton, node: self)
                 let nextScene = MainScene(size: scene!.size)
                 nextScene.scaleMode = SKSceneScaleMode.AspectFill
                 transitionForNextScene(nextScene)

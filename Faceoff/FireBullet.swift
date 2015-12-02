@@ -55,6 +55,7 @@ class FireBullet: Weapon{
             
             if fromEnemy {
                 bullet!.size.height *= -1
+
                 bullet!.name = Constants.GameScene.EnemyFire
                 PhysicsSetting.setupEnemyFire(bullet!)
             }

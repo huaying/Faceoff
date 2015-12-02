@@ -60,10 +60,9 @@ class MultiBullet: Bullet {
             PhysicsSetting.setupFire(bulletRight!)
             
             if fromEnemy {
-                bulletLeft!.size.height *= -1
-                bulletMiddle!.size.height *= -1
-                bulletRight!.size.height *= -1
-
+                bulletLeft?.size.height *= -1
+                bulletMiddle?.size.height *= -1
+                bulletRight?.size.height *= -1
                 bulletLeft!.name = Constants.GameScene.EnemyFire
                 bulletMiddle!.name = Constants.GameScene.EnemyFire
                 bulletRight!.name = Constants.GameScene.EnemyFire

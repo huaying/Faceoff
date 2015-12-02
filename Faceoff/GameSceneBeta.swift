@@ -21,9 +21,11 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     var enemyMark: SKSpriteNode!
     var enemyImageBase64String = ""
     var fireMutexReady = true
-    var startMoving = true
+    var startMoving = true;
     var isGameStart = false
-    
+    var needPause: Bool = true
+    var statusButton: SKSpriteNode!
+    var pauseMask: SKView!
    // var arr: [String] = []
     
     var weapons: Array<SKSpriteNode>?
@@ -35,6 +37,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     var enemyMp: MPManager?
     var weaponManager = WeaponManager()
     var slowUpdateCount = 0
+
     
     let motionManager: CMMotionManager = CMMotionManager()
     var velocityMultiplier = Constants.GameScene.Velocity
@@ -51,8 +54,11 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
         case Ended
         case None
     }
-    var touchStatus: TouchStatus = .None
     
+    var touchStatus: TouchStatus = .None
+    let pause = SKTexture(imageNamed: "pause")
+    let play = SKTexture(imageNamed: "play")
+
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
 
@@ -118,6 +124,13 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
                     enemyMp?.powerValue = CGFloat(mp)
                 }
             }
+            else if let _: [String] = userInfo["pause"] as? [String] {
+                pauseGame()
+                
+            }
+            else if let _: [String] = userInfo["resume"] as? [String] {                resumeGame()
+            }
+
         }
     }
     
@@ -131,14 +144,39 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
         setupHealthBar()
         setupOpponentHealthBar()
         setupMpBar()
+        setupStatusButton()
         setupenemyMapBar()
         loadBackground()
         loadWeapons()
         resetMutex()
         userInteractionEnabled = true
         isGameStart = true
-        startMoving = true
     }
+    
+    
+    
+    func pauseGame()
+    {
+        view!.scene?.paused = true
+        //self.userInteractionEnabled = false
+    }
+    func resumeGame()
+    {
+        view!.scene?.paused = false
+        //self.userInteractionEnabled = true
+    }
+    
+    
+    
+    func setupStatusButton(){
+       // pauseMask.setco
+        statusButton = SKSpriteNode(texture: pause)
+        statusButton.position = CGPoint(x: frame.minX + CGFloat(15) , y: frame.maxY - CGFloat(15))
+        statusButton.setScale(0.07)
+        statusButton.alpha = 0.5
+        addChild(statusButton)
+    }
+
     
     func stopGame(){
         isGameStart = false
@@ -163,6 +201,10 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
             return
         }
     }
+    
+
+
+    
     
     func setupHealthBar() {
         hp = HPManager(view: view!)
@@ -218,30 +260,15 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     
     func loadWeapons(){
         
-        weapons = []
-        for i in 0..<3{
-            let weaponSlot = SKSpriteNode(imageNamed: Constants.GameScene.WeaponSlot)
-            let name = weaponManager.candidateWeaponTypes![i]!
-            let weaponImage = Tools.cropImageToCircle(UIImage(named: name)!)
-            let weapon = SKSpriteNode(texture: SKTexture(image: weaponImage), size: CGSizeMake(35,35))
-            
-            weaponSlot.position = CGPointMake(scene!.size.width-30,CGFloat(65*(i+1)))
-            weaponSlot.size = CGSizeMake(40,40)
-            weaponSlot.name = name
-            weaponSlot.addChild(weapon)
-            weapons!.append(weaponSlot)
-            addChild(weaponSlot)
-        }
-        
-//        weapons = [
-//            addSprite(weaponManager.candidateWeaponTypes![0]!, location: CGPoint(x: scene!.size.width-30,y: 195.0),scale: 1, z:-1),
-//            addSprite(weaponManager.candidateWeaponTypes![1]!, location: CGPoint(x: scene!.size.width-30,y: 130.0),scale: 1, z:-1),
-//            addSprite(weaponManager.candidateWeaponTypes![2]!, location: CGPoint(x: scene!.size.width-30,y: 65.0),scale: 1, z:-1),
-//        ]
+        weapons = [
+            addSprite(weaponManager.candidateWeaponTypes![0]!, location: CGPoint(x: scene!.size.width-30,y: 195.0),scale: 1, z:-1),
+            addSprite(weaponManager.candidateWeaponTypes![1]!, location: CGPoint(x: scene!.size.width-30,y: 130.0),scale: 1, z:-1),
+            addSprite(weaponManager.candidateWeaponTypes![2]!, location: CGPoint(x: scene!.size.width-30,y: 65.0),scale: 1, z:-1),
+        ]
     }
     
     func addSprite(imageNamed: String, location: CGPoint, scale: CGFloat, z:CGFloat) -> SKSpriteNode {
-        
+        //print(imageNamed)
         let sprite = SKSpriteNode(imageNamed:imageNamed)
         sprite.name = imageNamed
         sprite.size.height = 35
@@ -323,10 +350,35 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         /* Called when a touch begins */
+        
+        //pause function
+        if let location = touches.first?.locationInNode(self){
+            
+            if statusButton.containsPoint(location){
+//                statusButton.runAction(SKAction.playSoundFileNamed(FaceoffGameSceneEffectAudioName.ButtonAudioName.rawValue, waitForCompletion: false))
+                
+                if(needPause){
+                    
+                    statusButton.texture = play
+                    needPause = false
+                    btAdvertiseSharedInstance.update("pause")
+                    pauseGame()
+                }
+                else if(!needPause){
+                    statusButton.texture = pause
+                    btAdvertiseSharedInstance.update("resume")
+                    needPause = true
+                    resumeGame()
+                }
+                //pause the game
+                //jump out the alert view
+                
+            }
+        }
+        
         if isGameStart {
             if touchStatus == .Began || touchStatus == .None {
                 weaponManager.firePreparingBegin(touches.first!)
-            
                 touchStatus = .Ended
             }
             
@@ -346,6 +398,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
                         for (i,node) in weapons!.enumerate() {
                             if node.containsPoint(location) {
                                 lockWeapon(i, node: node)
+
                                 return
                             }
                         }
@@ -358,7 +411,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
                         })
                     }
                 }
-
+                
                 velocityMultiplier = Constants.GameScene.Velocity
                 touchStatus = .Began
             }
@@ -376,11 +429,13 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
             node.runAction(SKAction.scaleTo(1.5, duration: 0.5))
             
             weaponManager.setCharacterWeapon(node.name!)
+            //weaponManager.weapon = weaponManager.makeWeapon(node.name!)
             btAdvertiseSharedInstance.update("weapon",data: ["weapon":node.name!])
             
             node.runAction(SKAction.waitForDuration(3.0), completion: {
                 
                 self.weaponManager.setCharacterWeapon(Constants.Weapon.WeaponType.Bullet)
+            //self.weaponManager.weapon = self.weaponManager.makeWeapon(Constants.Weapon.WeaponType.Bullet)
             btAdvertiseSharedInstance.update("weapon",data: ["weapon":Constants.Weapon.WeaponType.Bullet])
                 
                 node.runAction(SKAction.scaleTo(1, duration: 0.5))
@@ -388,7 +443,6 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
                 let cd = CDAnimationBuilder()
                 let child = SKSpriteNode(texture: nil, size: node.size)
                 
-                print("node",node.size)
                 child.zPosition = 5
                 node.addChild(child)
                 child.runAction(cd.initCdAnimation("cd", time: 3.0), completion: {
