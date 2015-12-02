@@ -34,13 +34,11 @@ class BuildConnectionScene: SKScene {
     
     override func didMoveToView(view: SKView) {
         
+        btAdvertiseSharedInstance = BTAdvertise();
+        btDiscoverySharedInstance = BTDiscovery();
+
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("connectionChanged:"), name: BLEServiceChangedStatusNotification, object: nil)
-        
-        // Start the Bluetooth advertise process
-        btAdvertiseSharedInstance
-        
-        // Start the Bluetooth discovery process
-        btDiscoverySharedInstance
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("allSet:"), name: "allSet", object: nil)
         
@@ -56,8 +54,6 @@ class BuildConnectionScene: SKScene {
         loadBackground()
         loadBackButton()
         loadPlayerList()
-        
-        
         loadYourDeviceName()
     
 
@@ -106,22 +102,6 @@ class BuildConnectionScene: SKScene {
         cropNode.maskNode = crop
         cropNode.addChild(playerListNode)
         addChild(cropNode)
-        
-        
-//        //test scroll
-//        let As = ["Huaying","Ray","GiGi","Sunny","Ethan"]
-//        //let As = ["Huaying","Ray"]
-//        for(index, a) in As.enumerate(){
-//            
-//            let peerNode = SKLabelNode(fontNamed: "Copperplate")
-//            peerNode.text = a;
-//            peerNode.fontSize = 25;
-//            peerNode.position = CGPoint(x:0,y:CGFloat(index * 40))
-//            scrollNode.addChild(peerNode)
-//        }
-        
-        
-        
     }
     func loadYourDeviceName(){
         statusnode = SKLabelNode(fontNamed: Constants.Font)

@@ -40,8 +40,8 @@ class Tools {
     }
 
     static func playSound(audioName: String, node: SKNode){
-        let sound = SKAction.playSoundFileNamed(audioName, waitForCompletion: false)
-        node.runAction(sound)
+        let sound = SKAction.playSoundFileNamed(audioName, waitForCompletion: true)
+        node.runAction(sound,withKey: "soundPlay")
     }
     static func delay(delay:Double, closure:()->()) {
         

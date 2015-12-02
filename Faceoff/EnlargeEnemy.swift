@@ -22,6 +22,7 @@ class EnlargeEnemy: Bullet {
     }
     
     override func negativeEffect() {
+        Tools.playSound(Constants.Audio.EnlargeFire, node: gameScene!)
         enableEnlarge()
     }
     

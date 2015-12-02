@@ -314,6 +314,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     func pauseButtonHandle(touches: Set<UITouch>){
         if let location = touches.first?.locationInNode(self){
             if statusButton.containsPoint(location){
+                Tools.playSound(Constants.Audio.Pause, node: self)
                 if(needPause){
                     statusButton.texture = play
                     needPause = false
@@ -333,6 +334,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
         if let location = touches.first?.locationInNode(self){
             
             if exitButton != nil && exitButton!.containsPoint(location){
+                Tools.playSound(Constants.Audio.Pause, node: self)
                 removeAllChildren()
                 let nextScene = MainScene(size: scene!.size)
                 transitionForNextScene(nextScene)
@@ -343,6 +345,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     func restartButtonHandle(touches: Set<UITouch>){
         if let location = touches.first?.locationInNode(self){
             if restartButton != nil && restartButton!.containsPoint(location){
+                Tools.playSound(Constants.Audio.Pause, node: self)
                 removeGameEndPanel()
                 setupGame()
             }
@@ -352,6 +355,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     func resumeButtonHandle(touches: Set<UITouch>){
         if let location = touches.first?.locationInNode(self){
             if resumeButton != nil && resumeButton!.containsPoint(location){
+                Tools.playSound(Constants.Audio.Pause, node: self)
                 statusButton.texture = pause
                 btAdvertiseSharedInstance.update("resume")
                 needPause = true

@@ -11,7 +11,7 @@ import SpriteKit
 import CoreBluetooth
 import UIKit
 
-let btAdvertiseSharedInstance = BTAdvertise();
+var btAdvertiseSharedInstance = BTAdvertise();
 
 class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
   
@@ -23,7 +23,7 @@ class BTAdvertise: NSObject, CBPeripheralManagerDelegate, CBPeripheralDelegate {
   
     override init() {
         super.init()
-	
+        print("bta")
         let peripheralQueue = dispatch_queue_create("com.raywenderlich", DISPATCH_QUEUE_SERIAL)
         self.peripheralManager = CBPeripheralManager(delegate: self, queue: peripheralQueue)
     }

@@ -14,43 +14,34 @@ struct Constants {
     static let Font = "Copperplate"
     
     struct Audio {
-        static let TransButton = "button.wav"
-        static let CameraButton = "button.wav"
-        static let SelectWeaponButton = "button.wav"
-        static let WeaponSwift = "button.wav"
-        static let WeaponEnlarge = "button.wav"
-        static let SelectOpponent = "button.wav"
+        static let TransButton = "TransButton.wav"
+        static let CameraButton = "cameraButton.wav"
+        static let SelectWeaponButton = "selectWeapon.wav"
+        static let WeaponSwift = "swiftWeapon.wav"
+        static let WeaponEnlarge = "weaponEnlarge.wav"
+        static let SelectOpponent = "SelectOpponent.wav"
         static let Preparebackground = "button.wav"
         static let GameBackground = "button.wav"
+        static let Pause = "pause.wav"
+        static let Lose = "lose.wav"
         
         static let SelecWeaponInGame = "button.wav"
         static let Help = "button.wav"
         
-        static let BulletFire = "button.wav"
-        static let IceBulletFire = "button.wav"
-        static let FireBulletFire = "button.wav"
-        static let MultiBulletFire = "button.wav"
+        static let BulletFire = "ShipBullet.wav"
+        static let IceBulletFire = "IceBulletFire"
+        static let FireBulletFire = "FireBulletFire.wav"
+        static let MultiBulletFire = "ShipBullet.wav"
         static let BonusBulletFire = "button.wav"
-        static let LaserFire = "button.wav"
-        static let InvisibilityFire = "button.wav"
-        static let HealFire = "button.wav"
+        static let LaserPrepareFire = "kameCharge"
+        static let LaserFire = "kameEmmit.wav"
+        static let InvisibilityFire = "InvisibilityFire.wav"
+        static let HealFire = "HealFire.wav"
         static let DetectFire = "button.wav"
         static let ArmorFire = "button.wav"
-        
-        static let BulletFireFromEnemy = "button.wav"
-        static let IceBulletFireFromEnemy = "button.wav"
-        static let FireBulletFireFromEnemy = "button.wav"
-        static let MultiBulletFireFromEnemy = "button.wav"
-        static let BonusBulletFireFromEnemy = "button.wav"
-        static let LaserFireFromEnemy = "button.wav"
-        static let InvisibilityFireFromEnemy = "button.wav"
-        static let HealFireFromEnemy = "button.wav"
-        static let DetectFireFromEnemy = "button.wav"
-        static let ArmorFireFromEnemy = "button.wav"
+        static let AddMp = "addmp.wav"
+        static let EnlargeFire = "enlargeFire.wav"
     }
-    
-    
-    
     
     struct Character {
         static let MaxOfCandidateNumber = 3
@@ -167,7 +158,7 @@ struct Constants {
             static let Bullet = "Missel"
             static let IceBullet = "ice_bullet.png"
             static let FireBullet = "fire_bullet.png"
-            static let MultiBullet = "Missel"
+            static let MultiBullet = "light_bullet.png"
             static let BonusBullet = "DoubleBonus"
             static let Laser = "Ultimate"
             static let Invisibility = "Invisibility_Cloak"

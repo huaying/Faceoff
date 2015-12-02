@@ -24,6 +24,7 @@ class Armor: Bullet {
     
     override func positveEffect() {
         enableArmor()
+        Tools.playSound(Constants.Audio.ArmorFire, node: gameScene!)
         gameScene!.decreaseMana(CGFloat(getLosingMp()))
     }
     

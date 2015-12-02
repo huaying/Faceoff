@@ -8,12 +8,14 @@
 
 import Foundation
 import SpriteKit
+import AVFoundation
 
 class Laser: Weapon {
     
     var damage: Double = 0
     var mana: Double = 1.5
     let chargeWait = SKAction.waitForDuration(0.3)
+    var kameCharge : AVAudioPlayer! = nil
     
     override init(sceneNode :SKScene){
         super.init(sceneNode: sceneNode)
@@ -46,6 +48,9 @@ class Laser: Weapon {
             
             let normalizedX = 1 - (bulletPosition.x/gameScene!.size.width)
             btAdvertiseSharedInstance.update("fire-laser",data: ["x":normalizedX.description,"laserWidth":laserFinalWidth.description])
+        
+            kameCharge?.stop()
+            Tools.playSound(Constants.Audio.LaserFire, node: self.gameScene!)
         }
     }
     override func fireFromEnemy(fireInfo: [String]) {
@@ -116,6 +121,16 @@ class Laser: Weapon {
                 self.firePreparingEmitter!.zPosition = 0;
                 self.firePreparingEmitter!.alpha = 0.6
                 self.firePreparingEmitter!.particleBirthRate = 500
+                
+                do {
+                    try self.kameCharge = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("kameCharge", ofType: "wav")!))
+                    
+                    self.kameCharge.play()
+                } catch {
+                    print(error)
+                }
+
+                
                 
                 character.addChild(self.firePreparingEmitter!)
             }

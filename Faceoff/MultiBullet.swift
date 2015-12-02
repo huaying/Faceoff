@@ -48,6 +48,9 @@ class MultiBullet: Bullet {
     override func fire(fromPosition: CGPoint, vector: CGVector, fromEnemy: Bool = false){
         
         if let bulletImageName = bulletImageName {
+            
+            Tools.playSound(Constants.Audio.MultiBulletFire, node: gameScene!)
+            
             var bulletLeft: SKSpriteNode?
             var bulletMiddle: SKSpriteNode?
             var bulletRight: SKSpriteNode?
@@ -86,9 +89,9 @@ class MultiBullet: Bullet {
             bulletMiddle!.position = fromPosition
             bulletRight!.position = fromPosition
             
-            let bulletLeftAction = SKAction.sequence([SKAction.moveBy(CGVectorMake(bulletLeft!.size.width * -7, vector.dy), duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
+            let bulletLeftAction = SKAction.sequence([SKAction.moveBy(CGVectorMake(bulletLeft!.size.width * -3, vector.dy), duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
             let bulletMiddleAction = SKAction.sequence([SKAction.moveBy(CGVectorMake(0, vector.dy), duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
-            let bulletRightAction = SKAction.sequence([SKAction.moveBy(CGVectorMake(bulletLeft!.size.width * 7, vector.dy), duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
+            let bulletRightAction = SKAction.sequence([SKAction.moveBy(CGVectorMake(bulletLeft!.size.width * 3, vector.dy), duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
             
             bulletLeft!.runAction(bulletLeftAction)
             bulletMiddle!.runAction(bulletMiddleAction)

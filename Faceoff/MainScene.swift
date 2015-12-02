@@ -216,7 +216,7 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
                                 break
                             }
                             pickCharacter(i)
-                            
+                        Tools.playSound(Constants.Audio.Pause, node: self)
                         }
                         candidateCharacterNode.removeDeleteButton()
                     }

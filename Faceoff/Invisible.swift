@@ -35,6 +35,7 @@ class Invisible: Bullet {
     }
     
     override func positveEffect() {
+        Tools.playSound(Constants.Audio.InvisibilityFire, node: gameScene!)
         gameScene!.decreaseMana(CGFloat(getLosingMp()))
     }
     

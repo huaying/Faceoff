@@ -24,6 +24,7 @@ class Heal: Bullet {
     
     override func positveEffect() {
         enableCure()
+        Tools.playSound(Constants.Audio.HealFire, node: gameScene!)
         gameScene!.decreaseMana(CGFloat(getLosingMp()))
     }
     

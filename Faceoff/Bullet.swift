@@ -60,6 +60,7 @@ class Bullet: Weapon {
             let bulletAction = SKAction.sequence([SKAction.moveBy(vector, duration: 1.0), SKAction.waitForDuration(3.0/60.0), SKAction.removeFromParent()])
             
             bullet!.runAction(bulletAction)
+            Tools.playSound(Constants.Audio.BulletFire, node: bullet!)
             gameScene!.addChild(bullet!)
         }
         

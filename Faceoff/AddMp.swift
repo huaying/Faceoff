@@ -21,7 +21,8 @@ class AddMp: Bullet {
     }
     
     override func positveEffect() {
-        gameScene!.decreaseMana(-CGFloat(mp))
+        Tools.playSound(Constants.Audio.AddMp, node: gameScene!)
+        gameScene!.increaseMana(CGFloat(mp))
     }
     
     override func getCDtime() -> Double {

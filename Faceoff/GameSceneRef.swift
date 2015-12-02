@@ -1835,9 +1835,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.motionManager.stopAccelerometerUpdates()
             
             // 3
-            let gameOverScene: GameOverScene = GameOverScene(size: self.size)
+            //let gameOverScene: GameOverScene = GameOverScene(size: self.size)
             
-            view!.presentScene(gameOverScene, transition: SKTransition.doorsOpenHorizontalWithDuration(1.0))
+            //view!.presentScene(gameOverScene, transition: SKTransition.doorsOpenHorizontalWithDuration(1.0))
             
             NSNotificationCenter.defaultCenter().removeObserver(self)
 

@@ -425,7 +425,7 @@ class SelectWeaponScene: SKScene {
     func scrollToFirst(weapon: SKNode, RorL: CGFloat, distance: CGFloat, duration: Double){
         
         
-        Tools.playSound(Constants.Audio.WeaponSwift, node: self)
+        Tools.playSound(Constants.Audio.WeaponEnlarge, node: self)
         
         let moveToLeft = SKAction.moveTo(CGPointMake(weapon.position.x-distance,weapon.position.y), duration:duration)
         let moveToRight = SKAction.moveTo(CGPointMake(weapon.position.x+distance,weapon.position.y), duration:duration)

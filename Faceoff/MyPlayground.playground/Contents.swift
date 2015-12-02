@@ -2,7 +2,7 @@
 import Foundation
 import XCPlayground
 
-class test :NSObject{
+class asdfsad :NSObject{
     
     var timer: NSTimer!
     func a(){
@@ -23,9 +23,7 @@ class test :NSObject{
         print("c")
     }
 }
-var t = test()
-t.b()
-t = test()
+
 
 
 //func delay(delay:Double, closure:()->()) {
@@ -40,4 +38,16 @@ t = test()
 //delay(2) {
 //    print(222)
 //}
+
+
+
+
+class Test{
+    init(){
+        print("qq")
+    }
+}
+
+let test = Test()
+test
 XCPSetExecutionShouldContinueIndefinitely()

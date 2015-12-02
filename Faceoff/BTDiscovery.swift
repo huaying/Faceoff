@@ -10,24 +10,26 @@ import Foundation
 import CoreBluetooth
 import UIKit
 
-let btDiscoverySharedInstance = BTDiscovery();
+var btDiscoverySharedInstance = BTDiscovery();
 
-var peers = [CBPeripheral]()
-var peerName = [String]()
+
 
 class BTDiscovery: NSObject, CBCentralManagerDelegate {
   
   private var centralManager: CBCentralManager?
   private var peripheralBLE: CBPeripheral?
-  
+  var peers = [CBPeripheral]()
+  var peerName = [String]()
+    
   override init() {
 	super.init()
-	
+
 	let centralQueue = dispatch_queue_create("com.raywenderlich", DISPATCH_QUEUE_SERIAL)
 	centralManager = CBCentralManager(delegate: self, queue: centralQueue)
     
   }
   
+
   func startScanning() {
     if let central = centralManager {
         central.scanForPeripheralsWithServices([BLEServiceUUID], options: nil)
@@ -46,7 +48,9 @@ class BTDiscovery: NSObject, CBCentralManagerDelegate {
   
 
     func disconnect(){
-        self.centralManager?.cancelPeripheralConnection(self.peripheralBLE!)
+        if self.peripheralBLE != nil {
+            self.centralManager?.cancelPeripheralConnection(self.peripheralBLE!)
+        }
     }
     
     func sendToPeripheral(){
@@ -78,6 +82,7 @@ class BTDiscovery: NSObject, CBCentralManagerDelegate {
             let peripheralConnectionName = ["peripheralName": peerName]
             
             NSNotificationCenter.defaultCenter().postNotificationName("getPeripheralName", object: self, userInfo: peripheralConnectionName)
+            
         }
     
     
