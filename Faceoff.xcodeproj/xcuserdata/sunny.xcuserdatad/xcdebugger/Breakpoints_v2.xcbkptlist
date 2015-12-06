@@ -432,11 +432,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Faceoff/GameSceneBeta.swift"
-            timestampString = "471136181.745972"
+            timestampString = "471136327.447591"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "589"
-            endingLineNumber = "589"
+            startingLineNumber = "586"
+            endingLineNumber = "586"
             landmarkName = "setupGameEndPanel(_:)"
             landmarkType = "5">
          </BreakpointContent>
