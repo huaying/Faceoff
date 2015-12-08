@@ -189,5 +189,12 @@ class WeaponManager: NSObject{
         //        fireBullet.effect(character)
         weapon?.effectToMonster(monster)
     }
+    
+    func enoughManaForWeapon(currentMana: CGFloat,weaponName: String) -> Bool{
+        if CGFloat(makeWeapon(weaponName).getLosingMp()) > currentMana {
+            return false
+        }
+        return true
+    }
 
 }

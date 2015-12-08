@@ -295,6 +295,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
         }
         if mp?.powerValue <= 0  {
             weaponManager.firePreparingEnd_(currentTime)
+            velocityMultiplier = Constants.GameScene.Velocity
         }
         //Mana recovered regularly
         self.increaseMana(0.2)
@@ -407,6 +408,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?)  {
         
+        var isWeaponButtonClicked = false
         if isGameStart {
             if touchStatus == .Ended {
                 if !weaponManager.firePreparingEnd(touches.first!){
@@ -414,11 +416,12 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
                         for (i,node) in weapons!.enumerate() {
                             if node.containsPoint(location) {
                                 lockWeapon(i, node: node)
-                                return
+                                isWeaponButtonClicked = true
+                                break
                             }
                         }
                     }
-                    if(fireMutexReady == true) {
+                    if(fireMutexReady == true && !isWeaponButtonClicked) {
                         fireMutexReady = false
                         weaponManager.fireBullet()
                         self.runAction(SKAction.waitForDuration(0.2), completion: {
@@ -437,16 +440,22 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
 
     func lockWeapon(index: Int, node: SKSpriteNode) {
         
+        let weaponName = node.name!
+        
+        if !weaponManager.enoughManaForWeapon(mp!.powerValue, weaponName: weaponName){
+            return
+        }
+        
         if(weaponMutex[index]) {
             bulletFireMutex += 1
             
             weaponMutex[index] = false;
-            weaponManager.setCharacterWeapon(node.name!)
+        
+            weaponManager.setCharacterWeapon(weaponName)
             let cdtime = weaponManager.weapon?.getCDtime()
             let usctime = weaponManager.weapon?.getUscTime()
-            
-            print("weapon name is " + node.name!)
-            btAdvertiseSharedInstance.update("weapon",data: ["weapon":node.name!])
+
+            btAdvertiseSharedInstance.update("weapon",data: ["weapon":weaponName])
             
             
             //add weaponSlot
@@ -474,23 +483,27 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
                 })
             })
             
-            
-            //add weaponEnableNotification
-            let weaponNotification = SKSpriteNode(imageNamed: node.name!)
-            weaponNotification.size = CGSizeMake(200,200)
-            weaponNotification.position = CGPointMake(frame.midX,frame.midY)
-            weaponNotification.alpha = 0.0
-            addChild(weaponNotification)
-            weaponNotification.runAction(SKAction.sequence([
-                SKAction.fadeAlphaTo(0.5, duration: 0.5),
-                SKAction.waitForDuration(0.5),
-                SKAction.fadeAlphaTo(0.0, duration: 0.5),
-                SKAction.runBlock({weaponNotification.removeFromParent()})
-            ]))
-            
+            addWeaponEnableNotification(weaponName)
             
         }
     }
+    func addWeaponEnableNotification(weaponImageName: String){
+        
+        let weaponNotification = SKSpriteNode(imageNamed: weaponImageName)
+        weaponNotification.size = CGSizeMake(200,200)
+        weaponNotification.position = CGPointMake(frame.midX,frame.midY)
+        weaponNotification.alpha = 0.0
+        addChild(weaponNotification)
+        weaponNotification.runAction(SKAction.sequence([
+            SKAction.fadeAlphaTo(0.5, duration: 0.5),
+            SKAction.waitForDuration(0.5),
+            SKAction.fadeAlphaTo(0.0, duration: 0.5),
+            SKAction.runBlock({weaponNotification.removeFromParent()})
+            ]))
+
+    }
+    
+    
 
     // Physics Contact Helpers
     func didBeginContact(contact: SKPhysicsContact) {
@@ -615,12 +628,16 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     func removePausePanel(){
         resumeButton?.removeFromParent()
         exitButton?.removeFromParent()
+        resumeButton = nil
+        exitButton = nil
     }
     
     func removeGameEndPanel(){
         resultLabel?.removeFromParent()
         restartButton?.removeFromParent()
         exitButton?.removeFromParent()
+        restartButton = nil
+        exitButton = nil
     }
     
     func pauseGame(){
