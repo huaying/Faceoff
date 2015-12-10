@@ -12,7 +12,7 @@ import CoreMotion
 import AVFoundation
 import AudioToolbox
 
-class GameScene3: GameScene2{
+class GameScene3: GameScene {
    
     var monster: MonsterNode!
     let MonsterName = Constants.GameScene.Monster
@@ -23,17 +23,6 @@ class GameScene3: GameScene2{
     
     var Stage = 1
     
-    override func didMoveToView(view: SKView) {
-        /* Setup your scene here */
-
-        if (!self.contentCreated) {
-            self.setupGame()
-            self.contentCreated = true
-            
-            // Accelerometer starts
-            self.motionManager.startAccelerometerUpdates()
-        }
-    }
     
     override func setupGame(){
         super.setupGame()
@@ -43,8 +32,6 @@ class GameScene3: GameScene2{
         monsterBeginFire(1,range: 5)
 
     }
-    
-
     
     func setupMonster() {
         
@@ -198,7 +185,7 @@ class GameScene3: GameScene2{
         
         if isGameStart {
             enemyHp!.decrease(value)
-            //btAdvertiseSharedInstance.update("hp",data: ["hp":hp!.powerValue.description])
+            
             
             if(enemyHp!.powerValue <= 50 && enemyHp!.powerValue > 0){
                 //do something but not profEmitterActionAtPosition
@@ -210,41 +197,17 @@ class GameScene3: GameScene2{
         }
     }
 
-    // Physics Contact Helpers
-    override func didBeginContact(contact: SKPhysicsContact) {
-        
-        if contact as SKPhysicsContact? != nil {
-            self.handleContact(contact)
-        }
-    }
+
     
     override func handleContact(contact: SKPhysicsContact) {
+        
+        super.handleContact(contact)
         
         if (contact.bodyA.node?.parent == nil || contact.bodyB.node?.parent == nil) {
             return
         }
-        
         let nodeNames = [contact.bodyA.node!.name!, contact.bodyB.node!.name!] as NSArray
         
-        //Character is attacked
-        if nodeNames.containsObject(CharacterName) && nodeNames.containsObject(EnemyFireName) {
-            
-            if contact.bodyA.node == character {
-                contact.bodyB.node!.removeFromParent()
-            } else {
-                contact.bodyA.node!.removeFromParent()
-            }
-            
-            character?.shake()
-            character.getEffect(weaponManager)
-            decreaseHealth(CGFloat(weaponManager.fireDamage()))
-        }
-        else if nodeNames.containsObject(CharacterName) && nodeNames.containsObject(EnemyPoweredFire) {
-            
-            character?.shake()
-            character.getEffect(weaponManager)
-            decreaseHealth(CGFloat(weaponManager.poweredFireDamage()))
-        }
         if nodeNames.containsObject(MonsterName) && nodeNames.containsObject(FireName) {
             
             if contact.bodyA.node == monster {

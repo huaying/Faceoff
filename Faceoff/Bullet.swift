@@ -27,7 +27,7 @@ class Bullet: Weapon {
         fire(bulletPosition,vector: bulletVector)
         
         let normalizedX = 1 - (bulletPosition.x/gameScene!.size.width)
-        btAdvertiseSharedInstance.update("fire-bullet",data: ["x":normalizedX.description])
+        gameScene?.updateInfoToEnemy("fire-bullet",data: ["x":normalizedX.description])
     }
     
     override func fireFromEnemy(fireInfo: [String]) {

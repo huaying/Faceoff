@@ -25,8 +25,8 @@ class MultiBullet: Bullet {
         fire(bulletPosition,vector: bulletVector)
         
         let normalizedX = 1 - (bulletPosition.x/gameScene!.size.width)
-        btAdvertiseSharedInstance.update("fire-multibullet",data: ["x":normalizedX.description])
-    }
+        gameScene?.updateInfoToEnemy("fire-multibullet",data: ["x":normalizedX.description])
+            }
 
     override func getLosingMp() -> Double {
         return mp

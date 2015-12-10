@@ -21,7 +21,7 @@ class PowerManger {
     var bar: SKSpriteNode?
     
     var view: SKView?
-    var gameScene :GameScene2?
+    var gameScene :GameScene?
     
     var slefStatusNode: SKSpriteNode?
     var enemyStatusNode: SKSpriteNode?
@@ -47,14 +47,14 @@ class PowerManger {
     }
     
     func load(node: SKNode,positionX: CGFloat? = nil){
-        gameScene = node as? GameScene2
+        gameScene = node as? GameScene
         powerValue = maxOfPower
         makeBar(positionX)
         show(node)
     }
     
     func load(scene: SKNode,enemy: Bool = false){
-        gameScene = scene as? GameScene2
+        gameScene = scene as? GameScene
         makePanel(enemy)
         powerValue = maxOfPower
     }

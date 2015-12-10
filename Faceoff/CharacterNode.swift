@@ -8,6 +8,7 @@
 
 import Foundation
 import SpriteKit
+import AudioToolbox
 
 class CharacterNode: SKSpriteNode {
     
@@ -32,5 +33,7 @@ class CharacterNode: SKSpriteNode {
     func shake(){
         let action = SKAction.shake(0.5, amplitudeX: 10, amplitudeY: 10)
         runAction(action)
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+
     }
 }

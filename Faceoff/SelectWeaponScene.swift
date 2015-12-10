@@ -44,11 +44,10 @@ class SelectWeaponScene: SKScene {
     var 進入遊戲按鈕: SKNode! = nil
     var touchRect: SKSpriteNode! = nil
     
-    
     let Distance = CGFloat(105.0)
+    var single = false
     
     override func didMoveToView(view: SKView) {
-        
         
         loadBackground()
         loadCenterBlock()
@@ -61,6 +60,12 @@ class SelectWeaponScene: SKScene {
         loadDescriptionLabel()
         loadWeaponSlide()
         
+        if !single {
+            dispatch_async(dispatch_get_main_queue()) {
+                enemyCharacterLoader = EnemyCharacterLoader()
+                enemyCharacterLoader.preload()
+            }
+        }
     }
     
     func loadWeaponSlide(){
@@ -288,13 +293,15 @@ class SelectWeaponScene: SKScene {
                         return
                     }
                 }
-                if !btAdvertiseSharedInstance.single{
+                if !single{
                     
+                    
+                    //enemyCharacterLoader.preload()
                     while !EnemyCharacterLoader.isLoaded() {
                         sleep(1)
                     }
                     
-                    let nextScene = GameScene2(size: scene!.size)
+                    let nextScene = GameSceneVersus(size: scene!.size)
                     nextScene.scaleMode = SKSceneScaleMode.ResizeFill
                     nextScene.weaponManager.candidateWeaponTypes = weaponArray
                     

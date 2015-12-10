@@ -12,7 +12,9 @@ import SpriteKit
 
 
 var musicPlayer:AVAudioPlayer!
-
+var btDiscoverySharedInstance:BTDiscovery!
+var btAdvertiseSharedInstance:BTAdvertise!
+var enemyCharacterLoader: EnemyCharacterLoader!
 
 class GameViewController: UIViewController {
   

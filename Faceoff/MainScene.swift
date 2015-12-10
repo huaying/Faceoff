@@ -27,6 +27,8 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
 
     override func didMoveToView(view: SKView) {
         
+        btAdvertiseSharedInstance = nil
+        btDiscoverySharedInstance = nil
         
         loadBackground()
         loadStartButton()
@@ -191,15 +193,22 @@ class MainScene: SKScene,UINavigationControllerDelegate, UIImagePickerController
                 
             else if 進入遊戲按鈕.containsPoint(location){
 
-                Tools.playSound(Constants.Audio.TransButton, node: self)
-
-                let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)
-                
-                removeAllChildren()
-                self.view!.removeGestureRecognizer(gestureRecognizer!)
-                let nextScene = PlayModeScene(size: scene!.size)
-                nextScene.scaleMode = .AspectFill
-                scene?.view?.presentScene(nextScene, transition: transition)
+                if (CharacterManager.getPickedCharacterFromLocalStorage() != nil){
+                    
+                    Tools.playSound(Constants.Audio.TransButton, node: self)
+                    
+                    let transition = SKTransition.revealWithDirection(SKTransitionDirection.Up, duration: 0.5)
+                    
+                    removeAllChildren()
+                    self.view!.removeGestureRecognizer(gestureRecognizer!)
+                    let nextScene = PlayModeScene(size: scene!.size)
+                    nextScene.scaleMode = .AspectFill
+                    scene?.view?.presentScene(nextScene, transition: transition)
+                }
+                else{
+                    self.view!.makeToast(message: "Please take a picture!", duration: 0.5, position: "bottom")
+                    return
+                }
             }
             
             //Execute the block when characted list has been tapped

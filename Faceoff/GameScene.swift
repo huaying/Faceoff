@@ -1,8 +1,8 @@
 //
-//  GameSceneBeta.swift
+//  GameScene.swift
 //  Faceoff
 //
-//  Created by Huaying Tsai on 11/18/15.
+//  Created by Huaying Tsai on 12/8/15.
 //  Copyright © 2015 Liang. All rights reserved.
 //
 
@@ -10,9 +10,9 @@ import Foundation
 import SpriteKit
 import CoreMotion
 import AVFoundation
-import AudioToolbox
 
-class GameScene2: SKScene, SKPhysicsContactDelegate{
+
+class GameScene: SKScene, SKPhysicsContactDelegate{
     
     var contactQueue = Array<SKPhysicsContact>()
     var contentCreated: Bool = false
@@ -26,7 +26,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     var needPause: Bool = true
     var statusButton: SKSpriteNode!
     var pauseMask: SKView!
-   // var arr: [String] = []
+    // var arr: [String] = []
     
     var weapons: Array<SKSpriteNode>?
     //var weaponsStringArray: [String] = ["cure", "energyBlast", "fire", "shotGun", "snow", "spy"]
@@ -37,7 +37,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     var enemyMp: MPManager?
     var weaponManager = WeaponManager()
     var slowUpdateCount = 0
-
+    
     
     let motionManager: CMMotionManager = CMMotionManager()
     var velocityMultiplier = Constants.GameScene.Velocity
@@ -65,9 +65,11 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     var exitButton: SKSpriteNode?
     var resultLabel: SKLabelNode?
     
+    var endingEmitter :SKEmitterNode! = nil
+    
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
-
+        
         if (!self.contentCreated) {
             self.setupGame()
             self.contentCreated = true
@@ -75,73 +77,14 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
             // Accelerometer starts
             self.motionManager.startAccelerometerUpdates()
         }
-        
-         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("updateByInfoOfEnemy:"), name: "getInfoOfEnemy", object: nil)
-        
+                
         Tools.setupBGM()
-        
-    }
-
-
-    func updateByInfoOfEnemy(notification: NSNotification) {
-        
-        if isGameStart {
-            let userInfo = notification.userInfo as! Dictionary<String, AnyObject>
-            //print(userInfo)
-            
-            if let info: [String] = userInfo["location"] as? [String] {
-                if let normalizedX = Double(info[0]) {
-                    let x = CGFloat(normalizedX) * self.size.width
-                    enemyMark.runAction(SKAction.moveToX(x, duration: 0.2))
-                }
-            }
-                
-            else if let info: [String] = userInfo["weapon"] as?
-                [String] {
-                let weaponType = info[0]
-                //weaponManager.enemyWeapon = weaponManager.makeWeapon(weaponType)
-                weaponManager.setEnemyWeapon(weaponType)
-            }
-            else if let info: [String] = userInfo["fire-bullet"] as? [String] {
-                weaponManager.fireFromEnemy(info)
-            }
-            else if let info: [String] = userInfo["fire-multibullet"] as? [String] {
-                weaponManager.fireFromEnemy(info)
-            }
-            else if let info: [String] = userInfo["fire-laser"] as? [String] {
-                weaponManager.poweredFireFromEnemy(info)
-            }
-            
-            else if let info: [String] = userInfo["hp"] as? [String] {
-                if let hp = Double(info[0]){
-                    enemyHp?.powerValue = CGFloat(hp)
-                    
-                    if hp <= 0 {
-                        dispatch_async(dispatch_get_main_queue(),{
-                            self.stopGame()
-                            self.setupGameEndPanel(true)
-                            //you win
-                        })
-                    }
-                }
-            }
-            else if let info: [String] = userInfo["mp"] as? [String] {
-                if let mp = Double(info[0]){
-                    enemyMp?.powerValue = CGFloat(mp)
-                }
-            }
-            else if let _: [String] = userInfo["pause"] as? [String] {
-                pauseGame()
-                
-            }
-            else if let _: [String] = userInfo["resume"] as? [String] {                resumeGame()
-            }
-
-        }
     }
     
+    func updateInfoToEnemy(key: String, data: [String: String] = [String:String]()){}
+    
     func setupGame() {
-       
+        
         PhysicsSetting.setupScene(self)
         weaponManager.loadWeapons(self)
         setupCharacter()
@@ -157,17 +100,13 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
         resetMutex()
         userInteractionEnabled = true
         isGameStart = true
-
+        
     }
     
-     func resetMutex() {
+    func resetMutex() {
+        fireMutexReady = true
         weaponMutex = [true,true,true]
     }
-    
-    
-
-
-    
     
     func loadBackground() {
         guard let _ = childNodeWithName(Constants.GameScene.Background) as! SKSpriteNode? else {
@@ -256,7 +195,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     override func update(currentTime: CFTimeInterval) {
         
         if isGameStart {
-        
+            
             //Character Motion Control
             if(startMoving){
                 self.processUserMotionForUpdate(currentTime)
@@ -271,7 +210,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
             }
         }
     }
-
+    
     func processLocationSendingForUpdate(currentTime: CFTimeInterval){
         
         //send character's location to enemy
@@ -279,7 +218,8 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
         let y = character.position.y
         let normalizedX = 1 - (x/size.width)
         let normalizedY = 1 - (y/size.height)
-        btAdvertiseSharedInstance.update("location",data: ["x":normalizedX.description, "y":normalizedY.description])
+        
+        updateInfoToEnemy("location",data: ["x":normalizedX.description, "y":normalizedY.description])
         usleep(10000)
     }
     func processManaForUpdate(currentTime: CFTimeInterval){
@@ -313,10 +253,10 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
         for contact in self.contactQueue {
             self.handleContact(contact)
             
-//            if let index = (self.contactQueue as NSArray).indexOfObject(contact) as Int? {
-//                self.contactQueue.removeAtIndex(index)
-//            }
-
+            //            if let index = (self.contactQueue as NSArray).indexOfObject(contact) as Int? {
+            //                self.contactQueue.removeAtIndex(index)
+            //            }
+            
         }
     }
     
@@ -327,11 +267,11 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
                 if(needPause){
                     statusButton.texture = play
                     needPause = false
-                    btAdvertiseSharedInstance.update("pause")
+                    updateInfoToEnemy("pause")
                     pauseGame()
                 }else if(!needPause){
                     statusButton.texture = pause
-                    btAdvertiseSharedInstance.update("resume")
+                    updateInfoToEnemy("resume")
                     needPause = true
                     resumeGame()
                 }
@@ -344,6 +284,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
             
             if exitButton != nil && exitButton!.containsPoint(location){
                 Tools.playSound(Constants.Audio.Pause, node: self)
+                removeAllActions()
                 removeAllChildren()
                 Tools.setupStartBGM()
                 Tools.restartBackgroundMusic()
@@ -369,7 +310,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
             if resumeButton != nil && resumeButton!.containsPoint(location){
                 Tools.playSound(Constants.Audio.Pause, node: self)
                 statusButton.texture = pause
-                btAdvertiseSharedInstance.update("resume")
+                updateInfoToEnemy("resume")
                 needPause = true
                 resumeGame()
                 Tools.resumeBackgroundMusic()
@@ -398,8 +339,8 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
                 weaponManager.firePreparingBegin(touches.first!)
                 touchStatus = .Ended
             }
-            
-            //Here means touchEvent Bug happened
+                
+                //Here means touchEvent Bug happened
             else {
                 touchesEnded(touches,withEvent: event)
             }
@@ -430,14 +371,14 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
                     }
                 }else{
                     velocityMultiplier = Constants.GameScene.Velocity
-
+                    
                 }
                 touchStatus = .Began
             }
         }
     }
     
-
+    
     func lockWeapon(index: Int, node: SKSpriteNode) {
         
         let weaponName = node.name!
@@ -450,12 +391,12 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
             bulletFireMutex += 1
             
             weaponMutex[index] = false;
-        
+            
             weaponManager.setCharacterWeapon(weaponName)
             let cdtime = weaponManager.weapon?.getCDtime()
             let usctime = weaponManager.weapon?.getUscTime()
-
-            btAdvertiseSharedInstance.update("weapon",data: ["weapon":weaponName])
+            
+            updateInfoToEnemy("weapon",data: ["weapon":weaponName])
             
             
             //add weaponSlot
@@ -467,7 +408,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
                 self.bulletFireMutex -= 1
                 if self.bulletFireMutex == 0 {
                     self.weaponManager.setCharacterWeapon(Constants.Weapon.WeaponType.Bullet)
-                    btAdvertiseSharedInstance.update("weapon",data: ["weapon":Constants.Weapon.WeaponType.Bullet])
+                    self.updateInfoToEnemy("weapon",data: ["weapon":Constants.Weapon.WeaponType.Bullet])
                 }
                 
                 let cd = CDAnimationBuilder()
@@ -500,11 +441,11 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
             SKAction.fadeAlphaTo(0.0, duration: 0.5),
             SKAction.runBlock({weaponNotification.removeFromParent()})
             ]))
-
+        
     }
     
     
-
+    
     // Physics Contact Helpers
     func didBeginContact(contact: SKPhysicsContact) {
         
@@ -546,7 +487,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
         if isGameStart {
             mp!.increase(value)
             if(mp!.powerValue < 100){
-                btAdvertiseSharedInstance.update("mp",data: ["mp":mp!.powerValue.description])
+                updateInfoToEnemy("mp",data: ["mp":mp!.powerValue.description])
             }
         }
     }
@@ -555,7 +496,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
         if isGameStart {
             mp!.decrease(value)
             if(mp!.powerValue < 100){
-                btAdvertiseSharedInstance.update("mp",data: ["mp":mp!.powerValue.description])
+                updateInfoToEnemy("mp",data: ["mp":mp!.powerValue.description])
             }
         }
     }
@@ -564,7 +505,7 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
         
         if isGameStart {
             hp!.decrease(value)
-            btAdvertiseSharedInstance.update("hp",data: ["hp":hp!.powerValue.description])
+            updateInfoToEnemy("hp",data: ["hp":hp!.powerValue.description])
             
             if(hp!.powerValue <= 50 && hp!.powerValue > 0){
                 //do something but not profEmitterActionAtPosition
@@ -595,15 +536,19 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
         resultLabel!.position = CGPointMake(frame.midX, frame.maxY * 2/3)
         
         if isWin {
-            resultLabel!.text = "You Win!"
+            self.endingEffect(true)
+            resultLabel!.text = "VICTORY!"
             Tools.pauseBackgroundMusic()
             Tools.playSound(Constants.Audio.Win, node: self)
+            
         }else{
-            resultLabel!.text = "You Lose!"
+            self.endingEffect(false)
+            resultLabel!.text = "Try Again!"
             Tools.pauseBackgroundMusic()
             Tools.playSound(Constants.Audio.Lost, node: self)
         }
-            
+
+        
         restartButton = SKSpriteNode(imageNamed: Constants.GameScene.RestartButton)
         restartButton!.size = CGSizeMake(50,50)
         restartButton!.position = CGPointMake(frame.midX - 40, frame.maxY * 1/3)
@@ -633,9 +578,11 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     }
     
     func removeGameEndPanel(){
+        removeAllChildren()
         resultLabel?.removeFromParent()
         restartButton?.removeFromParent()
         exitButton?.removeFromParent()
+        self.endingEmitter.removeFromParent()
         restartButton = nil
         exitButton = nil
     }
@@ -657,8 +604,31 @@ class GameScene2: SKScene, SKPhysicsContactDelegate{
     func stopGame(){
         isGameStart = false
         weaponManager.cleanWeapons()
-        self.removeAllChildren()
+        self.removeAllActions()
+        statusButton.removeFromParent()
+        character.removeFromParent()
     }
     
-
+    func endingEffect(isWin: Bool) -> SKAction {
+        var sksPath = ""
+        if(isWin){
+            sksPath = NSBundle.mainBundle().pathForResource("fireflies", ofType: "sks")!
+            
+        }
+        else {
+            sksPath = NSBundle.mainBundle().pathForResource("MagicParticle", ofType: "sks")!
+            
+        }
+        endingEmitter = NSKeyedUnarchiver.unarchiveObjectWithFile(sksPath) as! SKEmitterNode
+        endingEmitter?.position = CGPoint(x: frame.midX, y: frame.midY)
+        endingEmitter?.zPosition = 0;
+        endingEmitter?.alpha = 0.8
+        endingEmitter?.setScale(0.7)
+        endingEmitter.zPosition = -1
+        addChild((endingEmitter)!)
+        let wait = SKAction.waitForDuration(0.15)
+        return SKAction.runBlock({ () -> Void in
+            self.endingEmitter?.runAction(wait)
+        })
+    }
 }

@@ -12,22 +12,19 @@ import CoreBluetooth
 import SpriteKit
 import MultipeerConnectivity
 
-let enemyCharacterLoader = EnemyCharacterLoader()
+
 
 class BuildConnectionScene: SKScene {
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
-    var peers = [CBPeripheral]()
-    var peerName = [String]()
-    
-    var peerToConnect: CBPeripheral?
-    var centralManager: CBCentralManager!
+    var peersName = [String]()
     
     var statusnode: SKLabelNode! = nil
     let background: SKNode! = nil
     var playerListNode: SKSpriteNode! = nil
     var scrollNode = ScrollNode()
+    var connectLock = false
     
     var 返回按鈕: SKNode! = nil
     var 遊戲按鈕: SKNode! = nil
@@ -36,17 +33,14 @@ class BuildConnectionScene: SKScene {
         
         btAdvertiseSharedInstance = BTAdvertise();
         btDiscoverySharedInstance = BTDiscovery();
-
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("connectionChanged:"), name: BLEServiceChangedStatusNotification, object: nil)
+        
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("connectionChanged:"), name: BLEServiceChangedStatusNotification, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("allSet:"), name: "allSet", object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("getCentral:"), name: "getCentral", object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("getPeripheral:"), name: "getPeripheral", object: nil)
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("getPeripheralName:"), name: "getPeripheralName", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("foundPeer:"), name: "foundPeer", object: nil)
         
         
         
@@ -113,55 +107,24 @@ class BuildConnectionScene: SKScene {
     
     func allSet(notification: NSNotification) {
         
-        let userInfo = notification.userInfo as! Dictionary<String, AnyObject>
-        let deviceName: String = userInfo["peripheralName"] as! String
+    NSNotificationCenter.defaultCenter().removeObserver(self)
         
-        for (index,peer) in peers.enumerate() {
-            print(deviceName, peer.name)
-            
-            if(index < peerName.count && peerName[index] == deviceName ){
-               
-                print(centralManager.description)
-                btDiscoverySharedInstance.connectToPeripheral(centralManager, peripheral: peers[index])
-                
-                let nextScene = SelectWeaponScene(size: scene!.size)
-                enemyCharacterLoader.preload()
-                
-                transitionForNextScene(nextScene)
-                centralManager.stopScan()
-            }
-        }
-    }
-    
-    func getCentral(notification: NSNotification){
         
-        let userInfo = notification.userInfo as! Dictionary<String, AnyObject>
-        centralManager = userInfo["central"] as! CBCentralManager
-        print("GetCentral!!!")
+
+        
+        let nextScene = SelectWeaponScene(size: scene!.size)
+        transitionForNextScene(nextScene)
         
     }
     
-    func getPeripheral(notification: NSNotification){
-        
-        let userInfo = notification.userInfo as! Dictionary<String, AnyObject>
-        peers = userInfo["peripheral"] as! [CBPeripheral]
-        
-        for(index, peripheral) in peers.enumerate(){
-            
-            let peerNode = SKLabelNode(fontNamed: Constants.Font)
-            peerNode.text = peripheral.name;
-            peerNode.fontSize = 20;
-            peerNode.position = CGPoint(x:0,y:CGFloat(index * 40))
-        }
-        
-    }
     
-    func getPeripheralName(notification: NSNotification){
+    func foundPeer(notification: NSNotification){
         
         let userInfo = notification.userInfo as! Dictionary<String, AnyObject>
-        peerName = userInfo["peripheralName"] as! [String]
+        peersName = userInfo["peers"] as! [String]
         
-        for(index, name) in peerName.enumerate(){
+        scrollNode.removeAllChildren()
+        for(index, name) in peersName.enumerate(){
             
             let peerNode = SKLabelNode(fontNamed: Constants.Font)
             peerNode.text = name;
@@ -172,28 +135,34 @@ class BuildConnectionScene: SKScene {
         
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        if let location = touches.first?.locationInNode(scrollNode){
-            let peerNodes = scrollNode.children
-            for peerNode in peerNodes{
-                if peerNode.containsPoint(location){
-                    
-                    let tmp = peerNode as! SKLabelNode
-                    
-                    for var i = 0; i < peerName.count; i++ {
+    func peerConnectDetect(touches: Set<UITouch>){
+        if !connectLock {
+            if let location = touches.first?.locationInNode(scrollNode){
+                let peerNodes = scrollNode.children
+                for peerNode in peerNodes{
+                    if peerNode.containsPoint(location){
+                        let labelNode = peerNode as! SKLabelNode
                         
-                        if tmp.text! == peerName[i]{
-                            
-                            btDiscoverySharedInstance.connectToPeripheral(centralManager, peripheral: peers[i])
-                            Tools.playSound(Constants.Audio.SelectOpponent, node: self)
-                            peerToConnect = peers[i]
-                            
-                            print(peerToConnect?.name)
+                        for peerName in peersName {
+                            if labelNode.text! == peerName{
+                                connectLock = true
+                                
+                                btDiscoverySharedInstance.connect(peerName)
+                                Tools.playSound(Constants.Audio.SelectOpponent, node: self)
+                                //                            peerToConnect = peerName
+                                break
+                            }
                         }
                     }
                 }
             }
         }
+
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        
+        peerConnectDetect(touches)
         
         if let location = touches.first?.locationInNode(self){
             if 返回按鈕.containsPoint(location){
@@ -223,65 +192,33 @@ class BuildConnectionScene: SKScene {
         scene?.view?.presentScene(nextScene, transition: transition)
     }
     
-    func connectionChanged(notification: NSNotification) {
-        // Connection status changed. Indicate on GUI.
-        let userInfo = notification.userInfo as! [String: Bool]
-        
-        dispatch_async(dispatch_get_main_queue(), {
-            // Set image based on connection status
-            if let isConnected: Bool = userInfo["isConnected"] {
-                if isConnected {
-                    
-                    
-                    let tit = NSLocalizedString("Alert", comment: "")
-                    let msg = NSLocalizedString("Received from Central!", comment: "")
-                    let alert:UIAlertView = UIAlertView()
-                    alert.title = tit
-                    alert.message = msg
-                    alert.delegate = self
-                    alert.addButtonWithTitle("OK")
-                    alert.addButtonWithTitle("Cancel")
-                    //alert.show()
-                    
-                    print("connect!")
-                    
-                    if self.peerToConnect != nil{
-                        
-                        btDiscoverySharedInstance.bleService?.writeDeviceName(UIDevice.currentDevice().name)
-                        
-                        //btDiscoverySharedInstance.bleService?.writeDeviceUUID((UIDevice.currentDevice().identifierForVendor?.UUIDString)!)
-                        
-                        self.peerToConnect = nil
-                        
-                        
-                        let nextScene = SelectWeaponScene(size: self.scene!.size)
-                        enemyCharacterLoader.preload()
-                        
-                        self.transitionForNextScene(nextScene)
-                    }
-                    
-                    
-                    
-                    
-                } else {
-                    
-                    let tit = NSLocalizedString("Alert", comment: "")
-                    let msg = NSLocalizedString("Not Connected!", comment: "")
-                    let alert:UIAlertView = UIAlertView()
-                    alert.title = tit
-                    alert.message = msg
-                    alert.delegate = self
-                    alert.addButtonWithTitle("OK")
-                    alert.addButtonWithTitle("Cancel")
-                    //alert.show()
-                    
-                    //self.imgBluetoothStatus.image = UIImage(named: "Bluetooth_Disconnected")
-                }
-            }
-        });
-    }
+//    func connectionChanged(notification: NSNotification) {
+//        // Connection status changed. Indicate on GUI.
+//        let userInfo = notification.userInfo as! [String: Bool]
+//        
+//        dispatch_async(dispatch_get_main_queue(), {
+//            // Set image based on connection status
+//            if let isConnected: Bool = userInfo["isConnected"] {
+//                if isConnected {
+//                    
+//                    if self.peerToConnect != nil{
+//                        
+//                        btDiscoverySharedInstance.bleService?.writeDeviceName(UIDevice.currentDevice().name)
+//                        
+//                        self.peerToConnect = nil
+//                        
+//                        let nextScene = SelectWeaponScene(size: self.scene!.size)
+//                        enemyCharacterLoader.preload()
+//                        
+//                        self.transitionForNextScene(nextScene)
+//                    }
+//                }
+//            }
+//        });
+//    }
     
     override func update(currentTime: NSTimeInterval) {
         
     }
+    
 }

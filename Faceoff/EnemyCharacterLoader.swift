@@ -15,19 +15,20 @@ class EnemyCharacterLoader: NSObject {
     var isEnemyGetReady: Bool = false
     
     func preload(){
-        CharacterManager.deleteEnemyFromLocalStrorage()
+        
         setupBlueToothDataHandler()
         sendNotificationOfReadyToReceive()
     }
     
     func sendNotificationOfReadyToReceive(){
-
-        btAdvertiseSharedInstance.update("character-image-ready")
+        Tools.delay(3, closure: {
+            btAdvertiseSharedInstance.update("character-image-ready")
+        })
     }
     
     func setupBlueToothDataHandler(){
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("updateByInfoOfEnemy:"), name: "getInfoOfEnemy", object: nil)
-        sleep(1)
+        
     }
     
     func updateByInfoOfEnemy(notification: NSNotification) {
@@ -46,6 +47,7 @@ class EnemyCharacterLoader: NSObject {
         //Receiving Finish Signal
         else if let _: [String] = userInfo["character-image-finish"] as? [String] {
             let decodedImage = decodeBase64DataToImage()
+            //CharacterManager.deleteEnemyFromLocalStrorage()
             CharacterManager.saveEnemyCharacterToLocalStorage(decodedImage)
             //self.addChild(SKSpriteNode(texture: SKTexture(image: decodedImage!)))
             
@@ -53,7 +55,6 @@ class EnemyCharacterLoader: NSObject {
             
         //Receiving the Signal that Enemy get ready to reiceive chunk data
         else if let _: [String] = userInfo["character-image-ready"] as? [String] {
-            
             let a = NSDate().timeIntervalSinceReferenceDate
             sendCharacterImageDataToEnemy()
             print(NSDate().timeIntervalSinceReferenceDate - a)
@@ -68,13 +69,13 @@ class EnemyCharacterLoader: NSObject {
     }
     
     func sendCharacterImageDataToEnemy(){
+        
         let image: UIImage = CharacterManager.getPickedCharacterSmallFromLocalStorage()!
         
         let imageData = UIImagePNGRepresentation(image)
         
         let base64String = imageData!.base64EncodedStringWithOptions(.EncodingEndLineWithLineFeed)
-        
-        
+
         var chunks = [[Character]]()
         let chunkSize = 100
         

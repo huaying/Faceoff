@@ -18,13 +18,13 @@ class Weapon: NSObject{
     var bulletImageName: String?
     var firePreparingEmitter: SKEmitterNode!
     
-    var gameScene: GameScene2?
+    var gameScene: GameScene?
     var gameSceneSingle: GameScene3?
     
     var isFirePreparing: Bool = false
     
     init(sceneNode :SKScene){
-        if let gameScene = sceneNode as? GameScene2 {
+        if let gameScene = sceneNode as? GameScene {
             self.gameScene = gameScene
         }
     }

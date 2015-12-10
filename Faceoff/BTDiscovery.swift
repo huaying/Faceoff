@@ -1,207 +1,115 @@
 //
 //  BTDiscovery.swift
-//  Arduino_Servo
+//  bt
 //
-//  Created by Owen L Brown on 9/24/14.
-//  Copyright (c) 2014 Razeware LLC. All rights reserved.
+//  Created by Huaying Tsai on 12/9/15.
+//  Copyright © 2015 huaying. All rights reserved.
 //
 
 import Foundation
 import CoreBluetooth
 import UIKit
 
-var btDiscoverySharedInstance = BTDiscovery();
-
-
+/* Services & Characteristics UUIDs */
+let BLEServiceUUID = CBUUID(string: "035A7775-49AA-42BD-BBDB-E2AE77782966")
+//let BLEServiceUUID = CBUUID(string: "025A7775-49AA-42BD-BBDB-E2AE77782969")
+let PositionCharUUID = CBUUID(string: "F48A2C23-BC54-40FC-BED0-60EDDA139F47")
+//let PositionCharUUID = CBUUID(string: "F38A2C23-BC54-40FC-BED0-60EDDA139F49")
 
 class BTDiscovery: NSObject, CBCentralManagerDelegate {
-  
-  private var centralManager: CBCentralManager?
-  private var peripheralBLE: CBPeripheral?
-  var peers = [CBPeripheral]()
-  var peerName = [String]()
     
-  override init() {
-	super.init()
-
-	let centralQueue = dispatch_queue_create("com.raywenderlich", DISPATCH_QUEUE_SERIAL)
-	centralManager = CBCentralManager(delegate: self, queue: centralQueue)
+    private var centralManager: CBCentralManager?
+    var peripheralBLE: CBPeripheral?
+    var peers = [String:CBPeripheral]()
+    var btService: BTService?
+    var isConnectedToOthers = false
     
-  }
-  
-
-  func startScanning() {
-    if let central = centralManager {
-        central.scanForPeripheralsWithServices([BLEServiceUUID], options: nil)
-        //central.scanForPeripheralsWithServices(nil, options: nil)
+    override init(){
+        super.init()
+        
+        let centralQueue = dispatch_queue_create("huaying.faceoff", DISPATCH_QUEUE_SERIAL)
+        centralManager = CBCentralManager(delegate: self, queue: centralQueue)
+        
+        
     }
-  }
     
-
-  var bleService: BTService? {
-    didSet {
-      if let service = self.bleService {
-        service.startDiscoveringServices()
-      }
-    }
-  }
-  
-
-    func disconnect(){
-        if self.peripheralBLE != nil {
-            self.centralManager?.cancelPeripheralConnection(self.peripheralBLE!)
+    func startScanning(){
+        if let central = centralManager {
+            central.scanForPeripheralsWithServices([BLEServiceUUID], options: nil)
         }
     }
     
-    func sendToPeripheral(){
-        
-        
-        let valuemoto2 = 13
-        let value: UInt8 = UInt8(valuemoto2 & 0xFF)
-        let data = NSData(bytes: [value] as [UInt8], length: 1)
-        
-        
-        self.bleService!.peripheral! .writeValue(data, forCharacteristic: (self.bleService?.positionCharacteristic)!, type: CBCharacteristicWriteType.WithResponse)
+    func connectToPeripheral(peripheral: CBPeripheral){
+        if !isConnectedToOthers {
+            centralManager!.connectPeripheral(peripheral, options: nil)
+        }
     }
     
-    
-  // MARK: - CBCentralManagerDelegate
-  
-  func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber) {
-        // Be sure to retain the peripheral or it will fail during connection.
+    // MARK: - CBCentralManagerDelegate
+    func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber) {
+        print("BTDiscovery: cetralManager discover peripheral")
         
         
-        let centralConnectionDetails = ["central": central]
-        
-        
-        peers.append(peripheral)
-        let peripheralConnectionDetails = ["peripheral": peers]
-        
-        if advertisementData[CBAdvertisementDataLocalNameKey] != nil{
-            peerName.append(advertisementData[CBAdvertisementDataLocalNameKey] as! String)
-            let peripheralConnectionName = ["peripheralName": peerName]
+        if let name = advertisementData[CBAdvertisementDataLocalNameKey] as? String {
             
-            NSNotificationCenter.defaultCenter().postNotificationName("getPeripheralName", object: self, userInfo: peripheralConnectionName)
             
-        }
-    
-    
-    NSNotificationCenter.defaultCenter().postNotificationName("getCentral", object: self, userInfo: centralConnectionDetails)
-    
-    NSNotificationCenter.defaultCenter().postNotificationName("getPeripheral", object: self, userInfo: peripheralConnectionDetails)
-    
-        print("幹", advertisementData[CBAdvertisementDataLocalNameKey])
-    }
-    
-    func connectToPeripheral(central: CBCentralManager, peripheral: CBPeripheral){
-        
-        self.peripheralBLE = peripheral
-        // Connect to peripheral
-        centralManager!.connectPeripheral(peripheral, options: nil)
-        
-        // Validate peripheral information
-        if ((self.peripheralBLE == nil) || (self.peripheralBLE!.name == nil) || (self.peripheralBLE!.name == "")) {
-            return
-        }
-        
-        
-        // If not already connected to a peripheral, then connect to this one
-        if ((self.peripheralBLE == nil) || (self.peripheralBLE?.state == CBPeripheralState.Disconnected)) {
-            // Retain the peripheral before trying to connect
-            self.peripheralBLE = peripheral
+                peers[name] = peripheral
+                
+                let peersInfo = ["peers": Array(peers.keys)]
+            NSNotificationCenter.defaultCenter().postNotificationName("foundPeer", object: self, userInfo: peersInfo)
+                
+                peripheralBLE = peripheral
             
-            // Reset service
-            self.bleService = nil
-            
-            // Connect to peripheral
-            central.connectPeripheral(peripheral, options: nil)
         }
         
     }
-
     
-  func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
-    
-    print("Device Connected!")
-
-    self.peripheralBLE = peripheral
-
-    if (self.peripheralBLE == nil) {
-      return;
-    }
-
-    // Create new service class
-    if (peripheral == self.peripheralBLE) {
-      self.bleService = BTService(initWithPeripheral: peripheral)
+    func connect(peerName: String){
+        connectToPeripheral(peers[peerName]!)
     }
     
-    // Stop scanning for new devices
-    central.stopScan()
-  }
-  
-  func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?) {
-    
-    self.peripheralBLE = peripheral
-    if (self.peripheralBLE == nil) {
-      return;
-    }
-    
-    // See if it was our peripheral that disconnected
-    if (peripheral == self.peripheralBLE) {
-      self.bleService = nil;
-      self.peripheralBLE = nil;
-    }
-    
-    // Start scanning for new devices
-    self.startScanning()
-  }
-  
-  // MARK: - Private
-  
-  func clearDevices() {
-    self.bleService = nil
-    self.peripheralBLE = nil
-  }
-  
-  func centralManagerDidUpdateState(central: CBCentralManager) {
-
-    switch (central.state) {
+    func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
+        print("BTDiscovery: connectPeripheral success")
         
-    case CBCentralManagerState.PoweredOff:
-        print("Hello new Print with new line1");
-
-        self.clearDevices()
-        break
-      
-    case CBCentralManagerState.Unauthorized:
-        print("Hello new Print with new line2");
-
-      // Indicate to user that the iOS device does not support BLE.
-      break
-      
-    case CBCentralManagerState.Unknown:
-        print("Hello new Print with new line3");
-
-      // Wait for another event
-        break
-      
-    case CBCentralManagerState.PoweredOn:
-        print("Hello new Print with new line4");
-
-        self.startScanning()
-        break
-      
-    case CBCentralManagerState.Resetting:
-        print("Hello new Print with new line5");
-
-        self.clearDevices()
-        break
-      
-    case CBCentralManagerState.Unsupported:
-        print("Hello new Print with new line6");
-
-        break
+        isConnectedToOthers = true
+        btService = BTService(initWithPeripheral: peripheral)
+        central.stopScan()
+        
+        
     }
-  }
-
+    
+    func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?) {
+        print("disconnect")
+    }
+    
+    func centralManagerDidUpdateState(central: CBCentralManager) {
+        
+        switch (central.state) {
+            
+        case CBCentralManagerState.PoweredOff:
+            //self.clearDevices()
+            break
+            
+        case CBCentralManagerState.Unauthorized:
+            // Indicate to user that the iOS device does not support BLE.
+            break
+            
+        case CBCentralManagerState.Unknown:
+            // Wait for another event
+            break
+            
+        case CBCentralManagerState.PoweredOn:
+            self.startScanning()
+            break
+            
+        case CBCentralManagerState.Resetting:
+            //self.clearDevices()
+            break
+            
+        case CBCentralManagerState.Unsupported:
+            break
+        }
+    }
+    
+    
 }

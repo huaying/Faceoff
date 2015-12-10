@@ -17,6 +17,10 @@ class PlayModeScene: SKScene {
     
     override func didMoveToView(view: SKView) {
         
+        btAdvertiseSharedInstance = nil
+        btDiscoverySharedInstance = nil
+
+        
         loadBackground()
         loadBackButton()
         loadStoryButton()
@@ -72,11 +76,9 @@ class PlayModeScene: SKScene {
         if let location = touches.first?.locationInNode(self){
             if 選擇單人遊戲按鈕.containsPoint(location){
                 Tools.playSound(Constants.Audio.TransButton, node: self)
-                print("single play")
-                
-                btAdvertiseSharedInstance.single = true
                 
                 let nextScene = SelectWeaponScene(size: scene!.size)
+                nextScene.single = true
                 nextScene.backgroundColor = UIColor.grayColor()
                 nextScene.scaleMode =  .AspectFill
                 transitionForNextScene(nextScene)

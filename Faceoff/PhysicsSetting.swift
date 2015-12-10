@@ -11,7 +11,7 @@ import SpriteKit
 
 class PhysicsSetting {
     
-    static func setupScene(node: GameScene2) -> GameScene2 {
+    static func setupScene(node: GameScene) -> GameScene {
         
         node.physicsWorld.contactDelegate = node
         node.physicsBody = SKPhysicsBody(edgeLoopFromRect: node.frame)

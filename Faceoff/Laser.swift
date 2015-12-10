@@ -47,7 +47,7 @@ class Laser: Weapon {
             fire(bulletPosition,laserWidth: CGFloat(laserFinalWidth))
             
             let normalizedX = 1 - (bulletPosition.x/gameScene!.size.width)
-            btAdvertiseSharedInstance.update("fire-laser",data: ["x":normalizedX.description,"laserWidth":laserFinalWidth.description])
+            gameScene?.updateInfoToEnemy("fire-laser",data: ["x":normalizedX.description,"laserWidth":laserFinalWidth.description])
         
             kameCharge?.stop()
             Tools.playSound(Constants.Audio.LaserFire, node: self.gameScene!)
