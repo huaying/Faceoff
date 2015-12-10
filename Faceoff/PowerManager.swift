@@ -10,7 +10,7 @@ import Foundation
 import SpriteKit
 
 class PowerManger {
-    let maxOfPower:CGFloat = 100
+    let maxOfPower:CGFloat = 200
     let minOfPower:CGFloat = 0
     
     let barWidth:CGFloat = 5
